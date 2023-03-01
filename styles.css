@@ -7,26 +7,26 @@ body{
 }
 
 .desktop{
-    height: 83vh;
-    margin-top: 4vh;
+    height: 82vh;
+    margin-top: 5vh;
     border-style: solid;
     border-width: 1px !important;
-    border-color: rgba(255, 255, 255, 0.663) !important;
+    border-color: rgb(0, 0, 0) !important;
     background-image: url("backgr.png");
     background-size: cover;
     box-shadow: 0 0 3rem 0.2rem #cb8ebd;
     animation-name: example;
-    animation-duration: 4s;
+    animation-duration: 3s;
     animation-iteration-count: infinite;
     animation-direction: alternate; 
     }
 
 .logo{
     min-width: 200px;
-    font-size: 4vh;
+    font-size: 3.7vh;
     height: 12vh; 
-    text-shadow: 0 0 1rem #ffffff; 
-    color:#e9bce1;
+    text-shadow: 0 0 0.5rem #ffffff; 
+    color:#f1a8e4;
 }
 
 .powerbutton{
@@ -39,17 +39,44 @@ body{
 }
 
 .backg{
-    height: 76vh;
+    height: 75vh;
 }
 
 .barra{
     border-color: rgba(15, 14, 14, 0.572) !important;
     height: 7vh;
     background-color: #0000007b;
+ }
+ 
+.izq{
+    padding: 6vh 0 0 4vw;
+    width: 20vw;
+    flex-wrap: wrap;
+}
+
+.app{
+    height: 15vh;
+    width: 14vw;
+    text-decoration-line: none;
+}
+
+.app-icon{
+    padding: 0 1vw;
+    font-size: 5vh;
+}
+
+p{
+    font-family: 'Raleway', sans-serif;
+    font-size: 1.9vh;
+    text-shadow: 0 0 0.5rem #000000;
+}
+
+.info{
+    text-shadow: 0 0 0;
+    height: 76vh;
 }
 
 .iconos{
-    color:#ffffffe8;
     width: 40vw;
     font-size: 3.5vh;
 }
@@ -60,15 +87,22 @@ body{
 }
 
 .icono{
+    color:#ffffffe8 !important;
     font-size: 3.5vh;
 }
 
 .icono:hover{
     font-size: 4vh;
     transition: font-size 0.1s;
+    text-shadow: 0 0 0.5rem #ffe3ffaf;
+}
+
+.toast{
+    border: 1px solid rgb(15, 14, 14) !important;
+    max-width: 300px;
 }
 
 @keyframes example {
-    from {box-shadow: 0 0 1.5rem 0.2rem #db8fd3;}
-    to {box-shadow: 0 0 1.5rem 0.2rem #a377e0;}
+    from {box-shadow: 0 0 1.5rem 0.2rem #db8fbe;}
+    to {box-shadow: 0 0 1.5rem 0.2rem #9c77e0;}
   }
