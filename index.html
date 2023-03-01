@@ -27,7 +27,60 @@
   </head>
 
   <body>
+    
+    <div class="d-flex flex-wrap justify-content-center" id="staticBackdrop" data-bs-backdrop="static" data-bs-keyboard="false" tabindex="-1" aria-labelledby="staticBackdropLabel" aria-hidden="true">
+      <div class="desktop col-11 border border-2 rounded-3">
+        <div class="backg d-flex">
+          <div class="izq d-flex">
+            <a class="app d-flex flex-column" style="color: azure;" type="button" data-bs-toggle="modal" data-bs-target="#Modal">
+              <i class="app-icon bi bi-person-badge"></i>
+              <p>Mis datos</p>
+            </a>
+            <a class="app d-flex flex-column" style="color: azure;">
+              <i class="app-icon bi bi-file-text"></i>
+              <p>Mis datos</p>
+            </a>
+            <a class="app d-flex flex-column" style="color: azure;">
+              <i class="app-icon bi bi-folder"></i>
+              <p>Mis datos</p>
+            </a>
+            <a class="app d-flex flex-column" style="color: azure;">
+              <i class="app-icon bi bi-image"></i>
+              <p>Mis datos</p>
+            </a>
+          </div>
+        </div>
+        <div class="barra d-flex rounded-bottom border-top border-2 justify-content-center">
+          <div class="d-flex justify-content-around iconos">
+            
+            <a class="marcos d-flex justify-content-center" href="https://github.com/RocioMarcos" target="_blank">
+              <i class="icono bi bi-github"></i>
+            </a>
+            
+            <a class="marcos d-flex justify-content-center" href="https://www.linkedin.com/in/rocio-marcos-55188921a" target="_blank">
+              <i class="icono bi bi-linkedin"></i>
+            </a>
 
+            <a class="marcos d-flex justify-content-center">
+              <i class="icono bi bi-whatsapp"></i>
+            </a>
+
+            <a class="marcos d-flex justify-content-center" type="button" id="gmailToastBtn">
+              <i class="icono bi bi-envelope"></i>
+            </a>
+
+            <a class="marcos d-flex justify-content-center" type="button" id="discordToastBtn">
+              <i class="icono bi bi-discord"></i>
+            </a>
+          </div>
+        </div>
+      </div>
+      <div class="logo d-flex justify-content-center p-3">
+        <div class="powerbutton d-flex justify-content-center border rounded-circle">
+          <i class="bi bi-power"></i>
+        </div>
+      </div>
+    </div>
     
     <!-- Modals -->
     <div class="modal fade" id="Modal" tabindex="-1" aria-labelledby="ModalLabel" data-bs-backdrop="static" data-bs-keyboard="false" tabindex="-1" aria-hidden="true">
