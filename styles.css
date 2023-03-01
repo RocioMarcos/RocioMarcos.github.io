@@ -1,0 +1,74 @@
+body{
+    width: 100%;
+    overflow: hidden;
+    background-color: #222222;
+    height: 100vh; 
+    box-shadow: 0 0 3rem 0.5rem #000000 inset;
+}
+
+.desktop{
+    height: 83vh;
+    margin-top: 4vh;
+    border-style: solid;
+    border-width: 1px !important;
+    border-color: rgba(255, 255, 255, 0.663) !important;
+    background-image: url("backgr.png");
+    background-size: cover;
+    box-shadow: 0 0 3rem 0.2rem #cb8ebd;
+    animation-name: example;
+    animation-duration: 4s;
+    animation-iteration-count: infinite;
+    animation-direction: alternate; 
+    }
+
+.logo{
+    min-width: 200px;
+    font-size: 4vh;
+    height: 12vh; 
+    text-shadow: 0 0 1rem #ffffff; 
+    color:#e9bce1;
+}
+
+.powerbutton{
+    border-style: solid;
+    border-color: rgb(15, 14, 14) !important;
+    width: 7vh;
+    padding: 0.5vh;
+    box-shadow: 0 0 1.5rem #14141433 inset;
+    box-shadow: 0 0 0.5rem #141414af;
+}
+
+.backg{
+    height: 76vh;
+}
+
+.barra{
+    border-color: rgba(15, 14, 14, 0.572) !important;
+    height: 7vh;
+    background-color: #0000007b;
+}
+
+.iconos{
+    color:#ffffffe8;
+    width: 40vw;
+    font-size: 3.5vh;
+}
+
+.marcos{
+    height: 6vh;
+    width: 7vh;
+}
+
+.icono{
+    font-size: 3.5vh;
+}
+
+.icono:hover{
+    font-size: 4vh;
+    transition: font-size 0.1s;
+}
+
+@keyframes example {
+    from {box-shadow: 0 0 1.5rem 0.2rem #db8fd3;}
+    to {box-shadow: 0 0 1.5rem 0.2rem #a377e0;}
+  }
