@@ -32,22 +32,27 @@
       <div class="desktop col-11 border border-2 rounded-3">
         <div class="backg d-flex">
           <div class="izq d-flex">
+
             <a class="app d-flex flex-column" style="color: azure;" type="button" data-bs-toggle="modal" data-bs-target="#Modal">
               <i class="app-icon bi bi-person-badge"></i>
               <p>Mis datos</p>
             </a>
-            <a class="app d-flex flex-column" style="color: azure;">
+
+            <a class="app d-flex flex-column" style="color: azure;" type="button" data-bs-toggle="modal" data-bs-target="#ModalTrabajos">
+              <i class="app-icon bi bi-briefcase"></i>
+              <p>Trabajos</p>
+            </a>
+
+            <a class="app d-flex flex-column" style="color: azure;" type="button" data-bs-toggle="modal" data-bs-target="#ModalEstudios">
+              <i class="app-icon bi bi-mortarboard"></i>
+              <p>Estudios</p>
+            </a>
+
+            <a class="app d-flex flex-column" style="color: azure;" type="button" data-bs-toggle="modal" data-bs-target="#ModalOtros">
               <i class="app-icon bi bi-file-text"></i>
-              <p>Mis datos</p>
+              <p>Curriculum</p>
             </a>
-            <a class="app d-flex flex-column" style="color: azure;">
-              <i class="app-icon bi bi-folder"></i>
-              <p>Mis datos</p>
-            </a>
-            <a class="app d-flex flex-column" style="color: azure;">
-              <i class="app-icon bi bi-image"></i>
-              <p>Mis datos</p>
-            </a>
+            
           </div>
         </div>
         <div class="barra d-flex rounded-bottom border-top border-2 justify-content-center">
@@ -61,7 +66,7 @@
               <i class="icono bi bi-linkedin"></i>
             </a>
 
-            <a class="marcos d-flex justify-content-center">
+            <a class="marcos d-flex justify-content-center" type="button" id="telefonoToastBtn">
               <i class="icono bi bi-whatsapp"></i>
             </a>
 
@@ -82,25 +87,133 @@
       </div>
     </div>
     
-    <!-- Modals -->
+<!-- Modals -->
+
+    <!-- Mis Datos -->
     <div class="modal fade" id="Modal" tabindex="-1" aria-labelledby="ModalLabel" data-bs-backdrop="static" data-bs-keyboard="false" tabindex="-1" aria-hidden="true">
-      <div class="modal-dialog">
+      <div class="modal-dialog modal-dialog-centered">
         <div class="modal-content">
-          <div class="modal-header">
-            <h1 class="modal-title fs-5" id="ModalLabel">Sobre mi</h1>
+          <div class="modal-header" style="height: 7vh; font-size: 3vh; background-color: #9c77e0; color: #ffffff;">
+            <i class="bi bi-person-badge"></i>
+            <h1 class="modal-title fs-5" id="ModalLabel">‎ Sobre mi</h1>
             <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
           </div>
-          <div class="modal-body">
-            <p class="info">Apasionada por diseño, planificación, desarrollo. Constantemente en la búsqueda de formación propia junto con la búsqueda de oportunidades de aprendizaje</p>
+          <div class="modal-body" style="height: 20vh;">
+            <p class="info">Originaria de Santiago del estero, Argentina<br><br>Apasionada por diseño, planificación, desarrollo. <br>Constantemente en la búsqueda de formación propia junto con la búsqueda de oportunidades de aprendizaje<br><br>Mi lengua materna es el español, pero también poseo un nivel avanzado de inglés.</p>
+          </div>
+          <div class="modal-footer" style="height: 1vh; background-color: #9c77e0;">
           </div>
         </div>
       </div>
     </div>
 
-    <!-- Toasts -->
+    <!-- Trabajos -->
+    <div class="modal fade" id="ModalTrabajos" tabindex="-1" aria-labelledby="ModalLabel" data-bs-backdrop="static" data-bs-keyboard="false" tabindex="-1" aria-hidden="true">
+      <div class="modal-dialog modal-dialog-centered modal-dialog-scrollable">
+        <div class="modal-content">
+          <div class="modal-header" style="height: 7vh; font-size: 3vh; background-color: #cb77e0; color: #ffffff;">
+            <i class="bi bi-briefcase"></i>
+            <h1 class="modal-title fs-5" id="ModalLabel">‎ Trabajos</h1>
+            <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+          </div>
+          <div class="modal-body" style="height: 40vh;">
+
+            <ol class="list-group">
+              <li class="list-group-item d-flex justify-content-between align-items-start">
+                <div class="ms-2 me-auto">
+                  <div class="fw-bold">Front-end Freelancer</div>
+                    Diseño, maquetado y desarrollo de sistemas.
+                </div>
+                <span class="badge rounded-pill" style="background-color: #cb77e0;">(2023 - )</span>
+              </li>
+              <li class="list-group-item d-flex justify-content-between align-items-start">
+                <div class="ms-2 me-auto">
+                  <div class="fw-bold">Desarrolladora fullstack</div>
+                    Estudio contable privado. Sistema de gestión de vencimientos impositivos.<br> (HTML, CSS, JavaScript, Python, Django y SQL)
+                </div>
+                <span class="badge rounded-pill" style="background-color: #cb77e0;">(2021 - 2022)</span>
+              </li>
+              <li class="list-group-item d-flex justify-content-between align-items-start">
+                <div class="ms-2 me-auto">
+                  <div class="fw-bold">Profesora particular</div>
+                    Enseñanza de matemática, física, historia del arte y, composición y lenguaje visual.
+                </div>
+                <span class="badge rounded-pill" style="background-color: #cb77e0;">(2018 - 2020)</span>
+              </li>
+            </ol>
+            
+          </div>
+          <div class="modal-footer" style="height: 1vh; background-color: #cb77e0;">
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <!-- Estudios -->
+    <div class="modal fade" id="ModalEstudios" tabindex="-1" aria-labelledby="ModalLabel" data-bs-backdrop="static" data-bs-keyboard="false" tabindex="-1" aria-hidden="true">
+      <div class="modal-dialog modal-dialog-centered modal-dialog-scrollable">
+        <div class="modal-content">
+          <div class="modal-header" style="height: 7vh; font-size: 3vh; background-color: #e077de; color: #ffffff;">
+            <i class="bi bi-mortarboard"></i>
+            <h1 class="modal-title fs-5" id="ModalLabel">‎ Estudios</h1>
+            <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+          </div>
+          <div class="modal-body" style="height: 40vh;">
+
+            <ol class="list-group">
+              <li class="list-group-item d-flex justify-content-between align-items-start">
+                <div class="ms-2 me-auto">
+                  <div class="fw-bold">Tecnicatura superior en programación</div>
+                    Instituto Tecnológico de Santiago del Estero
+                </div>
+                <span class="badge rounded-pill"  style="background-color: #e077de;">(2021 - 2023)</span>
+              </li>
+              <li class="list-group-item d-flex justify-content-between align-items-start">
+                <div class="ms-2 me-auto">
+                  <div class="fw-bold">Profesorado de Artes Visuales</div>
+                    Orientacion Escultura<br>Instituto Superior de Bellas Artes "Juan Yaparí"
+                </div>
+                <span class="badge rounded-pill" style="background-color: #e077de;" >(2018 - )</span>
+              </li>
+              <li class="list-group-item d-flex justify-content-between align-items-start">
+                <div class="ms-2 me-auto">
+                  <div class="fw-bold">Primaria / Secundaria</div>
+                    Modalidad en Ciencias Naturales con Orientación Salud<br>Escuela Normal Superior General Manuel Belgrano
+                </div>
+                <span class="badge rounded-pill" style="background-color: #e077de;">(2004 - 2015)</span>
+              </li>
+            </ol>
+
+          </div>
+          <div class="modal-footer" style="height: 1vh; background-color: #e077de;">
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <!-- Otros -->
+    <div class="modal fade" id="ModalOtros" tabindex="-1" aria-labelledby="ModalLabel" data-bs-backdrop="static" data-bs-keyboard="false" tabindex="-1" aria-hidden="true">
+      <div class="modal-dialog modal-dialog-centered modal-dialog-scrollable">
+        <div class="modal-content">
+          <div class="modal-header" style="height: 7vh; font-size: 3vh; background-color: #e077c2; color: #ffffff;">
+            <i class="bi bi-file-text"></i>
+            <h1 class="modal-title fs-5" id="ModalLabel">‎ CV</h1>
+            <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+          </div>
+          <div class="modal-body p-0" style="height: 40vh;">
+            <img  src="Curriculum.jpg" class="img-fluid" alt="Curriculum"></img>
+          </div>
+          <div class="modal-footer" style="height: 1vh; background-color: #e077c2;">
+          </div>
+        </div>
+      </div>
+    </div>
+
+<!-- Toasts -->
     <div aria-live="polite" aria-atomic="true" class="position-relative">
       <div class="toast-container position-fixed p-3" style="bottom: 22vh; right: 5vw;">
 
+        <!-- Discord -->
         <div class="toast" id="discordToast" role="alert" aria-live="assertive" aria-atomic="true" data-bs-autohide="false">
           <div class="toast-header" style="background-color: #5661f6cb; color: rgb(255, 255, 255);">
             <i class="bi bi-discord"></i>
@@ -113,18 +226,7 @@
           </div>
         </div>
 
-        <div class="toast" id="discordToast" role="alert" aria-live="assertive" aria-atomic="true" data-bs-autohide="false">
-          <div class="toast-header" style="background-color: #5661f6cb; color: rgb(255, 255, 255);">
-            <i class="bi bi-discord"></i>
-            <strong class="me-auto"> Discord</strong>
-            <small class="text-muted" style="color: rgba(255, 255, 255, 0.765) !important;">de RocioMarcos</small>
-            <button type="button" class="btn-close" data-bs-dismiss="toast" aria-label="Close"></button>
-          </div>
-          <div class="toast-body">
-            Mi tag es <strong>Emfrid#4215</strong>
-          </div>
-        </div>
-
+        <!-- Mail -->
         <div class="toast" id="gmailToast" role="alert" aria-live="assertive" aria-atomic="true" data-bs-autohide="false">
           <div class="toast-header" style="background: linear-gradient(135deg, rgba(66,133,244,1) 60%, rgba(197,34,31,1) 60%, rgba(197,34,31,1) 65%, rgba(234,67,53,1) 65%, rgba(234,67,53,1) 75%, rgba(251,188,4,1) 75%, rgba(251,188,4,1) 80%, rgba(52,168,83,1) 80%); color: rgb(255, 255, 255);">
             <i class="bi bi-envelope"></i>
@@ -137,10 +239,25 @@
           </div>
         </div>
 
+        <!-- Telefono -->
+        <div class="toast" id="telefonoToast" role="alert" aria-live="assertive" aria-atomic="true" data-bs-autohide="false">
+          <div class="toast-header" style="background: rgb(35, 161, 47); color: rgb(255, 255, 255);">
+            <i class="bi bi-whatsapp"></i>
+            <strong class="me-auto"> Teléfono</strong>
+            <small class="text-muted" style="color: rgba(255, 255, 255, 0.765) !important;">de RocioMarcos</small>
+            <button type="button" class="btn-close" data-bs-dismiss="toast" aria-label="Close"></button>
+          </div>
+          <div class="toast-body">
+            Contacto <strong>+54 381 3480470</strong>
+          </div>
+        </div>
+
       </div>
     </div>
 
 <!-- Scripts -->
+
+    <!-- Toasts -->
     <script>
       const toastDiscord = document.getElementById('discordToastBtn')
       const toastLiveDiscord = document.getElementById('discordToast')
@@ -160,14 +277,16 @@
           toast.show()
         })
       }
+      const toasttelefono = document.getElementById('telefonoToastBtn')
+      const toastLivetelefono = document.getElementById('telefonoToast')
+      if (toasttelefono) {
+        toasttelefono.addEventListener('click', () => {
+          const toast = new bootstrap.Toast(toastLivetelefono)
+      
+          toast.show()
+        })
+      }
     </script>
-    <script>
-      const myModal = document.getElementById('myModal')
-      const myInput = document.getElementById('myInput')
 
-      myModal.addEventListener('shown.bs.modal', () => {
-        myInput.focus()
-      })
-    </script>
   </body>
 </html>
