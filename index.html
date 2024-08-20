@@ -328,12 +328,12 @@
 
         .ubicacion{
             position: relative;
-            min-height: 450px;
+            min-height: 650px;
         }
 
         .ubicacion .bg-ubi{
             position: absolute;
-            height: 300px;
+            height: 350px;
             width: 100%;
             background-image: url("https://www.aromasoxigenar.com.ar/images/bg_7.jpg");
             background-size: cover;
@@ -347,7 +347,6 @@
             flex-direction: column;
             align-items: center;
             margin-top: 25px;
-
             width: 100%;
             z-index: 100;
         }
@@ -366,6 +365,13 @@
             font-family: "Lexend Deca", sans-serif;
             font-weight: 300;
             color: var(--texto-secundario);
+        }
+
+        .ubicacion .localidad{
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            width: 650px;
         }
 
         .ubicacion select{
@@ -389,6 +395,8 @@
             border: 1px solid rgba(0, 0, 0, .25);
             box-shadow: 0px 0px 7px rgba(0, 0, 0, .5);
         }
+
+
 
         .unite{
             display: flex;
@@ -429,11 +437,37 @@
         }
 
 
-        @media (min-width: 576px){
+        @media (min-width: 600px){
+
+            .fragancias{
+                min-height: 500px;
+            }
+
+            .fragancias .elegir{
+                flex-direction: row;
+                justify-content: center;
+                padding: 0px;
+            }
+
+            .fragancias .elegir .producto-frag{
+                margin: 0px 20px;
+            }
+
+            .f1, .f2, .f3, .f4, .f5, .f6, .f7, .f8, .f9, .f10{
+                min-width: 175px;
+            }
 
             .ubicacion{
                 position: relative;
-                min-height: 525px;
+                min-height: 600px;
+            }
+
+            .ubicacion .localidad{
+                display: flex;
+                flex-direction: row;
+                align-items: center;
+                justify-content: space-between;
+                width: 650px;
             }
 
             .ubicacion .mapa{
@@ -502,7 +536,7 @@
 
             .fragancias{
                 min-height: 550px;
-                margin-top: 125px;
+                margin-top: 100px;
                 padding: 0px 50px;
                 text-align: center;
             }
@@ -549,9 +583,13 @@
                 height: auto;
             }
 
+            .f1, .f2, .f3, .f4, .f5, .f6, .f7, .f8, .f9, .f10{
+                min-width: 250px;
+            }
+
             .ubicacion{
                 position: relative;
-                min-height: 650px;
+                min-height: 700px;
             }
 
             .ubicacion .bg-ubi{
@@ -858,23 +896,34 @@
                 <h5>
                     Encontr&aacute; tu distribuidor m&aacute;s cercano:
                 </h5>
-                <select>
-                    <option value="chubut">Chubut</option>
-                    <option value="cordoba" selected>C&oacute;rdoba</option>
-                    <option value="neuquen">Neuquen</option>
-                    <option value="rioNegro">R&iacute;o Negro</option>
-                    <option value="santaFe">Santa F&eacute;</option>
-                    <option value="santiago">Santiago del Estero</option>
-                </select>
 
-                <select>
-                    <option value="chubut">Chubut</option>
-                    <option value="cordoba" selected>C&oacute;rdoba</option>
-                    <option value="neuquen">Neuquen</option>
-                    <option value="rioNegro">R&iacute;o Negro</option>
-                    <option value="santaFe">Santa F&eacute;</option>
-                    <option value="santiago">Santiago del Estero</option>
-                </select>
+                <div class="localidad">
+                    <div class="provincia">
+                        <h5>Seleccion&aacute; tu provincia:</h5>
+                        <select name="provincia" id="provincia">
+                            <option selected disabled>-- Elegir provincia --</option>
+                            <option value="chubut">Chubut</option>
+                            <option value="cordoba">C&oacute;rdoba</option>
+                            <option value="neuquen">Neuquen</option>
+                            <option value="rioNegro">R&iacute;o Negro</option>
+                            <option value="santaFe">Santa F&eacute;</option>
+                            <option value="santiago">Santiago del Estero</option>
+                        </select>
+                    </div>
+    
+                    <div class="ciudad">
+                        <h5>Seleccion&aacute; tu ciudad:</h5>
+                        <select name="ciudad" id="ciudad">
+                            <option selected disabled>-- Elegir ciudad --</option>
+                            <!-- 
+                            <option value="cordoba" selected>C&oacute;rdoba</option>
+                            <option value="neuquen">Neuquen</option>
+                            <option value="rioNegro">R&iacute;o Negro</option>
+                            <option value="santaFe">Santa F&eacute;</option>
+                            <option value="santiago">Santiago del Estero</option> -->
+                        </select>
+                    </div>
+                </div>
 
                 <iframe class="mapa" id="mapa" src="https://www.google.com/maps/embed?pb=!1m18!1m12!1m3!1d3405.808658261434!2d-64.17063012439361!3d-31.39183907427309!2m3!1f0!2f0!3f0!3m2!1i1024!2i768!4f13.1!3m3!1m2!1s0x94329812caf58ab7%3A0x9d88866466d773f3!2sAromas%20Oxigenar!5e0!3m2!1ses!2sar!4v1724170193996!5m2!1ses!2sar" allowfullscreen="" loading="lazy" referrerpolicy="no-referrer-when-downgrade"></iframe>
             </div>
@@ -1002,26 +1051,101 @@
 
         })
 
-        const dic ={
-                'chubut':'https://www.google.com/maps/embed?pb=!1m18!1m12!1m3!1d21399.325647208487!2d-67.50056581681187!3d-45.83266495379836!2m3!1f0!2f0!3f0!3m2!1i1024!2i768!4f13.1!3m3!1m2!1s0xbde4544de04824f5%3A0x5d9f7f8e3bb8ee4b!2sComodoro%20Rivadavia%2C%20Chubut!5e0!3m2!1ses!2sar!4v1724175031566!5m2!1ses!2sar',
-                'cordoba':'https://www.google.com/maps/embed?pb=!1m18!1m12!1m3!1d3405.808658261434!2d-64.17063012439361!3d-31.39183907427309!2m3!1f0!2f0!3f0!3m2!1i1024!2i768!4f13.1!3m3!1m2!1s0x94329812caf58ab7%3A0x9d88866466d773f3!2sAromas%20Oxigenar!5e0!3m2!1ses!2sar!4v1724170193996!5m2!1ses!2sar',
-                'neuquen':'https://www.google.com/maps/embed?pb=!1m18!1m12!1m3!1d99192.76517152009!2d-67.65902826562959!3d-39.020470637020296!2m3!1f0!2f0!3f0!3m2!1i1024!2i768!4f13.1!3m3!1m2!1s0x960a1ce240513f5b%3A0x9aee81bb607eb50!2sR8332%20Gral.%20Roca%2C%20R%C3%ADo%20Negro!5e0!3m2!1ses!2sar!4v1724175849890!5m2!1ses!2sar',
-                'rioNegro':'https://www.google.com/maps/embed?pb=!1m18!1m12!1m3!1d384678.9365007757!2d-71.66887179864956!3d-41.127884985461606!2m3!1f0!2f0!3f0!3m2!1i1024!2i768!4f13.1!3m3!1m2!1s0x961a7b1520c860e5%3A0x8210ae97cb7b9a65!2sSan%20Carlos%20de%20Bariloche%2C%20R%C3%ADo%20Negro!5e0!3m2!1ses!2sar!4v1724175497043!5m2!1ses!2sar',
-                'santaFe':'https://www.google.com/maps/embed?pb=!1m18!1m12!1m3!1d27492.282224225197!2d-61.98008144397317!3d-30.53417738627329!2m3!1f0!2f0!3f0!3m2!1i1024!2i768!4f13.1!3m3!1m2!1s0x9435a99f11c34b85%3A0x2bd1cb0896501b!2sSuardi%2C%20Santa%20Fe!5e0!3m2!1ses!2sar!4v1724175396443!5m2!1ses!2sar',
-                'santiago':'https://www.google.com/maps/embed?pb=!1m18!1m12!1m3!1d3530.309426021258!2d-64.2861894!3d-27.7694385!2m3!1f0!2f0!3f0!3m2!1i1024!2i768!4f13.1!3m3!1m2!1s0x943b53424c414a3f%3A0xd8f155d897dee184!2sSantiago%20del%20Estero!5e0!3m2!1ses!2sar!4v1724175271682!5m2!1ses!2sar',
+
+
+        const dic = {
+            'chubut':{
+                'Trevelin': 'https://www.google.com/maps/embed?pb=!1m18!1m12!1m3!1d9645.169571106098!2d-71.47182523877713!3d-43.08545144441715!2m3!1f0!2f0!3f0!3m2!1i1024!2i768!4f13.1!3m3!1m2!1s0x961dbbc323173289%3A0x99675354e0415645!2sTrevelin%2C%20Chubut!5e0!3m2!1ses!2sar!4v1724176098838!5m2!1ses!2sar',
+                'Puerto Madryn': 'https://www.google.com/maps/embed?pb=!1m18!1m12!1m3!1d750825.7740573832!2d-65.6819194708497!3d-42.68438137817893!2m3!1f0!2f0!3f0!3m2!1i1024!2i768!4f13.1!3m3!1m2!1s0xbe02355e87a2ead1%3A0x1e890d2810b44382!2sPuerto%20Madryn%2C%20Chubut!5e0!3m2!1ses!2sar!4v1724176071049!5m2!1ses!2sar',
+                'Lago Puelo': 'https://www.google.com/maps/embed?pb=!1m18!1m12!1m3!1d23695.44025321184!2d-71.60393425000001!3d-42.0661191!2m3!1f0!2f0!3f0!3m2!1i1024!2i768!4f13.1!3m3!1m2!1s0x961beb6dab21611d%3A0x721c5da902c617e1!2sLago%20Puelo%2C%20Chubut!5e0!3m2!1ses!2sar!4v1724175999089!5m2!1ses!2sar',
+                'Esquel': 'https://www.google.com/maps/embed?pb=!1m18!1m12!1m3!1d93508.46568618702!2d-71.40439915812597!3d-42.91209772515027!2m3!1f0!2f0!3f0!3m2!1i1024!2i768!4f13.1!3m3!1m2!1s0x961dac39e7401099%3A0x7778716e39146c20!2sEsquel%2C%20Chubut!5e0!3m2!1ses!2sar!4v1724175968379!5m2!1ses!2sar',
+                'Epuyen': 'https://www.google.com/maps/embed?pb=!1m18!1m12!1m3!1d23633.8297710732!2d-71.38410142265458!3d-42.23092635709967!2m3!1f0!2f0!3f0!3m2!1i1024!2i768!4f13.1!3m3!1m2!1s0x961b87d8d8391ad7%3A0xff6964d741c7b3b6!2zRXB1ecOpbiwgQ2h1YnV0!5e0!3m2!1ses!2sar!4v1724195883192!5m2!1ses!2sar',
+                'El Hoyo':'https://www.google.com/maps/embed?pb=!1m18!1m12!1m3!1d11847.958427608297!2d-71.52166679999999!3d-42.06484215!2m3!1f0!2f0!3f0!3m2!1i1024!2i768!4f13.1!3m3!1m2!1s0x961b939ef6c1d26d%3A0x64f02f48282318c!2sEl%20Hoyo%2C%20Chubut!5e0!3m2!1ses!2sar!4v1724175145971!5m2!1ses!2sar',
+                'Comodoro Rivadavia':'https://www.google.com/maps/embed?pb=!1m18!1m12!1m3!1d21399.325647208487!2d-67.50056581681187!3d-45.83266495379836!2m3!1f0!2f0!3f0!3m2!1i1024!2i768!4f13.1!3m3!1m2!1s0xbde4544de04824f5%3A0x5d9f7f8e3bb8ee4b!2sComodoro%20Rivadavia%2C%20Chubut!5e0!3m2!1ses!2sar!4v1724175031566!5m2!1ses!2sar',
+            },
+            'cordoba':{
+                'Arroyito':'https://www.google.com/maps/embed?pb=!1m18!1m12!1m3!1d54479.05616453562!2d-63.0988717881385!3d-31.415751310794487!2m3!1f0!2f0!3f0!3m2!1i1024!2i768!4f13.1!3m3!1m2!1s0x94334dc4e1de6bb7%3A0x729ec37b4e23c1f8!2sArroyito%2C%20C%C3%B3rdoba!5e0!3m2!1ses!2sar!4v1724195951081!5m2!1ses!2sar',
+                'Brinkmann': 'https://www.google.com/maps/embed?pb=!1m18!1m12!1m3!1d15928.578813382252!2d-62.046952027495614!3d-30.86869945415837!2m3!1f0!2f0!3f0!3m2!1i1024!2i768!4f13.1!3m3!1m2!1s0x94351e69b1698c57%3A0xc6fa94ee0e403893!2sBrinkmann%2C%20C%C3%B3rdoba!5e0!3m2!1ses!2sar!4v1724176173603!5m2!1ses!2sar',
+                'Capital': 'https://www.google.com/maps/embed?pb=!1m18!1m12!1m3!1d3405.808658261434!2d-64.17063012439361!3d-31.39183907427309!2m3!1f0!2f0!3f0!3m2!1i1024!2i768!4f13.1!3m3!1m2!1s0x94329812caf58ab7%3A0x9d88866466d773f3!2sAromas%20Oxigenar!5e0!3m2!1ses!2sar!4v1724170193996!5m2!1ses!2sar',
+                'Calchin': 'https://www.google.com/maps/embed?pb=!1m18!1m12!1m3!1d27166.043411923467!2d-63.21945795391351!3d-31.66791034535961!2m3!1f0!2f0!3f0!3m2!1i1024!2i768!4f13.1!3m3!1m2!1s0x95ccb7d24a746a85%3A0x4e704c09393ed539!2zQ2FsY2jDrW4sIEPDs3Jkb2Jh!5e0!3m2!1ses!2sar!4v1724192558987!5m2!1ses!2sar',
+                'Colonia Caroya': 'https://www.google.com/maps/embed?pb=!1m18!1m12!1m3!1d13676.593520077846!2d-64.06173709999999!3d-31.02211535!2m3!1f0!2f0!3f0!3m2!1i1024!2i768!4f13.1!3m3!1m2!1s0x9432626eac44a027%3A0x85b6e301081d1c22!2sX5223%20Col.%20Caroya%2C%20C%C3%B3rdoba!5e0!3m2!1ses!2sar!4v1724192612949!5m2!1ses!2sar',
+                'Colonia Tirolesa': 'https://www.google.com/maps/embed?pb=!1m18!1m12!1m3!1d27291.945189058788!2d-64.08813295568866!3d-31.23476885811077!2m3!1f0!2f0!3f0!3m2!1i1024!2i768!4f13.1!3m3!1m2!1s0x943291ed1a25af6f%3A0x518be6c4b82cccdd!2sX5101%20Col.%20Tirolesa%2C%20C%C3%B3rdoba!5e0!3m2!1ses!2sar!4v1724192643164!5m2!1ses!2sar',
+                'Devoto': 'https://www.google.com/maps/embed?pb=!1m18!1m12!1m3!1d18896.530113529014!2d-62.31787374751871!3d-31.402907155629478!2m3!1f0!2f0!3f0!3m2!1i1024!2i768!4f13.1!3m3!1m2!1s0x95cb322fcadcc957%3A0xf279a4e60951cc8b!2sDevoto%2C%20C%C3%B3rdoba!5e0!3m2!1ses!2sar!4v1724192751845!5m2!1ses!2sar',
+                'El Tio': 'https://www.google.com/maps/embed?pb=!1m18!1m12!1m3!1d27248.946206893863!2d-62.8502167553069!3d-31.383302103695655!2m3!1f0!2f0!3f0!3m2!1i1024!2i768!4f13.1!3m3!1m2!1s0x943355f5dc75c1e7%3A0xd93d8869426be3a6!2zRWwgVMOtbywgQ8OzcmRvYmE!5e0!3m2!1ses!2sar!4v1724192791524!5m2!1ses!2sar',
+                'Freyre': 'https://www.google.com/maps/embed?pb=!1m18!1m12!1m3!1d54622.81802021147!2d-62.13537814334851!3d-31.16732504036631!2m3!1f0!2f0!3f0!3m2!1i1024!2i768!4f13.1!3m3!1m2!1s0x9434d63797201347%3A0x595beeb76aada2f0!2sFreyre%2C%20C%C3%B3rdoba!5e0!3m2!1ses!2sar!4v1724192821533!5m2!1ses!2sar',
+                'Jesus Maria': 'https://www.google.com/maps/embed?pb=!1m18!1m12!1m3!1d54728.02300593166!2d-64.13341119523184!3d-30.984392412458103!2m3!1f0!2f0!3f0!3m2!1i1024!2i768!4f13.1!3m3!1m2!1s0x943263974bf8796f%3A0x2fc325cba041b543!2zSmVzdXMgTWFyw61hLCBDw7NyZG9iYQ!5e0!3m2!1ses!2sar!4v1724192836508!5m2!1ses!2sar',
+                'La Francia': 'https://www.google.com/maps/embed?pb=!1m18!1m12!1m3!1d26552.624170315896!2d-62.64906373377989!3d-31.403406180397322!2m3!1f0!2f0!3f0!3m2!1i1024!2i768!4f13.1!3m3!1m2!1s0x95cb4d5213897af3%3A0xd203fbd61295c1de!2sLa%20Francia%2C%20C%C3%B3rdoba!5e0!3m2!1ses!2sar!4v1724192861124!5m2!1ses!2sar',
+                'La Para': 'https://www.google.com/maps/embed?pb=!1m18!1m12!1m3!1d13695.062143291902!2d-62.99770375!3d-30.893219399999996!2m3!1f0!2f0!3f0!3m2!1i1024!2i768!4f13.1!3m3!1m2!1s0x943379f6b93bea19%3A0xa0fffe255172486!2sLa%20Para%2C%20C%C3%B3rdoba!5e0!3m2!1ses!2sar!4v1724192875836!5m2!1ses!2sar',
+                'La Puerta': 'https://www.google.com/maps/embed?pb=!1m18!1m12!1m3!1d7962.272677339342!2d-63.26049390385968!3d-30.89296291783268!2m3!1f0!2f0!3f0!3m2!1i1024!2i768!4f13.1!3m3!1m2!1s0x94330a58e407e4e9%3A0x760a1b2c3d0b13!2sLa%20Puerta%2C%20C%C3%B3rdoba!5e0!3m2!1ses!2sar!4v1724192892532!5m2!1ses!2sar',
+                'Las Varillas': 'https://www.google.com/maps/embed?pb=!1m18!1m12!1m3!1d27106.989935723737!2d-62.7182823!3d-31.869252800000005!2m3!1f0!2f0!3f0!3m2!1i1024!2i768!4f13.1!3m3!1m2!1s0x95cb646d6843dac9%3A0x5f060daa945765fd!2sLas%20Varillas%2C%20C%C3%B3rdoba!5e0!3m2!1ses!2sar!4v1724192908795!5m2!1ses!2sar',
+                'Luque': 'https://www.google.com/maps/embed?pb=!1m18!1m12!1m3!1d13585.669520127212!2d-63.3436471!3d-31.6497989!2m3!1f0!2f0!3f0!3m2!1i1024!2i768!4f13.1!3m3!1m2!1s0x95cccc2ca58c0f87%3A0x3febde79710d54fc!2zTHVxdWUsIEPDs3Jkb2Jh!5e0!3m2!1ses!2sar!4v1724192930219!5m2!1ses!2sar',
+                'Morteros': 'https://www.google.com/maps/embed?pb=!1m18!1m12!1m3!1d54884.467021383294!2d-62.04911919803258!3d-30.710550746026417!2m3!1f0!2f0!3f0!3m2!1i1024!2i768!4f13.1!3m3!1m2!1s0x9435039ff322311d%3A0xdcbb82c4008ca472!2sMorteros%2C%20C%C3%B3rdoba!5e0!3m2!1ses!2sar!4v1724192954003!5m2!1ses!2sar',
+                'Pilar': 'https://www.google.com/maps/embed?pb=!1m18!1m12!1m3!1d27162.243869007387!2d-63.878427849999994!3d-31.68089935!2m3!1f0!2f0!3f0!3m2!1i1024!2i768!4f13.1!3m3!1m2!1s0x9432cb4e4c88d987%3A0xa9c6e711124e5e5b!2zUGlsYXIsIEPDs3Jkb2Jh!5e0!3m2!1ses!2sar!4v1724192968108!5m2!1ses!2sar',
+                'Piquillin': 'https://www.google.com/maps/embed?pb=!1m18!1m12!1m3!1d27272.301473753705!2d-63.77783555551426!3d-31.302703556085955!2m3!1f0!2f0!3f0!3m2!1i1024!2i768!4f13.1!3m3!1m2!1s0x9432e7e7f585111f%3A0xca4ea48c858baea6!2zUGlxdWlsbMOtbiwgQ8OzcmRvYmE!5e0!3m2!1ses!2sar!4v1724192981781!5m2!1ses!2sar',
+                'Porteña': 'https://www.google.com/maps/embed?pb=!1m18!1m12!1m3!1d54711.43469145461!2d-62.107659294934884!3d-31.013301008949213!2m3!1f0!2f0!3f0!3m2!1i1024!2i768!4f13.1!3m3!1m2!1s0x943520b3965e5567%3A0xca32660a8a13246b!2zUG9ydGXDsWEsIEPDs3Jkb2Jh!5e0!3m2!1ses!2sar!4v1724192995436!5m2!1ses!2sar',
+                'Rio Segundo': 'https://www.google.com/maps/embed?pb=!1m18!1m12!1m3!1d108686.67438970084!2d-63.98703449509518!3d-31.648671482823623!2m3!1f0!2f0!3f0!3m2!1i1024!2i768!4f13.1!3m3!1m2!1s0x9432cafff1f1cec1%3A0xf370c1a41d5322ac!2zUsOtbyBTZWd1bmRvLCBDw7NyZG9iYQ!5e0!3m2!1ses!2sar!4v1724193009452!5m2!1ses!2sar',
+                'Sacanta': 'https://www.google.com/maps/embed?pb=!1m18!1m12!1m3!1d54333.35905001441!2d-63.092861938167005!3d-31.66573528153573!2m3!1f0!2f0!3f0!3m2!1i1024!2i768!4f13.1!3m3!1m2!1s0x95ccb073fc8d85a3%3A0x5c117ea2f28a7d71!2sSacanta%2C%20C%C3%B3rdoba!5e0!3m2!1ses!2sar!4v1724193030899!5m2!1ses!2sar',
+                'San Francisco': 'https://www.google.com/maps/embed?pb=!1m18!1m12!1m3!1d108949.50584026129!2d-62.17563005465511!3d-31.423160288435078!2m3!1f0!2f0!3f0!3m2!1i1024!2i768!4f13.1!3m3!1m2!1s0x95cb28228bc1d067%3A0x8f04abfe8c3700f4!2sSan%20Francisco%2C%20C%C3%B3rdoba!5e0!3m2!1ses!2sar!4v1724193112612!5m2!1ses!2sar',
+                'San Jose de la Dormida': 'https://www.google.com/maps/embed?pb=!1m18!1m12!1m3!1d55084.79512059709!2d-63.98816740161909!3d-30.35664209028946!2m3!1f0!2f0!3f0!3m2!1i1024!2i768!4f13.1!3m3!1m2!1s0x943220188dfbe69f%3A0xc841596f7fcd185c!2sSan%20Jose%20de%20la%20Dormida%2C%20C%C3%B3rdoba!5e0!3m2!1ses!2sar!4v1724193130452!5m2!1ses!2sar',
+                'Santa Rosa de Rio Prime': 'https://www.google.com/maps/embed?pb=!1m18!1m12!1m3!1d54631.78391326373!2d-63.444387993509004!3d-31.1517726422341!2m3!1f0!2f0!3f0!3m2!1i1024!2i768!4f13.1!3m3!1m2!1s0x94331a04ab072f75%3A0x9c495e7644a3e7fa!2sVilla%20Santa%20Rosa%2C%20C%C3%B3rdoba!5e0!3m2!1ses!2sar!4v1724193182483!5m2!1ses!2sar',
+                'Sgo Temple': 'https://www.google.com/maps/embed?pb=!1m18!1m12!1m3!1d27248.026408703223!2d-63.43835895529874!3d-31.386472503601897!2m3!1f0!2f0!3f0!3m2!1i1024!2i768!4f13.1!3m3!1m2!1s0x9433251634e7faad%3A0xd11f868265e91dfc!2sSantiago%20Temple%2C%20C%C3%B3rdoba!5e0!3m2!1ses!2sar!4v1724193208827!5m2!1ses!2sar',
+                'Toledo': 'https://www.google.com/maps/embed?pb=!1m18!1m12!1m3!1d54396.63412562204!2d-64.04728298929963!3d-31.55738744415492!2m3!1f0!2f0!3f0!3m2!1i1024!2i768!4f13.1!3m3!1m2!1s0x9432b77811e3b27b%3A0xdbedb03cb0e4a0f1!2sToledo%2C%20C%C3%B3rdoba!5e0!3m2!1ses!2sar!4v1724193226803!5m2!1ses!2sar',
+                'Transito': 'https://www.google.com/maps/embed?pb=!1m18!1m12!1m3!1d54473.65478948459!2d-63.23938909067832!3d-31.425050709696247!2m3!1f0!2f0!3f0!3m2!1i1024!2i768!4f13.1!3m3!1m2!1s0x943349dd19e6458f%3A0x2c7f53864865fb20!2sTransito%2C%20C%C3%B3rdoba!5e0!3m2!1ses!2sar!4v1724193242259!5m2!1ses!2sar',
+                'Villa del Rosario': 'https://www.google.com/maps/embed?pb=!1m18!1m12!1m3!1d54395.82251899459!2d-63.572745239285105!3d-31.55877929399221!2m3!1f0!2f0!3f0!3m2!1i1024!2i768!4f13.1!3m3!1m2!1s0x94332a53b2697ec9%3A0x37f3384e4293f013!2sVilla%20del%20Rosario%2C%20C%C3%B3rdoba!5e0!3m2!1ses!2sar!4v1724193262026!5m2!1ses!2sar',
+                'Villa del Totoral': 'https://www.google.com/maps/embed?pb=!1m18!1m12!1m3!1d109771.61523702517!2d-64.1518897345622!3d-30.708194634035713!2m3!1f0!2f0!3f0!3m2!1i1024!2i768!4f13.1!3m3!1m2!1s0x943251cbe0c28541%3A0x8057f1e4576e7625!2sVilla%20del%20Totoral%2C%20C%C3%B3rdoba!5e0!3m2!1ses!2sar!4v1724193277732!5m2!1ses!2sar',
+                'Villa Maria': 'https://www.google.com/maps/embed?pb=!1m18!1m12!1m3!1d215552.1235590628!2d-63.40402994310211!3d-32.419106377602624!2m3!1f0!2f0!3f0!3m2!1i1024!2i768!4f13.1!3m3!1m2!1s0x95cc42fb51306dc1%3A0xbfb3fffbd425c6b1!2zVmlsbGEgTWFyw61hLCBDw7NyZG9iYQ!5e0!3m2!1ses!2sar!4v1724193294419!5m2!1ses!2sar',
+                'Villa Maria de Rio Seco': 'https://www.google.com/maps/embed?pb=!1m18!1m12!1m3!1d13658.504851659025!2d-63.731867384488524!3d-29.900616999243606!2m3!1f0!2f0!3f0!3m2!1i1024!2i768!4f13.1!3m3!1m2!1s0x9431a257c91bff41%3A0x1fe63a775e22c32c!2zVmlsbGEgZGUgTWFyw61hLCBDw7NyZG9iYQ!5e0!3m2!1ses!2sar!4v1724193323100!5m2!1ses!2sar',
+                'Punilla': 'https://www.google.com/maps/embed?pb=!1m18!1m12!1m3!1d13658.504851659025!2d-63.731867384488524!3d-29.900616999243606!2m3!1f0!2f0!3f0!3m2!1i1024!2i768!4f13.1!3m3!1m2!1s0x9431a257c91bff41%3A0x1fe63a775e22c32c!2zVmlsbGEgZGUgTWFyw61hLCBDw7NyZG9iYQ!5e0!3m2!1ses!2sar!4v1724193323100!5m2!1ses!2sar'
+            },
+            'neuquen':{
+                'Gral Roca':'https://www.google.com/maps/embed?pb=!1m18!1m12!1m3!1d99192.76517152009!2d-67.65902826562959!3d-39.020470637020296!2m3!1f0!2f0!3f0!3m2!1i1024!2i768!4f13.1!3m3!1m2!1s0x960a1ce240513f5b%3A0x9aee81bb607eb50!2sR8332%20Gral.%20Roca%2C%20R%C3%ADo%20Negro!5e0!3m2!1ses!2sar!4v1724175849890!5m2!1ses!2sar'},
+            'rioNegro':{
+                'Bariloche': 'https://www.google.com/maps/embed?pb=!1m18!1m12!1m3!1d384678.9365007757!2d-71.66887179864956!3d-41.127884985461606!2m3!1f0!2f0!3f0!3m2!1i1024!2i768!4f13.1!3m3!1m2!1s0x961a7b1520c860e5%3A0x8210ae97cb7b9a65!2sSan%20Carlos%20de%20Bariloche%2C%20R%C3%ADo%20Negro!5e0!3m2!1ses!2sar!4v1724175497043!5m2!1ses!2sar',
+                'Bolson': 'https://www.google.com/maps/embed?pb=!1m18!1m12!1m3!1d94931.52751379403!2d-71.60617551004272!3d-41.9657062121253!2m3!1f0!2f0!3f0!3m2!1i1024!2i768!4f13.1!3m3!1m2!1s0x961bbe292d49ca89%3A0xa4fcd4026336e0f6!2zRWwgQm9sc8OzbiwgUsOtbyBOZWdybw!5e0!3m2!1ses!2sar!4v1724175434031!5m2!1ses!2sar'
+            },
+            'santaFe':{
+                'Suardi':'https://www.google.com/maps/embed?pb=!1m18!1m12!1m3!1d27492.282224225197!2d-61.98008144397317!3d-30.53417738627329!2m3!1f0!2f0!3f0!3m2!1i1024!2i768!4f13.1!3m3!1m2!1s0x9435a99f11c34b85%3A0x2bd1cb0896501b!2sSuardi%2C%20Santa%20Fe!5e0!3m2!1ses!2sar!4v1724175396443!5m2!1ses!2sar'},
+            'santiago': {
+                'Capital':'https://www.google.com/maps/embed?pb=!1m18!1m12!1m3!1d3530.309426021258!2d-64.2861894!3d-27.7694385!2m3!1f0!2f0!3f0!3m2!1i1024!2i768!4f13.1!3m3!1m2!1s0x943b53424c414a3f%3A0xd8f155d897dee184!2sSantiago%20del%20Estero!5e0!3m2!1ses!2sar!4v1724175271682!5m2!1ses!2sar',
+                'Termas de Rio Hondo': 'https://www.google.com/maps/embed?pb=!1m18!1m12!1m3!1d56624.049701603144!2d-64.87856535!3d-27.50027885!2m3!1f0!2f0!3f0!3m2!1i1024!2i768!4f13.1!3m3!1m2!1s0x94236e669caaafcd%3A0x3f70fdb8b09c8578!2sTermas%20de%20R%C3%ADo%20Hondo%2C%20Santiago%20del%20Estero!5e0!3m2!1ses!2sar!4v1724175190866!5m2!1ses!2sar',
+                'Ojo de Agua': 'https://www.google.com/maps/embed?pb=!1m18!1m12!1m3!1d3528.8374442117733!2d-64.30138099999999!3d-27.814774099999998!2m3!1f0!2f0!3f0!3m2!1i1024!2i768!4f13.1!3m3!1m2!1s0x943b4d7cb4133a31%3A0x638f6f69f7a12634!2sC.%20Ojo%20de%20Agua%2C%20G4200%20Santiago%20del%20Estero!5e0!3m2!1ses!2sar!4v1724175240755!5m2!1ses!2sar',
+                'Loreto': 'https://www.google.com/maps/embed?pb=!1m18!1m12!1m3!1d28102.25732829978!2d-64.20233235!3d-28.304922150000003!2m3!1f0!2f0!3f0!3m2!1i1024!2i768!4f13.1!3m3!1m2!1s0x943b29cdcecf60e3%3A0x9dd62248b7b31094!2sLoreto%2C%20Santiago%20del%20Estero!5e0!3m2!1ses!2sar!4v1724175316450!5m2!1ses!2sar'
             }
-        const cars = document.getElementById('cars');
-        cars.addEventListener('change',function(){
+        }
+
+        const provincia = document.getElementById("provincia");
+        const ciudad = document.getElementById('ciudad');
+        provincia.addEventListener('change', () => {
+            let i = 0
+            var valor = provincia.value;
+            ciudad.innerHTML='';
+            for (const [key, value] of Object.entries(dic[valor])) {
+                let option = document.createElement('option');
+                option.value = key;
+                option.textContent = key;
+                ciudad.appendChild(option);
+                i++;
+            }
+            conseguirCiudad();
+        })
+
+
+        ciudad.addEventListener('change',
+            ()=>{conseguirCiudad()}    
+        )
+
+        function conseguirCiudad(){
             let defaul = "https://www.google.com/maps/embed?pb=!1m18!1m12!1m3!1d3405.808658261434!2d-64.17063012439361!3d-31.39183907427309!2m3!1f0!2f0!3f0!3m2!1i1024!2i768!4f13.1!3m3!1m2!1s0x94329812caf58ab7%3A0x9d88866466d773f3!2sAromas%20Oxigenar!5e0!3m2!1ses!2sar!4v1724170193996!5m2!1ses!2sar";
-            let value = cars.value;
+            var valor = provincia.value;
+            let value = ciudad.value;
             const mapa = document.getElementById('mapa');
-            if (dic.hasOwnProperty(value)) {
-                mapa.src=dic[value]
+            if (dic[valor].hasOwnProperty(value)){
+                mapa.src = dic[valor][value]
             }
             else{
                 mapa.src=defaul;
             }
-        })
+        }
 
 
         /* Comodoro Rivadavia:
