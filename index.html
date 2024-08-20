@@ -1,292 +1,1038 @@
 <!DOCTYPE html>
-<html lang="en">
-  <head>
-    <meta charset="UTF-8" />
-    <meta http-equiv="X-UA-Compatible" content="IE=edge" />
-    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-    <title>Rocio Marcos</title>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
 
-    <!-- Bootstrap Icons -->
-    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.10.2/font/bootstrap-icons.css"/>
-
-    <!-- Google Fonts - Roboto -->
     <link rel="preconnect" href="https://fonts.googleapis.com">
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-    <link href="https://fonts.googleapis.com/css2?family=Raleway&display=swap" rel="stylesheet">
+    <link href="https://fonts.googleapis.com/css2?family=Lexend+Deca:wght@100..900&family=Roboto+Condensed:ital,wght@0,100..900;1,100..900&display=swap" rel="stylesheet">
     
-    <!-- Bootstrap -->
-    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0-alpha1/dist/css/bootstrap.min.css" rel="stylesheet" integrity="sha384-GLhlTQ8iRABdZLl6O3oVMWSktQOp6b7In1Zl3/Jr59b6EGGoI1aFkw7cmDA6j6gD" crossorigin="anonymous">
-    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0-alpha1/dist/js/bootstrap.bundle.min.js" integrity="sha384-w76AqPfDkMBDXo30jS1Sgez6pr3x5MlQ1ZAGC+nuZB+EYdgRZgiwxhTBTkF7CXvN" crossorigin="anonymous"></script>
-    <script src="https://cdn.jsdelivr.net/npm/@popperjs/core@2.11.6/dist/umd/popper.min.js" integrity="sha384-oBqDVmMz9ATKxIep9tiCxS/Z9fNfEXiDAYTujMAeBAsjFuCZSmKbSSUnQlmh/jp3" crossorigin="anonymous"></script>
-    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0-alpha1/dist/js/bootstrap.min.js" integrity="sha384-mQ93GR66B00ZXjt0YO5KlohRA5SY2XofN4zfuZxLkoj1gXtW8ANNCe9d5Y3eG5eD" crossorigin="anonymous"></script>
+    <link rel="shortcut icon" href="img/favicon.ico">
+
+    <title>OxiAuto</title>
+
+    <!-- Estilos -->
+    <style>
+        :root{
+            --bg-nav: #FFFFFF;
+            --bg-principal: #FFFFFF;
+            --bg-footer: #333333;
+            --bg-acento: #0CC1B6;
+
+            --texto-principal: #000000;
+            --texto-secundario: #333333;
+            --texto-terciario: #FFFFFF;
+        }
+
+        *{
+            margin: 0px;
+            padding: 0px;
+            box-sizing: border-box;
+            font-family: 'Roboto Condensed';
+        }
+
+        body{
+            overflow-x: hidden;
+        }
+
+        a {
+            text-decoration: none;
+        }
+
+        li{
+            list-style: none;
+        }
+
+        hr{
+            height: 0px;
+            border: none;
+        }
+
+        nav{
+            position: fixed;
+            display: flex;
+            justify-content: space-between;
+            height: 75px;
+            width: 100%;
+            background-color: var(--bg-nav);
+            box-shadow: 0px 4px 10px rgba(0, 0, 0, .25);
+            text-transform: uppercase;
+            color: var(--texto-principal);
+            z-index: 10000;
+        }
+
+        nav .menu-btn{
+            display: block;
+        }
+
+        nav .btn-menu{
+            border: none;
+            background: transparent;
+            height: 100%;
+            min-width: 100px;
+            cursor: pointer;
+        }
+
+        nav .menu-nav{
+            display: none;
+        }
+
+        .menu-sm{
+            display: none;
+            position: fixed;
+            top: 75px;
+            height: calc(100vh - 75px);
+            width: 100vw;
+            z-index: 10001;
+            background-color: rgba(0, 0, 0, 0.55);
+        }
+        
+        .menu-sm ul{
+            display: flex;
+            flex-direction: column;
+            width: 100%;
+            border-top: 1px solid rgb(228, 228, 228);
+            box-shadow: 0px 10px 10px #0000009f;
+        }
+
+        .menu-sm ul li{
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            height: 90px;
+            background-color: #ffffff;
+            color: var(--texto-secundario);
+            font-weight: 400;
+            font-size: 2rem;
+            text-transform: uppercase;
+            transition: all 0.2s ease-in;
+        }
+
+        .menu-sm ul li:hover{
+            color: var(--texto-principal);
+            font-weight: 600;
+            text-shadow: 0px 0px 5px #00000051;
+        }
+        
+        footer{
+            display: flex;
+            flex-direction: row;
+            justify-content: center;
+            align-items: center;
+            height: 325px;
+            background-color: var(--bg-footer);
+            color: var(--texto-terciario);
+        }
+
+        footer .logo-footer{
+            display: flex; 
+            justify-content: center; 
+            align-items: center; 
+            width: 90px; 
+            height: 90px; 
+            border-radius: 100%; 
+            background-color: white;
+            margin-right: 5vw;
+        }
+
+        footer .logo-footer img{
+            width: 80px; 
+            height: 80px; 
+            border-radius: 100%; 
+            background-color: white;
+        }
+
+        .lugar, .atencion, .telefono, .whats, .mail{
+            margin-top: 10px;
+            display: flex;
+        }
+
+        .lugar svg, .atencion svg, .telefono svg, .whats svg, .mail svg {
+            margin: 0 10px;
+        }
+        
+        .whatsapp{
+            display: flex;
+            position: fixed;
+            top: 75px;
+            right: 10px;
+            width: 80px;
+            height: 100px;
+            /* background-color: red; */
+            z-index: 5000;
+        }
+        
+        .tira{
+            position: fixed;
+            width: 6px;
+            height: 35px;
+            margin: 0px 37px;
+            border-radius: 0px 0px 10px 10px;
+            background-color: var(--texto-principal);
+            color: black;
+            z-index: 5002;
+        }
+
+        .hueco{
+            position: fixed;
+            height: 15px;
+            width: 15px;
+            margin: 27px 32px;
+            border-radius: 100%;
+            box-shadow: 0px 0px 10px rgba(96, 96, 96, 0.5) inset;
+            z-index: 5001;
+        }
+
+        .btn-whatsapp{
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            padding-top: 15px;
+            height: 80px;
+            width: 80px;
+            margin-top: 20px;
+            background-color: white;
+            border-radius: 10px;
+            box-shadow: 0px 0px 10px rgba(0, 0, 0, .25);
+            color: var(--texto-principal);
+        }
+
+        .banner{
+            position: relative;
+            display: flex;
+            width: 100%;
+        } 
+        
+        .banner .activo{
+            margin-top: 75px;
+            height: 30vw;
+            width: 100vw;
+        }
+
+        .banner1 {
+            background-color: var(--bg-acento);
+        }
+
+        .banner2 {
+            display: none;
+            background-color: #06AEA3;
+        }
+
+        .banner3 {
+            display: none;
+            background-color: #069E95;
+        }
+
+        .producto {
+            position: relative;
+        }
+
+        .producto .textoFondo{
+            position: absolute;
+            width: 100vw;
+            font-size: 90px;
+            font-weight: 900;
+            text-transform: uppercase;
+            text-align: center;
+            color: rgba(0, 0, 0, .07);
+            z-index: 100;
+            user-select: none;
+        }
+
+        .producto .textoFrente{
+            position: relative;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            padding: 40px 10vw;
+            width: 100vw;
+        }
+
+        .producto .textoFrente h2{
+            margin-top: -10px;
+            text-transform: uppercase;
+            font-size: 4rem;
+        }
+
+        .producto .textoFrente p{
+            margin-top: 10px;
+            font-size: 1.65rem;
+            text-align: center;
+        }
     
-    
-    <!-- CSS -->
-    <link rel="stylesheet" href="styles.css" />
+        .fragancias{
+            min-height: 900px;
+            margin-top: 25px;
+            padding: 0px 50px;
+            text-align: center;
+        }
 
-  </head>
+        .fragancias h3{
+            font-size: 1.25rem;
+            font-family: "Lexend Deca", sans-serif;
+            font-weight: 400;
+            color: var(--texto-secundario);
+        }
 
-  <body>
-    
-    <div class="d-flex flex-wrap justify-content-center" id="staticBackdrop" data-bs-backdrop="static" data-bs-keyboard="false" tabindex="-1" aria-labelledby="staticBackdropLabel" aria-hidden="true">
-      <div class="desktop col-11 border border-2 rounded-3">
-        <div class="backg d-flex">
-          <div class="izq d-flex">
+        .fragancias .elegir{
+            margin: 25px 0px 50px 0px;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+        }
 
-            <a class="app d-flex flex-column" style="color: azure;" type="button" data-bs-toggle="modal" data-bs-target="#Modal">
-              <i class="app-icon bi bi-person-badge"></i>
-              <p>Mis datos</p>
-            </a>
+        .fragancias .elegir .frag{
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            width: 50px;
+            height: 50px;
+            background-color: rgba(0, 0, 0, .1);
+            border-radius: 100%;
+        }
 
-            <a class="app d-flex flex-column" style="color: azure;" type="button" data-bs-toggle="modal" data-bs-target="#ModalTrabajos">
-              <i class="app-icon bi bi-briefcase"></i>
-              <p>Trabajos</p>
-            </a>
+        .fragancias .elegir .frag img{
+            width: 100%;
+            height: auto;
+        }
 
-            <a class="app d-flex flex-column" style="color: azure;" type="button" data-bs-toggle="modal" data-bs-target="#ModalEstudios">
-              <i class="app-icon bi bi-mortarboard"></i>
-              <p>Estudios</p>
-            </a>
+        .fragancias .elegir .producto-frag{
+            margin: 15px 0px;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            width: 250px;
+            height: 200px;
+            background-color: rgba(0, 0, 0, .15);
+            font-size: 2rem;
+            color: rgba(0, 0, 0, 0.55);
+        }
 
-            <a class="app d-flex flex-column" style="color: azure;" type="button" data-bs-toggle="modal" data-bs-target="#ModalOtros">
-              <i class="app-icon bi bi-file-text"></i>
-              <p>Curriculum</p>
+        .f1, .f2, .f3, .f4, .f5, .f6, .f7, .f8, .f9, .f10{
+            display: flex;
+            min-width: 250px;
+        }
+        
+        .f2, .f3, .f4, .f5, .f7, .f8, .f9, .f10{
+            margin: -10px 0px;
+        }
+
+        .f1, .f3, .f5, .f6, .f8, .f10{
+            justify-content: space-between;
+        }
+
+        .f2, .f4, .f7, .f9{
+            justify-content: center;
+        }
+
+        .ubicacion{
+            position: relative;
+            min-height: 450px;
+        }
+
+        .ubicacion .bg-ubi{
+            position: absolute;
+            height: 300px;
+            width: 100%;
+            background-image: url("https://www.aromasoxigenar.com.ar/images/bg_7.jpg");
+            background-size: cover;
+            box-shadow: 0px 0px 10px rgba(0, 0, 0, .15) inset;
+            z-index: 10;
+        }
+        
+        .ubicacion .frente-ubi{
+            position: absolute;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            margin-top: 25px;
+
+            width: 100%;
+            z-index: 100;
+        }
+
+        .ubicacion h3{
+            font-weight: 400;
+            font-size: 1.25rem;
+            letter-spacing: 1px;
+            text-transform: uppercase;
+            color: var(--texto-secundario);
+        }
+
+        .ubicacion h5{
+            margin-top: 20px;
+            font-size: 1.05rem;
+            font-family: "Lexend Deca", sans-serif;
+            font-weight: 300;
+            color: var(--texto-secundario);
+        }
+
+        .ubicacion select{
+            margin-top: 10px;
+            border: none;
+            border-radius: 3px;
+            min-width: 300px;
+            padding: 5px 7px;
+            font-size: 1.05rem;
+            font-weight: 400;
+        }
+
+        .ubicacion option{
+            font-weight: 400;
+        }
+
+        .ubicacion .mapa{
+            margin-top: 35px;
+            width: 300px;
+            height: 250px;
+            border: 1px solid rgba(0, 0, 0, .25);
+            box-shadow: 0px 0px 7px rgba(0, 0, 0, .5);
+        }
+
+        .unite{
+            display: flex;
+            flex-direction: column;
+            justify-content: center;
+            align-items: center;
+            height: 200px;
+            background: var(--bg-acento);
+            color: var(--texto-terciario);
+        }
+
+        .unite h3{
+            font-size: 1.5rem;
+            font-weight: 400;
+        }
+            
+        .unite .unirme{
+            margin-top: 25px;
+            padding: 10px 25px;
+            background: transparent;
+            border: 3px solid white;
+            font-size: 1.75rem;
+            text-transform: uppercase;
+            color: white;
+            box-shadow: -12px -12px 0px rgba(255, 255, 255, 0.1), -8px -100px 0px rgba(255, 255, 255, 0.1) inset, -8px -8px 0px var(--bg-acento) inset;
+            transition: all 0.5s ease-in-out;
+        }
+
+        .unite .unirme:hover{
+            cursor: pointer;
+            box-shadow: none;
+        }
+
+        .unite .unirme:active{
+            background: white;
+            border: 5px solid var(--bg-acento);
+            color: var(--bg-acento);
+        }
+
+
+        @media (min-width: 576px){
+
+            .ubicacion{
+                position: relative;
+                min-height: 525px;
+            }
+
+            .ubicacion .mapa{
+                margin-top: 35px;
+                width: 550px;
+                height: 300px;
+            }
+
+            .unite{
+                display: flex;
+                flex-direction: row;
+                justify-content: space-evenly;
+                align-items: center;
+                height: 175px;
+                padding: 0px 100px;
+            }
+        }
+
+        @media (min-width: 992px){
+            nav .menu-btn{
+                display: none;
+            }
+
+            nav .menu-nav{
+                display: flex;
+                justify-content: space-evenly;
+                align-items: center;
+                width: 500px;
+            }
+            
+            nav .menu-nav a{
+                font-size: 20px;
+                color: var(--texto-secundario);
+            }
+
+            nav .menu-nav a:hover{
+                font-weight: 400;
+                color: var(--texto-principal);
+            }
+            .banner1, .banner2, .banner3{
+                height: 355px;
+                width: 10vw;
+            }
+
+            .producto .textoFondo{
+                position: absolute;
+                width: 100vw;
+                margin: -20px 0px;
+                font-size: 300px;
+                font-weight: 900;
+                text-transform: uppercase;
+                text-align: center;
+                color: rgba(0, 0, 0, .07);
+                z-index: 100;
+            }
+
+            .producto .textoFrente{
+                position: relative;
+                display: flex;
+                flex-direction: column;
+                align-items: center;
+                text-align: center;
+                padding: 40px 10vw;
+                width: 100vw;
+            }
+
+            .fragancias{
+                min-height: 550px;
+                margin-top: 125px;
+                padding: 0px 50px;
+                text-align: center;
+            }
+
+            .fragancias h3{
+                font-size: 1.25rem;
+                font-family: "Lexend Deca", sans-serif;
+                font-weight: 400;
+                color: var(--texto-secundario);
+            }
+
+            .fragancias .elegir{
+                margin: 25px 0px 50px 0px;
+                display: flex;
+                flex-direction: row;
+                justify-content: center;
+                width: 100%;
+            }
+
+            .fragancias .elegir .producto-frag{
+                display: flex;
+                justify-content: center;
+                align-items: center;
+                width: 250px;
+                height: 200px;
+                background-color: rgba(0, 0, 0, .15);
+                font-size: 2rem;
+                color: rgba(0, 0, 0, 0.55);
+                margin: 0px 50px;
+            }
+
+            .fragancias .elegir .frag{
+                display: flex;
+                align-items: center;
+                justify-content: center;
+                width: 75px;
+                height: 75px;
+                background-color: rgba(0, 0, 0, .15);
+                border-radius: 100%;
+            }
+
+            .fragancias .elegir .frag img{
+                width: 100%;
+                height: auto;
+            }
+
+            .ubicacion{
+                position: relative;
+                min-height: 650px;
+            }
+
+            .ubicacion .bg-ubi{
+                height: 400px;
+            }
+
+            .ubicacion h3{
+                font-weight: 400;
+                font-size: 1.5rem;
+                letter-spacing: 1px;
+                text-transform: uppercase;
+                color: var(--texto-secundario);
+            }
+
+            .ubicacion .mapa{
+                margin-top: 35px;
+                width: 625px;
+                height: 400px;
+            }
+
+            .unite{
+                display: flex;
+                flex-direction: row;
+                justify-content: space-evenly;
+                align-items: center;
+                height: 175px;
+                padding: 0px 100px;
+            }
+
+            .unite .unirme{
+                margin-top: 0px;
+            }
+            
+            .unite h3{
+                font-size: 1.9rem;
+                font-weight: 300;
+            }
+
+            footer{
+                display: flex;
+                flex-direction: row;
+                justify-content: center;
+                align-items: center;
+                height: 280px;
+                font-size: 1.15rem;
+                font-weight: 300;
+            }
+
+            footer p{
+                margin-top: -5px;
+            }
+
+            footer .logo-footer{
+                width: 150px; 
+                height: 150px; 
+                margin-right: 5vw;
+            }
+
+            footer .logo-footer img{
+                width: 130px; 
+                height: 130px; 
+            }
+
+            .lugar, .atencion, .telefono, .whats, .mail{
+                margin-top: 15px;
+            }
+
+            .contacto{
+                display: flex;
+                justify-content: space-between;
+                min-width: 500px;
+            }
+
+        }
+
+    </style>
+</head>
+<body>
+
+    <!-- Nav (Menú de opciones) -->
+    <nav>
+        <!-- Logo -->
+        <div class="logo-nav" style="height: 100%; min-width: 100px; display: flex;
+        justify-content: center; align-items: center;">
+
+            <div class="logo-img" style="height: 50px;width: 50px; border-radius: 100%; background-image: url('https://www.aromasoxigenar.com.ar/images/logo.png'); background-size: cover;">
+            </div>
+
+        </div>
+
+        <!-- Menu Button -->
+        <div class="menu-btn" id="menu">
+            <button class="btn-menu">
+                <svg xmlns="http://www.w3.org/2000/svg" width="40" height="40" fill="currentColor" class="bi bi-list" viewBox="0 0 16 16">
+                    <path fill-rule="evenodd" d="M2.5 12a.5.5 0 0 1 .5-.5h10a.5.5 0 0 1 0 1H3a.5.5 0 0 1-.5-.5m0-4a.5.5 0 0 1 .5-.5h10a.5.5 0 0 1 0 1H3a.5.5 0 0 1-.5-.5m0-4a.5.5 0 0 1 .5-.5h10a.5.5 0 0 1 0 1H3a.5.5 0 0 1-.5-.5"/>
+                </svg>
+            </button>
+        </div>
+
+
+        <!-- Opciones -->
+        <ul class="menu-nav">
+            <a href="#productos">
+                <li>
+                    Producto
+                </li>
             </a>
             
-          </div>
-        </div>
-        <div class="barra d-flex rounded-bottom border-top border-2 justify-content-center">
-          <div class="d-flex justify-content-around iconos">
+            <a href="#fragancias">
+                <li>
+                    Fragancia
+                </li>
+            </a>
+
+            <a href="#ubicacion">
+                <li>
+                    Puntos de venta
+                </li>
+            </a>
+
+            <a href="#unite">
+                <li>
+                    Unite
+                </li>
+            </a>
+        </ul>
+    </nav>
+
+    <div class="menu-sm" id="menuSM">
+        <ul>
+            <a href="#productos" id="link1">
+                <li>
+                    Producto
+                </li>
+            </a>
             
-            <a class="marcos d-flex justify-content-center" href="https://github.com/RocioMarcos" target="_blank">
-              <i class="icono bi bi-github"></i>
+            <a href="#fragancias" id="link2">
+                <li>
+                    Fragancia
+                </li>
             </a>
-            
-            <a class="marcos d-flex justify-content-center" href="https://www.linkedin.com/in/rocio-marcos-55188921a" target="_blank">
-              <i class="icono bi bi-linkedin"></i>
-            </a>
-
-            <a class="marcos d-flex justify-content-center" type="button" id="telefonoToastBtn">
-              <i class="icono bi bi-whatsapp"></i>
-            </a>
-
-            <a class="marcos d-flex justify-content-center" type="button" id="gmailToastBtn">
-              <i class="icono bi bi-envelope"></i>
-            </a>
-
-            <a class="marcos d-flex justify-content-center" type="button" id="discordToastBtn">
-              <i class="icono bi bi-discord"></i>
-            </a>
-          </div>
-        </div>
-      </div>
-      <div class="logo d-flex justify-content-center p-3">
-        <div class="powerbutton d-flex justify-content-center border rounded-circle">
-          <i class="bi bi-power"></i>
-        </div>
-      </div>
-    </div>
     
-<!-- Modals -->
-
-    <!-- Mis Datos -->
-    <div class="modal fade" id="Modal" tabindex="-1" aria-labelledby="ModalLabel" data-bs-backdrop="static" data-bs-keyboard="false" tabindex="-1" aria-hidden="true">
-      <div class="modal-dialog modal-dialog-centered">
-        <div class="modal-content">
-          <div class="modal-header" style="height: 7vh; font-size: 3vh; background-color: #9c77e0; color: #ffffff;">
-            <i class="bi bi-person-badge"></i>
-            <h1 class="modal-title fs-5" id="ModalLabel">‎ Sobre mi</h1>
-            <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
-          </div>
-          <div class="modal-body" style="height: 20vh;">
-            <p class="info">Originaria de Santiago del estero, Argentina<br><br>Apasionada por diseño, planificación, desarrollo. <br>Constantemente en la búsqueda de formación propia junto con la búsqueda de oportunidades de aprendizaje.</p>
-          </div>
-          <div class="modal-footer" style="height: 1vh; background-color: #9c77e0;">
-          </div>
-        </div>
-      </div>
+            <a href="#ubicacion" id="link3">
+                <li>
+                    Puntos de venta
+                </li>
+            </a>
+    
+            <a href="#unite" id="link4">
+                <li>
+                    Unite
+                </li>
+            </a>
+        </ul>
     </div>
 
-    <!-- Trabajos -->
-    <div class="modal fade" id="ModalTrabajos" tabindex="-1" aria-labelledby="ModalLabel" data-bs-backdrop="static" data-bs-keyboard="false" tabindex="-1" aria-hidden="true">
-      <div class="modal-dialog modal-dialog-centered modal-dialog-scrollable">
-        <div class="modal-content">
-          <div class="modal-header" style="height: 7vh; font-size: 3vh; background-color: #cb77e0; color: #ffffff;">
-            <i class="bi bi-briefcase"></i>
-            <h1 class="modal-title fs-5" id="ModalLabel">‎ Trabajos</h1>
-            <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
-          </div>
-          <div class="modal-body" style="height: 40vh;">
+    <!-- Cuerpo -->
+    <main>
+        <!-- Banner -->
+        <div class="banner">
 
-            <ol class="list-group">
-              <li class="list-group-item d-flex justify-content-between align-items-start">
-                <div class="ms-2 me-auto">
-                  <div class="fw-bold">Front-end Freelancer</div>
-                    Diseño, maquetado y desarrollo de sistemas.
-                </div>
-                <span class="badge rounded-pill" style="background-color: #cb77e0;">(2023 - )</span>
-              </li>
-              <li class="list-group-item d-flex justify-content-between align-items-start">
-                <div class="ms-2 me-auto">
-                  <div class="fw-bold">Desarrolladora fullstack</div>
-                    Estudio contable privado. Sistema de gestión de vencimientos impositivos.<br> (HTML, CSS, JavaScript, Python, Django y SQL)
-                </div>
-                <span class="badge rounded-pill" style="background-color: #cb77e0;">(2021 - 2022)</span>
-              </li>
-              <li class="list-group-item d-flex justify-content-between align-items-start">
-                <div class="ms-2 me-auto">
-                  <div class="fw-bold">Profesora particular</div>
-                    Enseñanza de matemática, física, historia del arte y, composición y lenguaje visual.
-                </div>
-                <span class="badge rounded-pill" style="background-color: #cb77e0;">(2018 - 2020)</span>
-              </li>
-            </ol>
-            
-          </div>
-          <div class="modal-footer" style="height: 1vh; background-color: #cb77e0;">
-          </div>
+            <div class="banner1 activo">
+
+            </div>
+
+            <div class="banner2">
+
+            </div>
+
+            <div class="banner3">
+
+            </div>
         </div>
-      </div>
+
+        
+    
+
+        <!-- Producto principal -->
+        <hr id="productos">
+
+        <div class="producto">
+            <div class="textoFondo">
+                Oxiauto
+            </div>
+            <div class="textoFrente">
+                <h2>
+                    OxiAuto
+                </h2>
+                <p>
+                    OxiAuto es un producto innovador que combina la tecnología de oxígeno con...  Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua.
+                </p>
+            </div>
+        </div>
+
+        
+        <!-- Fragancias -->
+        <hr id="fragancias">
+
+        <div class="fragancias">
+            <h3>Conoce nuestras fragancias:</h3>
+            <div class="elegir">
+                <div class="fragancias-izq">
+                    <div class="f1">
+                        <div class="frag">
+                            <img src="img/ICONO-VAINILLA.png" alt="">
+                        </div>
+                        <div class="frag">
+                            <img src="img/ICONO-MARINO.png" alt="">
+                        </div>
+                    </div>
+
+                    <div class="f2">
+                        <div class="frag">
+                            <img src="img/ICONO-PINA.png" alt="">
+                        </div>
+                    </div>
+
+                    <div class="f3">
+                        <div class="frag">
+                            <img src="img/ICONO-VERANO.png" alt="">
+                        </div>
+                        <div class="frag">
+                            <img src="img/ICONO-LAVANDA.png" alt="">
+                        </div>
+                    </div>
+
+                    <div class="f4">
+                        <div class="frag">
+                            <img src="img/ICONO-LIMON.png" alt="">
+                        </div>
+                    </div>
+
+                    <div class="f5">
+                        <div class="frag">
+                            <img src="img/ICONO-FUEGO.png" alt="">
+                        </div>
+                        <div class="frag">
+                            <img src="img/ICONO-HIELO.png" alt="">
+                        </div>
+                    </div>
+                </div>
+
+                <div class="producto-frag">
+                    Foto del producto
+                </div>
+                
+                <div class="fragancias-der">
+                    <div class="f6">
+                        <div class="frag">
+                            <img src="img/ICONO-FRUTALIS.png" alt="">
+                        </div>
+                        <div class="frag">
+                            <img src="img/ICONO-FRUTILLA.png" alt="">
+                        </div>
+                    </div>
+
+                    <div class="f7">
+                        <div class="frag">
+                            <img src="img/ICONO-COCO.png" alt="">
+                        </div>
+                    </div>
+
+                    <div class="f8">
+                        <div class="frag">
+                            <img src="img/ICONO-CEREZA.png" alt="">
+                        </div>
+                        <div class="frag">
+                            <img src="img/ICONO-CHICLE.png" alt="">
+                        </div>
+                    </div>
+
+                    <div class="f9">
+                        <div class="frag">
+                            <img src="img/ICONO-CITRUS.png" alt="">
+                        </div>
+                    </div>
+
+                    <div class="f10">
+                        <div class="frag">
+                            <img src="img/ICONO-ACQUA.png" alt="">
+                        </div>
+                        <div class="frag">
+                            <img src="img/ICONO-HIELO.png" alt="">
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <p>
+                Descripción del producto (especificaciones). Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat. Duis aute irure dolor in reprehenderit in voluptate velit esse cillum dolore eu fugiat nulla pariatur.
+            </p>
+        </div>
+
+        <!-- Puntos de venta -->
+        <hr id="ubicacion">
+        <div class="ubicacion">
+            <div class="bg-ubi">
+
+            </div>
+
+            <div class="frente-ubi">
+                <h3>
+                    ¿D&oacute;nde nos pod&eacute;s encontrar?
+                </h3>
+                <h5>
+                    Encontr&aacute; tu distribuidor m&aacute;s cercano:
+                </h5>
+                <select>
+                    <option value="chubut">Chubut</option>
+                    <option value="cordoba" selected>C&oacute;rdoba</option>
+                    <option value="neuquen">Neuquen</option>
+                    <option value="rioNegro">R&iacute;o Negro</option>
+                    <option value="santaFe">Santa F&eacute;</option>
+                    <option value="santiago">Santiago del Estero</option>
+                </select>
+
+                <select>
+                    <option value="chubut">Chubut</option>
+                    <option value="cordoba" selected>C&oacute;rdoba</option>
+                    <option value="neuquen">Neuquen</option>
+                    <option value="rioNegro">R&iacute;o Negro</option>
+                    <option value="santaFe">Santa F&eacute;</option>
+                    <option value="santiago">Santiago del Estero</option>
+                </select>
+
+                <iframe class="mapa" id="mapa" src="https://www.google.com/maps/embed?pb=!1m18!1m12!1m3!1d3405.808658261434!2d-64.17063012439361!3d-31.39183907427309!2m3!1f0!2f0!3f0!3m2!1i1024!2i768!4f13.1!3m3!1m2!1s0x94329812caf58ab7%3A0x9d88866466d773f3!2sAromas%20Oxigenar!5e0!3m2!1ses!2sar!4v1724170193996!5m2!1ses!2sar" allowfullscreen="" loading="lazy" referrerpolicy="no-referrer-when-downgrade"></iframe>
+            </div>
+        </div>
+
+        <!-- Invitacion -->
+        <hr id="unite">
+        <div class="unite">
+            <h3>
+                ¿Quer&eacute;s formar parte de
+                <br>
+                nuestros distribuidores?
+            </h3>
+            <button class="unirme">
+                <p>
+                    Contactanos
+                </p>
+            </button>
+        </div>
+    </main>
+
+    <!-- Footer -->
+    <footer>
+        <div class="logo-footer">
+            <img src="https://www.aromasoxigenar.com.ar/images/logo.png" alt="logo">
+        </div>
+
+        <div class="contacto">
+            <div class="izq">
+                <div class="telefono">
+                    <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor" class="bi bi-telephone" viewBox="0 0 16 16">
+                        <path d="M3.654 1.328a.678.678 0 0 0-1.015-.063L1.605 2.3c-.483.484-.661 1.169-.45 1.77a17.6 17.6 0 0 0 4.168 6.608 17.6 17.6 0 0 0 6.608 4.168c.601.211 1.286.033 1.77-.45l1.034-1.034a.678.678 0 0 0-.063-1.015l-2.307-1.794a.68.68 0 0 0-.58-.122l-2.19.547a1.75 1.75 0 0 1-1.657-.459L5.482 8.062a1.75 1.75 0 0 1-.46-1.657l.548-2.19a.68.68 0 0 0-.122-.58zM1.884.511a1.745 1.745 0 0 1 2.612.163L6.29 2.98c.329.423.445.974.315 1.494l-.547 2.19a.68.68 0 0 0 .178.643l2.457 2.457a.68.68 0 0 0 .644.178l2.189-.547a1.75 1.75 0 0 1 1.494.315l2.306 1.794c.829.645.905 1.87.163 2.611l-1.034 1.034c-.74.74-1.846 1.065-2.877.702a18.6 18.6 0 0 1-7.01-4.42 18.6 18.6 0 0 1-4.42-7.009c-.362-1.03-.037-2.137.703-2.877z"/>
+                    </svg>
+                    0351 471 3900
+                </div>
+
+                <div class="whats">
+                    <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor" class="bi bi-whatsapp" viewBox="0 0 16 16">
+                        <path d="M13.601 2.326A7.85 7.85 0 0 0 7.994 0C3.627 0 .068 3.558.064 7.926c0 1.399.366 2.76 1.057 3.965L0 16l4.204-1.102a7.9 7.9 0 0 0 3.79.965h.004c4.368 0 7.926-3.558 7.93-7.93A7.9 7.9 0 0 0 13.6 2.326zM7.994 14.521a6.6 6.6 0 0 1-3.356-.92l-.24-.144-2.494.654.666-2.433-.156-.251a6.56 6.56 0 0 1-1.007-3.505c0-3.626 2.957-6.584 6.591-6.584a6.56 6.56 0 0 1 4.66 1.931 6.56 6.56 0 0 1 1.928 4.66c-.004 3.639-2.961 6.592-6.592 6.592m3.615-4.934c-.197-.099-1.17-.578-1.353-.646-.182-.065-.315-.099-.445.099-.133.197-.513.646-.627.775-.114.133-.232.148-.43.05-.197-.1-.836-.308-1.592-.985-.59-.525-.985-1.175-1.103-1.372-.114-.198-.011-.304.088-.403.087-.088.197-.232.296-.346.1-.114.133-.198.198-.33.065-.134.034-.248-.015-.347-.05-.099-.445-1.076-.612-1.47-.16-.389-.323-.335-.445-.34-.114-.007-.247-.007-.38-.007a.73.73 0 0 0-.529.247c-.182.198-.691.677-.691 1.654s.71 1.916.81 2.049c.098.133 1.394 2.132 3.383 2.992.47.205.84.326 1.129.418.475.152.904.129 1.246.08.38-.058 1.171-.48 1.338-.943.164-.464.164-.86.114-.943-.049-.084-.182-.133-.38-.232"/>
+                    </svg>
+                    +54 9 351 354 7641
+                </div>
+
+                <div class="mail">
+                    <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor" class="bi bi-envelope" viewBox="0 0 16 16">
+                        <path d="M0 4a2 2 0 0 1 2-2h12a2 2 0 0 1 2 2v8a2 2 0 0 1-2 2H2a2 2 0 0 1-2-2zm2-1a1 1 0 0 0-1 1v.217l7 4.2 7-4.2V4a1 1 0 0 0-1-1zm13 2.383-4.708 2.825L15 11.105zm-.034 6.876-5.64-3.471L8 9.583l-1.326-.795-5.64 3.47A1 1 0 0 0 2 13h12a1 1 0 0 0 .966-.741M1 11.105l4.708-2.897L1 5.383z"/>
+                    </svg>
+                    info@aromasoxigenar.com.ar
+                </div>
+            </div>
+
+            <div class="der">
+                <div class="atencion">
+                    <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor" class="bi bi-clock" viewBox="0 0 16 16">
+                        <path d="M8 3.5a.5.5 0 0 0-1 0V9a.5.5 0 0 0 .252.434l3.5 2a.5.5 0 0 0 .496-.868L8 8.71z"/>
+                        <path d="M8 16A8 8 0 1 0 8 0a8 8 0 0 0 0 16m7-8A7 7 0 1 1 1 8a7 7 0 0 1 14 0"/>
+                    </svg>
+                    <p>
+                        Lunes a Viernes <br>
+                        de 8 a 13 y de 15 a 19
+                    </p>
+                </div>
+
+                <div class="lugar">
+                    <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor" class="bi bi-geo-alt" viewBox="0 0 16 16">
+                        <path d="M12.166 8.94c-.524 1.062-1.234 2.12-1.96 3.07A32 32 0 0 1 8 14.58a32 32 0 0 1-2.206-2.57c-.726-.95-1.436-2.008-1.96-3.07C3.304 7.867 3 6.862 3 6a5 5 0 0 1 10 0c0 .862-.305 1.867-.834 2.94M8 16s6-5.686 6-10A6 6 0 0 0 2 6c0 4.314 6 10 6 10"/>
+                        <path d="M8 8a2 2 0 1 1 0-4 2 2 0 0 1 0 4m0 1a3 3 0 1 0 0-6 3 3 0 0 0 0 6"/>
+                    </svg>
+                    <p>
+                        Cabo Contreras 859
+                        <br>
+                        B° General Bustos
+                    </p>
+                </div>
+            </div>
+        </div>
+    </footer>
+
+    <div class="whatsapp">
+        <a href="https://api.whatsapp.com/send?phone=+51999999999">
+            <div class="hueco"></div>
+            <div class="tira"></div>
+            <div class="btn-whatsapp">
+                <svg xmlns="http://www.w3.org/2000/svg" width="40" height="40" fill="currentColor" class="bi bi-whatsapp" viewBox="0 0 16 16">
+                    <path d="M13.601 2.326A7.85 7.85 0 0 0 7.994 0C3.627 0 .068 3.558.064 7.926c0 1.399.366 2.76 1.057 3.965L0 16l4.204-1.102a7.9 7.9 0 0 0 3.79.965h.004c4.368 0 7.926-3.558 7.93-7.93A7.9 7.9 0 0 0 13.6 2.326zM7.994 14.521a6.6 6.6 0 0 1-3.356-.92l-.24-.144-2.494.654.666-2.433-.156-.251a6.56 6.56 0 0 1-1.007-3.505c0-3.626 2.957-6.584 6.591-6.584a6.56 6.56 0 0 1 4.66 1.931 6.56 6.56 0 0 1 1.928 4.66c-.004 3.639-2.961 6.592-6.592 6.592m3.615-4.934c-.197-.099-1.17-.578-1.353-.646-.182-.065-.315-.099-.445.099-.133.197-.513.646-.627.775-.114.133-.232.148-.43.05-.197-.1-.836-.308-1.592-.985-.59-.525-.985-1.175-1.103-1.372-.114-.198-.011-.304.088-.403.087-.088.197-.232.296-.346.1-.114.133-.198.198-.33.065-.134.034-.248-.015-.347-.05-.099-.445-1.076-.612-1.47-.16-.389-.323-.335-.445-.34-.114-.007-.247-.007-.38-.007a.73.73 0 0 0-.529.247c-.182.198-.691.677-.691 1.654s.71 1.916.81 2.049c.098.133 1.394 2.132 3.383 2.992.47.205.84.326 1.129.418.475.152.904.129 1.246.08.38-.058 1.171-.48 1.338-.943.164-.464.164-.86.114-.943-.049-.084-.182-.133-.38-.232"/>
+                </svg>
+            </div>
+        </a>
     </div>
 
-    <!-- Estudios -->
-    <div class="modal fade" id="ModalEstudios" tabindex="-1" aria-labelledby="ModalLabel" data-bs-backdrop="static" data-bs-keyboard="false" tabindex="-1" aria-hidden="true">
-      <div class="modal-dialog modal-dialog-centered modal-dialog-scrollable">
-        <div class="modal-content">
-          <div class="modal-header" style="height: 7vh; font-size: 3vh; background-color: #e077de; color: #ffffff;">
-            <i class="bi bi-mortarboard"></i>
-            <h1 class="modal-title fs-5" id="ModalLabel">‎ Estudios</h1>
-            <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
-          </div>
-          <div class="modal-body" style="height: 40vh;">
-
-            <ol class="list-group">
-              <li class="list-group-item d-flex justify-content-between align-items-start">
-                <div class="ms-2 me-auto">
-                  <div class="fw-bold">Tecnicatura superior en programación</div>
-                    Instituto Tecnológico de Santiago del Estero
-                </div>
-                <span class="badge rounded-pill"  style="background-color: #e077de;">(2021 - 2023)</span>
-              </li>
-              <li class="list-group-item d-flex justify-content-between align-items-start">
-                <div class="ms-2 me-auto">
-                  <div class="fw-bold">Profesorado de Artes Visuales</div>
-                    Orientacion Escultura<br>Instituto Superior de Bellas Artes "Juan Yaparí"
-                </div>
-                <span class="badge rounded-pill" style="background-color: #e077de;" >(2018 - )</span>
-              </li>
-              <li class="list-group-item d-flex justify-content-between align-items-start">
-                <div class="ms-2 me-auto">
-                  <div class="fw-bold">Primaria / Secundaria</div>
-                    Modalidad en Ciencias Naturales con Orientación Salud<br>Escuela Normal Superior General Manuel Belgrano
-                </div>
-                <span class="badge rounded-pill" style="background-color: #e077de;">(2004 - 2015)</span>
-              </li>
-            </ol>
-
-          </div>
-          <div class="modal-footer" style="height: 1vh; background-color: #e077de;">
-          </div>
-        </div>
-      </div>
-    </div>
-
-    <!-- Otros -->
-    <div class="modal fade" id="ModalOtros" tabindex="-1" aria-labelledby="ModalLabel" data-bs-backdrop="static" data-bs-keyboard="false" tabindex="-1" aria-hidden="true">
-      <div class="modal-dialog modal-dialog-centered modal-dialog-scrollable">
-        <div class="modal-content">
-          <div class="modal-header" style="height: 7vh; font-size: 3vh; background-color: #e077c2; color: #ffffff;">
-            <i class="bi bi-file-text"></i>
-            <h1 class="modal-title fs-5" id="ModalLabel">‎ CV</h1>
-            <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
-          </div>
-          <div class="modal-body p-0" style="height: 40vh;">
-            <img  src="Curriculum.jpg" class="img-fluid" alt="Curriculum"></img>
-          </div>
-          <div class="modal-footer" style="height: 1vh; background-color: #e077c2;">
-          </div>
-        </div>
-      </div>
-    </div>
-
-<!-- Toasts -->
-    <div aria-live="polite" aria-atomic="true" class="position-relative">
-      <div class="toast-container position-fixed p-3" style="bottom: 22vh; right: 5vw;">
-
-        <!-- Discord -->
-        <div class="toast" id="discordToast" role="alert" aria-live="assertive" aria-atomic="true" data-bs-autohide="false">
-          <div class="toast-header" style="background-color: #5661f6cb; color: rgb(255, 255, 255);">
-            <i class="bi bi-discord"></i>
-            <strong class="me-auto"> Discord</strong>
-            <small class="text-muted" style="color: rgba(255, 255, 255, 0.765) !important;">de RocioMarcos</small>
-            <button type="button" class="btn-close" data-bs-dismiss="toast" aria-label="Close"></button>
-          </div>
-          <div class="toast-body">
-            Mi tag es <strong>Emfrid#4215</strong>
-          </div>
-        </div>
-
-        <!-- Mail -->
-        <div class="toast" id="gmailToast" role="alert" aria-live="assertive" aria-atomic="true" data-bs-autohide="false">
-          <div class="toast-header" style="background: linear-gradient(135deg, rgba(66,133,244,1) 60%, rgba(197,34,31,1) 60%, rgba(197,34,31,1) 65%, rgba(234,67,53,1) 65%, rgba(234,67,53,1) 75%, rgba(251,188,4,1) 75%, rgba(251,188,4,1) 80%, rgba(52,168,83,1) 80%); color: rgb(255, 255, 255);">
-            <i class="bi bi-envelope"></i>
-            <strong class="me-auto"> Correo</strong>
-            <small class="text-muted" style="color: rgba(255, 255, 255, 0.765) !important;">de RocioMarcos</small>
-            <button type="button" class="btn-close" data-bs-dismiss="toast" aria-label="Close"></button>
-          </div>
-          <div class="toast-body">
-            Puedes enviar un correo a <strong>Cherryrooma@gmail.com</strong>
-          </div>
-        </div>
-
-        <!-- Telefono -->
-        <div class="toast" id="telefonoToast" role="alert" aria-live="assertive" aria-atomic="true" data-bs-autohide="false">
-          <div class="toast-header" style="background: rgb(35, 161, 47); color: rgb(255, 255, 255);">
-            <i class="bi bi-whatsapp"></i>
-            <strong class="me-auto"> Teléfono</strong>
-            <small class="text-muted" style="color: rgba(255, 255, 255, 0.765) !important;">de RocioMarcos</small>
-            <button type="button" class="btn-close" data-bs-dismiss="toast" aria-label="Close"></button>
-          </div>
-          <div class="toast-body">
-            Contacto <strong>+54 381 3480470</strong>
-          </div>
-        </div>
-
-      </div>
-    </div>
-
-<!-- Scripts -->
-
-    <!-- Toasts -->
+    <!-- JS -->
     <script>
-      const toastDiscord = document.getElementById('discordToastBtn')
-      const toastLiveDiscord = document.getElementById('discordToast')
-      if (toastDiscord) {
-        toastDiscord.addEventListener('click', () => {
-          const toast = new bootstrap.Toast(toastLiveDiscord)
-      
-          toast.show()
+        window.addEventListener('load', () => {
+
+            let menu = document.querySelector("#menu");
+
+            let link1 = document.querySelector("#link1");
+            let link2 = document.querySelector("#link2");
+            let link3 = document.querySelector("#link3");
+            let link4 = document.querySelector("#link4");
+
+            let menuSM = document.querySelector("#menuSM");
+
+            menu.addEventListener('click', ()=>{
+                if (menuSM.style.display != "block"){
+                    menuSM.style.display = "block";
+                } else {
+                    menuSM.style.display = "none";
+                }
+            })
+
+            link1.addEventListener('click', ()=>{
+                menuSM.style.display = "none";
+                window.location = "#productos";
+            })
+            link2.addEventListener('click', ()=>{
+                menuSM.style.display = "none";
+            })
+            link3.addEventListener('click', ()=>{
+                menuSM.style.display = "none";
+            })
+            link4.addEventListener('click', ()=>{
+                menuSM.style.display = "none";
+            }) 
+
         })
-      }
-      const toastGmail = document.getElementById('gmailToastBtn')
-      const toastLiveGmail = document.getElementById('gmailToast')
-      if (toastGmail) {
-        toastGmail.addEventListener('click', () => {
-          const toast = new bootstrap.Toast(toastLiveGmail)
-      
-          toast.show()
+
+        const dic ={
+                'chubut':'https://www.google.com/maps/embed?pb=!1m18!1m12!1m3!1d21399.325647208487!2d-67.50056581681187!3d-45.83266495379836!2m3!1f0!2f0!3f0!3m2!1i1024!2i768!4f13.1!3m3!1m2!1s0xbde4544de04824f5%3A0x5d9f7f8e3bb8ee4b!2sComodoro%20Rivadavia%2C%20Chubut!5e0!3m2!1ses!2sar!4v1724175031566!5m2!1ses!2sar',
+                'cordoba':'https://www.google.com/maps/embed?pb=!1m18!1m12!1m3!1d3405.808658261434!2d-64.17063012439361!3d-31.39183907427309!2m3!1f0!2f0!3f0!3m2!1i1024!2i768!4f13.1!3m3!1m2!1s0x94329812caf58ab7%3A0x9d88866466d773f3!2sAromas%20Oxigenar!5e0!3m2!1ses!2sar!4v1724170193996!5m2!1ses!2sar',
+                'neuquen':'https://www.google.com/maps/embed?pb=!1m18!1m12!1m3!1d99192.76517152009!2d-67.65902826562959!3d-39.020470637020296!2m3!1f0!2f0!3f0!3m2!1i1024!2i768!4f13.1!3m3!1m2!1s0x960a1ce240513f5b%3A0x9aee81bb607eb50!2sR8332%20Gral.%20Roca%2C%20R%C3%ADo%20Negro!5e0!3m2!1ses!2sar!4v1724175849890!5m2!1ses!2sar',
+                'rioNegro':'https://www.google.com/maps/embed?pb=!1m18!1m12!1m3!1d384678.9365007757!2d-71.66887179864956!3d-41.127884985461606!2m3!1f0!2f0!3f0!3m2!1i1024!2i768!4f13.1!3m3!1m2!1s0x961a7b1520c860e5%3A0x8210ae97cb7b9a65!2sSan%20Carlos%20de%20Bariloche%2C%20R%C3%ADo%20Negro!5e0!3m2!1ses!2sar!4v1724175497043!5m2!1ses!2sar',
+                'santaFe':'https://www.google.com/maps/embed?pb=!1m18!1m12!1m3!1d27492.282224225197!2d-61.98008144397317!3d-30.53417738627329!2m3!1f0!2f0!3f0!3m2!1i1024!2i768!4f13.1!3m3!1m2!1s0x9435a99f11c34b85%3A0x2bd1cb0896501b!2sSuardi%2C%20Santa%20Fe!5e0!3m2!1ses!2sar!4v1724175396443!5m2!1ses!2sar',
+                'santiago':'https://www.google.com/maps/embed?pb=!1m18!1m12!1m3!1d3530.309426021258!2d-64.2861894!3d-27.7694385!2m3!1f0!2f0!3f0!3m2!1i1024!2i768!4f13.1!3m3!1m2!1s0x943b53424c414a3f%3A0xd8f155d897dee184!2sSantiago%20del%20Estero!5e0!3m2!1ses!2sar!4v1724175271682!5m2!1ses!2sar',
+            }
+        const cars = document.getElementById('cars');
+        cars.addEventListener('change',function(){
+            let defaul = "https://www.google.com/maps/embed?pb=!1m18!1m12!1m3!1d3405.808658261434!2d-64.17063012439361!3d-31.39183907427309!2m3!1f0!2f0!3f0!3m2!1i1024!2i768!4f13.1!3m3!1m2!1s0x94329812caf58ab7%3A0x9d88866466d773f3!2sAromas%20Oxigenar!5e0!3m2!1ses!2sar!4v1724170193996!5m2!1ses!2sar";
+            let value = cars.value;
+            const mapa = document.getElementById('mapa');
+            if (dic.hasOwnProperty(value)) {
+                mapa.src=dic[value]
+            }
+            else{
+                mapa.src=defaul;
+            }
         })
-      }
-      const toasttelefono = document.getElementById('telefonoToastBtn')
-      const toastLivetelefono = document.getElementById('telefonoToast')
-      if (toasttelefono) {
-        toasttelefono.addEventListener('click', () => {
-          const toast = new bootstrap.Toast(toastLivetelefono)
-      
-          toast.show()
-        })
-      }
+
+
+        /* Comodoro Rivadavia:
+        
+        https://www.google.com/maps/embed?pb=!1m18!1m12!1m3!1d21399.325647208487!2d-67.50056581681187!3d-45.83266495379836!2m3!1f0!2f0!3f0!3m2!1i1024!2i768!4f13.1!3m3!1m2!1s0xbde4544de04824f5%3A0x5d9f7f8e3bb8ee4b!2sComodoro%20Rivadavia%2C%20Chubut!5e0!3m2!1ses!2sar!4v1724175031566!5m2!1ses!2sar
+
+
+        */
     </script>
 
-  </body>
+
+
+</body>
 </html>
