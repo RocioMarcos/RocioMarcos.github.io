@@ -3,1241 +3,1217 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>API IOSEP — Rocío Marcos</title>
-<link href="https://fonts.googleapis.com/css2?family=Space+Grotesk:wght@300;400;500;600;700&family=Inter:wght@300;400;500&family=JetBrains+Mono:wght@400;500&display=swap" rel="stylesheet">
+<title>Integración IOSEP — Rocío Marcos</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link href="https://fonts.googleapis.com/css2?family=Outfit:wght@200;300;400;600;700&family=Inter:wght@300;400;500&family=JetBrains+Mono:wght@400;500&display=swap" rel="stylesheet">
 <style>
-  *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+/* ═══════════════════════════════════════════
+   RESET & BASE
+═══════════════════════════════════════════ */
+*, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
 
-  :root {
-    --bg: #07070f;
-    --bg2: #0d0d1a;
-    --blue: #3b82f6;
-    --blue-dim: #1d4ed8;
-    --blue-glow: rgba(59,130,246,0.18);
-    --green: #22c55e;
-    --red: #ef4444;
-    --white: #f0f0f0;
-    --muted: #6b7280;
-    --border: rgba(255,255,255,0.07);
-    --glass: rgba(255,255,255,0.04);
-    --glass-border: rgba(255,255,255,0.1);
-  }
+:root {
+  --bg:        #0b0f1a;
+  --bg-card:   #111827;
+  --sky:       #38bdf8;
+  --sky-dim:   #0ea5e9;
+  --sky-glow:  rgba(56,189,248,0.12);
+  --green:     #10b981;
+  --green-glow:rgba(16,185,129,0.15);
+  --red:       #f43f5e;
+  --red-glow:  rgba(244,63,94,0.15);
+  --indigo:    #818cf8;
+  --white:     #f1f5f9;
+  --gray:      #94a3b8;
+  --gray-dim:  #334155;
+  --border:    rgba(255,255,255,0.06);
+  --glass-bg:  rgba(255,255,255,0.035);
+  --glass-bdr: rgba(255,255,255,0.08);
+  --radius:    18px;
+}
 
-  html { scroll-behavior: smooth; }
+html { scroll-behavior: smooth; font-size: 16px; }
 
-  body {
-    background: var(--bg);
-    color: var(--white);
-    font-family: 'Inter', sans-serif;
-    overflow-x: hidden;
-    line-height: 1.6;
-  }
+body {
+  background: var(--bg);
+  color: var(--white);
+  font-family: 'Inter', sans-serif;
+  overflow-x: hidden;
+  line-height: 1.6;
+  -webkit-font-smoothing: antialiased;
+}
 
-  /* ── SCROLLBAR ── */
-  ::-webkit-scrollbar { width: 4px; }
-  ::-webkit-scrollbar-track { background: var(--bg); }
-  ::-webkit-scrollbar-thumb { background: var(--blue-dim); border-radius: 2px; }
+/* ─ scrollbar ─ */
+::-webkit-scrollbar { width: 3px; }
+::-webkit-scrollbar-track { background: var(--bg); }
+::-webkit-scrollbar-thumb { background: var(--sky-dim); border-radius: 2px; }
 
-  /* ── PROGRESS BAR ── */
-  #progress-bar {
-    position: fixed; top: 0; left: 0; height: 2px;
-    background: linear-gradient(90deg, var(--blue), var(--green));
-    z-index: 999; width: 0%; transition: width 0.1s linear;
-  }
+/* ─ progress bar ─ */
+#pbar {
+  position: fixed; top: 0; left: 0; height: 2px; z-index: 9999;
+  background: linear-gradient(90deg, var(--sky), var(--green));
+  width: 0%; transition: width 0.1s linear;
+  box-shadow: 0 0 6px var(--sky);
+}
 
-  /* ── NAV ── */
-  nav {
-    position: fixed; top: 0; left: 0; right: 0;
-    padding: 16px 40px;
-    display: flex; justify-content: space-between; align-items: center;
-    z-index: 100;
-    background: linear-gradient(to bottom, rgba(7,7,15,0.95), transparent);
-  }
-  .nav-logo {
-    font-family: 'Space Grotesk', sans-serif;
-    font-size: 13px; font-weight: 600; letter-spacing: 0.15em;
-    color: var(--muted); text-transform: uppercase;
-  }
-  .nav-dot {
-    width: 6px; height: 6px; border-radius: 50%;
-    background: var(--green);
-    box-shadow: 0 0 8px var(--green);
-    animation: pulse 2s infinite;
-  }
-  @keyframes pulse {
-    0%, 100% { opacity: 1; transform: scale(1); }
-    50% { opacity: 0.5; transform: scale(0.8); }
-  }
+/* ─ nav ─ */
+#nav {
+  position: fixed; top: 0; left: 0; right: 0; z-index: 100;
+  padding: 20px 48px;
+  display: flex; justify-content: space-between; align-items: center;
+  background: linear-gradient(to bottom, rgba(11,15,26,0.9) 0%, transparent 100%);
+  backdrop-filter: blur(0px);
+}
+.nav-id {
+  font-family: 'JetBrains Mono', monospace;
+  font-size: 11px; color: var(--gray); letter-spacing: 0.18em;
+  text-transform: uppercase;
+}
+.nav-pulse {
+  width: 7px; height: 7px; border-radius: 50%;
+  background: var(--green);
+  box-shadow: 0 0 10px var(--green);
+  animation: blink 2.4s ease-in-out infinite;
+}
+@keyframes blink { 0%,100%{opacity:1;} 50%{opacity:.3;} }
 
-  /* ── SECTIONS ── */
-  section {
-    min-height: 100vh;
-    display: flex; flex-direction: column; justify-content: center;
-    padding: 100px 40px;
-    position: relative;
-    max-width: 1200px;
-    margin: 0 auto;
-  }
-  section.full-bleed {
-    max-width: none;
-    padding: 100px 0;
-  }
-  .section-inner {
-    max-width: 1100px;
-    margin: 0 auto;
-    width: 100%;
-    padding: 0 40px;
-  }
+/* ─ general section ─ */
+.sec {
+  min-height: 100vh;
+  padding: 120px 48px;
+  max-width: 1160px;
+  margin: 0 auto;
+  display: flex; flex-direction: column; justify-content: center;
+}
+.sec-full {
+  min-height: 100vh;
+  padding: 120px 0;
+  display: flex; flex-direction: column; justify-content: center;
+}
 
-  /* ── EYEBROW ── */
-  .eyebrow {
-    font-family: 'JetBrains Mono', monospace;
-    font-size: 11px; letter-spacing: 0.2em;
-    color: var(--blue); text-transform: uppercase;
-    margin-bottom: 20px;
-    opacity: 0; transform: translateY(10px);
-    transition: opacity 0.5s, transform 0.5s;
-  }
-  .eyebrow::before { content: '// '; color: var(--muted); }
-  .eyebrow.visible { opacity: 1; transform: translateY(0); }
+/* ─ eyebrow ─ */
+.eyebrow {
+  font-family: 'JetBrains Mono', monospace;
+  font-size: 11px; letter-spacing: 0.22em;
+  color: var(--sky); text-transform: uppercase;
+  margin-bottom: 24px;
+  opacity: 0; transition: opacity .6s, transform .6s;
+  transform: translateY(8px);
+}
+.eyebrow::before { content: '// '; color: var(--gray-dim); }
+.eyebrow.in { opacity: 1; transform: translateY(0); }
 
-  /* ── ANIMATE ON SCROLL ── */
-  .anim { opacity: 0; transform: translateY(30px); transition: opacity 0.7s ease, transform 0.7s ease; }
-  .anim.visible { opacity: 1; transform: translateY(0); }
-  .anim-left { opacity: 0; transform: translateX(-30px); transition: opacity 0.7s ease, transform 0.7s ease; }
-  .anim-left.visible { opacity: 1; transform: translateX(0); }
-  .anim-right { opacity: 0; transform: translateX(30px); transition: opacity 0.7s ease, transform 0.7s ease; }
-  .anim-right.visible { opacity: 1; transform: translateX(0); }
-  .delay-1 { transition-delay: 0.15s; }
-  .delay-2 { transition-delay: 0.3s; }
-  .delay-3 { transition-delay: 0.45s; }
-  .delay-4 { transition-delay: 0.6s; }
+/* ─ section heading ─ */
+.sh {
+  font-family: 'Outfit', sans-serif;
+  font-weight: 600; letter-spacing: -0.03em;
+  line-height: 1.08;
+}
+.sh-xl { font-size: clamp(36px, 5.5vw, 64px); }
+.sh-lg { font-size: clamp(28px, 4vw, 48px); }
+.sh-accent { color: var(--sky); }
+.sh-dim    { color: var(--gray); font-weight: 300; }
 
-  /* ══════════════════════════════
-     1. HERO
-  ══════════════════════════════ */
-  #hero {
-    min-height: 100vh;
-    display: flex; flex-direction: column; justify-content: center; align-items: center;
-    text-align: center;
-    position: relative; overflow: hidden;
-  }
-  #hero-bg {
-    position: absolute; inset: 0;
-    background: radial-gradient(ellipse 80% 60% at 50% 60%, rgba(59,130,246,0.07) 0%, transparent 70%);
-    pointer-events: none;
-  }
-  .hero-grid {
-    position: absolute; inset: 0;
-    background-image:
-      linear-gradient(rgba(59,130,246,0.03) 1px, transparent 1px),
-      linear-gradient(90deg, rgba(59,130,246,0.03) 1px, transparent 1px);
-    background-size: 60px 60px;
-    pointer-events: none;
-  }
-  .hero-tag {
-    font-family: 'JetBrains Mono', monospace;
-    font-size: 11px; letter-spacing: 0.25em; color: var(--blue);
-    text-transform: uppercase;
-    margin-bottom: 32px;
-    padding: 6px 16px;
-    border: 1px solid rgba(59,130,246,0.3);
-    border-radius: 100px;
-    display: inline-block;
-  }
-  .hero-name {
-    font-family: 'Space Grotesk', sans-serif;
-    font-size: clamp(14px, 2vw, 18px);
-    font-weight: 400; color: var(--muted);
-    margin-bottom: 12px; letter-spacing: 0.05em;
-  }
-  .hero-title {
-    font-family: 'Space Grotesk', sans-serif;
-    font-size: clamp(42px, 8vw, 88px);
-    font-weight: 700; line-height: 0.95;
-    margin-bottom: 24px;
-    letter-spacing: -0.03em;
-  }
-  .hero-title span { color: var(--blue); }
-  .hero-sub {
-    font-size: clamp(15px, 2vw, 18px);
-    color: var(--muted); max-width: 520px;
-    margin: 0 auto 48px;
-    font-weight: 300; line-height: 1.7;
-  }
-  .hero-scroll {
-    display: flex; flex-direction: column; align-items: center; gap: 8px;
-    color: var(--muted); font-size: 12px; letter-spacing: 0.1em;
-    font-family: 'JetBrains Mono', monospace;
-    animation: float 3s ease-in-out infinite;
-  }
-  .scroll-line {
-    width: 1px; height: 50px;
-    background: linear-gradient(to bottom, var(--blue), transparent);
-  }
-  @keyframes float {
-    0%, 100% { transform: translateY(0); }
-    50% { transform: translateY(8px); }
-  }
+/* ─ scroll-animate classes ─ */
+.fade-up   { opacity:0; transform:translateY(32px); transition:opacity .7s ease, transform .7s ease; }
+.fade-left { opacity:0; transform:translateX(-28px); transition:opacity .7s ease, transform .7s ease; }
+.fade-right{ opacity:0; transform:translateX(28px);  transition:opacity .7s ease, transform .7s ease; }
+.scale-in  { opacity:0; transform:scale(.96);        transition:opacity .7s ease, transform .7s ease; }
+.fade-up.in, .fade-left.in, .fade-right.in, .scale-in.in { opacity:1; transform:none; }
+.d1{transition-delay:.1s}
+.d2{transition-delay:.2s}
+.d3{transition-delay:.32s}
+.d4{transition-delay:.44s}
+.d5{transition-delay:.56s}
+.d6{transition-delay:.68s}
 
-  /* ══════════════════════════════
-     2. QUIÉN SOY - TIMELINE
-  ══════════════════════════════ */
-  #quien {
-    padding: 120px 40px;
-  }
-  .timeline-title {
-    font-family: 'Space Grotesk', sans-serif;
-    font-size: clamp(32px, 5vw, 52px);
-    font-weight: 700; margin-bottom: 72px;
-    letter-spacing: -0.02em;
-  }
-  .timeline {
-    position: relative;
-    padding-left: 0;
-  }
-  .timeline-line {
-    position: absolute; left: 24px; top: 0; bottom: 0;
-    width: 2px;
-    background: var(--border);
-  }
-  .timeline-line-fill {
-    position: absolute; left: 24px; top: 0;
-    width: 2px; height: 0%;
-    background: linear-gradient(to bottom, var(--blue), var(--green));
-    transition: height 1.5s ease;
-    box-shadow: 0 0 12px var(--blue);
-  }
-  .timeline-line-fill.active { height: 100%; }
-  .timeline-item {
-    display: flex; gap: 32px; margin-bottom: 56px;
-    padding-left: 0;
-    opacity: 0; transform: translateX(-20px);
-    transition: opacity 0.6s ease, transform 0.6s ease;
-  }
-  .timeline-item.visible { opacity: 1; transform: translateX(0); }
-  .timeline-dot-wrap {
-    position: relative; flex-shrink: 0;
-    width: 48px; display: flex; justify-content: center;
-  }
-  .timeline-dot {
-    width: 12px; height: 12px; border-radius: 50%;
-    background: var(--bg); border: 2px solid var(--blue-dim);
-    margin-top: 6px; position: relative; z-index: 1;
-    transition: background 0.4s, border-color 0.4s, box-shadow 0.4s;
-  }
-  .timeline-item.visible .timeline-dot {
-    background: var(--blue);
-    border-color: var(--blue);
-    box-shadow: 0 0 12px var(--blue);
-  }
-  .timeline-year {
-    font-family: 'JetBrains Mono', monospace;
-    font-size: 11px; color: var(--blue);
-    letter-spacing: 0.1em; margin-bottom: 6px;
-  }
-  .timeline-label {
-    font-family: 'Space Grotesk', sans-serif;
-    font-size: 22px; font-weight: 600; margin-bottom: 8px;
-    letter-spacing: -0.01em;
-  }
-  .timeline-desc {
-    font-size: 14px; color: var(--muted); line-height: 1.7;
-    max-width: 480px;
-  }
+/* ═══════════════════════════════════════════
+   § 1  HERO
+═══════════════════════════════════════════ */
+#hero {
+  min-height: 100vh; position: relative;
+  display: flex; flex-direction: column;
+  justify-content: center; align-items: center;
+  text-align: center; overflow: hidden;
+  padding: 0 40px;
+}
 
-  /* ══════════════════════════════
-     3. EL PROBLEMA - SPLIT
-  ══════════════════════════════ */
-  #problema {
-    min-height: 100vh;
-    padding: 0;
-    max-width: none;
-  }
-  .problema-intro {
-    text-align: center; padding: 80px 40px 60px;
-    max-width: 700px; margin: 0 auto;
-  }
-  .problema-intro h2 {
-    font-family: 'Space Grotesk', sans-serif;
-    font-size: clamp(32px, 5vw, 52px);
-    font-weight: 700; letter-spacing: -0.02em;
-    margin-bottom: 16px;
-  }
-  .problema-split {
-    display: grid; grid-template-columns: 1fr auto 1fr;
-    min-height: 60vh;
-    gap: 0;
-  }
-  .split-entity {
-    padding: 60px 48px;
-    display: flex; flex-direction: column; justify-content: center;
-  }
-  .split-left { background: rgba(59,130,246,0.04); border-right: 1px solid var(--border); }
-  .split-right { background: rgba(34,197,94,0.03); border-left: 1px solid var(--border); }
-  .split-icon { font-size: 64px; margin-bottom: 24px; }
-  .split-name {
-    font-family: 'Space Grotesk', sans-serif;
-    font-size: 28px; font-weight: 700;
-    margin-bottom: 16px;
-  }
-  .split-desc { font-size: 15px; color: var(--muted); line-height: 1.7; }
+/* grid bg */
+#hero-grid {
+  position: absolute; inset: 0; pointer-events: none;
+  background-image:
+    linear-gradient(rgba(56,189,248,.028) 1px, transparent 1px),
+    linear-gradient(90deg, rgba(56,189,248,.028) 1px, transparent 1px);
+  background-size: 72px 72px;
+}
 
-  .split-middle {
-    display: flex; flex-direction: column; justify-content: center;
-    align-items: center; padding: 40px 32px; gap: 12px;
-    width: 200px;
-  }
-  .broken-line {
-    display: flex; flex-direction: column; align-items: center; gap: 6px;
-    opacity: 0; transition: opacity 0.5s;
-  }
-  .broken-line.visible { opacity: 1; }
-  .bl-seg {
-    width: 2px; background: var(--red);
-    border-radius: 2px;
-    animation: flicker 1.5s ease-in-out infinite;
-  }
-  .bl-seg:nth-child(1) { height: 20px; animation-delay: 0s; }
-  .bl-seg:nth-child(2) { height: 14px; animation-delay: 0.2s; }
-  .bl-seg:nth-child(3) { height: 18px; animation-delay: 0.4s; }
-  .bl-seg:nth-child(4) { height: 10px; animation-delay: 0.1s; }
-  .bl-seg:nth-child(5) { height: 16px; animation-delay: 0.3s; }
-  @keyframes flicker {
-    0%, 100% { opacity: 1; }
-    50% { opacity: 0.2; }
-  }
-  .no-comm {
-    font-family: 'JetBrains Mono', monospace;
-    font-size: 10px; color: var(--red);
-    text-align: center; letter-spacing: 0.1em;
-    padding: 6px 10px;
-    border: 1px solid rgba(239,68,68,0.3);
-    border-radius: 4px;
-    background: rgba(239,68,68,0.05);
-  }
-  .problema-tags {
-    display: flex; flex-wrap: wrap; gap: 12px;
-    padding: 40px 48px;
-    border-top: 1px solid var(--border);
-    max-width: 1200px; margin: 0 auto;
-  }
-  .ptag {
-    font-family: 'JetBrains Mono', monospace;
-    font-size: 13px; padding: 8px 18px;
-    border: 1px solid var(--border); border-radius: 100px;
-    color: var(--muted);
-    opacity: 0; transform: translateY(12px);
-    transition: opacity 0.5s ease, transform 0.5s ease;
-  }
-  .ptag.visible { opacity: 1; transform: translateY(0); }
-  .ptag.red { border-color: rgba(239,68,68,0.3); color: var(--red); }
+/* orbs */
+.orb {
+  position: absolute; border-radius: 50%;
+  filter: blur(90px); pointer-events: none; opacity: .45;
+}
+.orb-1 { width:480px;height:480px;background:rgba(56,189,248,.07);top:-80px;right:-120px; }
+.orb-2 { width:380px;height:380px;background:rgba(129,140,248,.06);bottom:-60px;left:-100px; }
 
-  /* ══════════════════════════════
-     4. REQUISITOS - CARDS
-  ══════════════════════════════ */
-  #requisitos { }
-  .req-title {
-    font-family: 'Space Grotesk', sans-serif;
-    font-size: clamp(28px, 4vw, 48px);
-    font-weight: 700; margin-bottom: 56px;
-    letter-spacing: -0.02em;
-  }
-  .req-cards {
-    display: grid; grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
-    gap: 24px;
-  }
-  .req-card {
-    background: var(--glass);
-    border: 1px solid var(--glass-border);
-    border-radius: 20px;
-    padding: 48px 36px;
-    backdrop-filter: blur(16px);
-    -webkit-backdrop-filter: blur(16px);
-    position: relative; overflow: hidden;
-    opacity: 0; transform: translateY(40px);
-    transition: opacity 0.7s ease, transform 0.7s ease;
-  }
-  .req-card.visible { opacity: 1; transform: translateY(0); }
-  .req-card::before {
-    content: '';
-    position: absolute; top: 0; left: 0; right: 0; height: 1px;
-    background: linear-gradient(90deg, transparent, rgba(255,255,255,0.15), transparent);
-  }
-  .req-card:hover {
-    border-color: var(--blue);
-    box-shadow: 0 0 32px rgba(59,130,246,0.12);
-    transform: translateY(-4px);
-  }
-  .req-icon { font-size: 48px; margin-bottom: 20px; }
-  .req-name {
-    font-family: 'Space Grotesk', sans-serif;
-    font-size: 24px; font-weight: 600;
-    margin-bottom: 12px;
-  }
-  .req-desc { font-size: 14px; color: var(--muted); line-height: 1.7; }
-  .req-glow {
-    position: absolute; width: 120px; height: 120px;
-    border-radius: 50%; filter: blur(60px);
-    bottom: -40px; right: -40px; opacity: 0.3;
-  }
+/* hero two-node animation */
+#hero-nodes {
+  position: relative; width: 100%; max-width: 560px;
+  height: 90px; margin: 0 auto 52px;
+  display: flex; align-items: center; justify-content: space-between;
+}
+.h-node {
+  width: 64px; height: 64px; border-radius: 16px;
+  display: flex; flex-direction: column; align-items: center; justify-content: center;
+  gap: 4px;
+  border: 1px solid var(--glass-bdr);
+  background: var(--glass-bg); backdrop-filter: blur(12px);
+  font-size: 22px;
+}
+.h-node-label {
+  font-family: 'Outfit', sans-serif; font-size: 9px; font-weight: 600;
+  letter-spacing: .12em; text-transform: uppercase; color: var(--gray);
+}
+#hero-line {
+  flex: 1; height: 2px; margin: 0 12px; position: relative;
+  background: var(--gray-dim); border-radius: 2px; overflow: visible;
+}
+#hero-packet {
+  position: absolute; top: 50%; transform: translateY(-50%);
+  width: 10px; height: 10px; border-radius: 50%;
+  background: var(--sky); box-shadow: 0 0 10px var(--sky);
+  left: -5px; animation: heroTravel 2.8s ease-in-out infinite;
+  opacity: 0;
+}
+@keyframes heroTravel {
+  0%   { left:-5px; opacity:0; }
+  10%  { opacity:1; }
+  90%  { opacity:1; }
+  100% { left:calc(100% + 5px); opacity:0; }
+}
+#hero-blocker {
+  position: absolute; left: 50%; top: 50%;
+  transform: translate(-50%,-50%);
+  width: 28px; height: 28px; border-radius: 50%;
+  background: var(--bg); border: 2px solid var(--red);
+  display: flex; align-items: center; justify-content: center;
+  font-size: 13px; color: var(--red);
+  box-shadow: 0 0 12px var(--red-glow);
+  animation: heroBloker 2.8s ease-in-out infinite;
+}
+@keyframes heroBloker {
+  0%,20%  { opacity:0; }
+  45%,70% { opacity:1; }
+  100%    { opacity:0; }
+}
 
-  /* ══════════════════════════════
-     5. QUÉ ES UNA API
-  ══════════════════════════════ */
-  #api { }
-  .api-title {
-    font-family: 'Space Grotesk', sans-serif;
-    font-size: clamp(28px, 4vw, 48px);
-    font-weight: 700; margin-bottom: 60px;
-    letter-spacing: -0.02em;
-  }
-  .api-flow {
-    display: flex; flex-direction: column; align-items: center; gap: 0;
-    max-width: 400px; margin: 0 auto;
-  }
-  .flow-node {
-    background: var(--glass);
-    border: 1px solid var(--glass-border);
-    border-radius: 14px;
-    padding: 20px 40px;
-    text-align: center;
-    width: 100%;
-    backdrop-filter: blur(12px);
-    opacity: 0; transform: translateY(20px);
-    transition: opacity 0.5s ease, transform 0.5s ease;
-  }
-  .flow-node.visible { opacity: 1; transform: translateY(0); }
-  .flow-node-label {
-    font-family: 'Space Grotesk', sans-serif;
-    font-size: 18px; font-weight: 600;
-  }
-  .flow-node-sub {
-    font-family: 'JetBrains Mono', monospace;
-    font-size: 11px; color: var(--muted); margin-top: 4px;
-  }
-  .flow-node.highlight {
-    border-color: var(--blue);
-    background: rgba(59,130,246,0.08);
-    box-shadow: 0 0 32px rgba(59,130,246,0.15);
-  }
-  .flow-arrow {
-    width: 2px; height: 48px;
-    background: linear-gradient(to bottom, var(--blue), var(--blue-dim));
-    position: relative;
-    opacity: 0; transition: opacity 0.4s ease;
-  }
-  .flow-arrow.visible { opacity: 1; }
-  .flow-arrow::after {
-    content: '';
-    position: absolute; bottom: 0; left: 50%;
-    transform: translateX(-50%);
-    border-left: 5px solid transparent;
-    border-right: 5px solid transparent;
-    border-top: 8px solid var(--blue-dim);
-  }
-  .flow-packet {
-    width: 10px; height: 10px; border-radius: 50%;
-    background: var(--blue);
-    box-shadow: 0 0 8px var(--blue);
-    position: absolute; left: 50%; transform: translateX(-50%);
-    top: 0;
-    animation: travel 2s ease-in-out infinite;
-    display: none;
-  }
-  .flow-arrow.visible .flow-packet { display: block; }
-  @keyframes travel {
-    0% { top: 0; opacity: 0; }
-    10% { opacity: 1; }
-    90% { opacity: 1; }
-    100% { top: 100%; opacity: 0; }
-  }
+.hero-tag {
+  font-family: 'JetBrains Mono', monospace;
+  font-size: 11px; letter-spacing: .2em; color: var(--sky);
+  border: 1px solid rgba(56,189,248,.25); border-radius: 100px;
+  padding: 6px 18px; display: inline-block; margin-bottom: 32px;
+  text-transform: uppercase;
+}
+.hero-h1 {
+  font-family: 'Outfit', sans-serif; font-weight: 200;
+  font-size: clamp(40px, 7.5vw, 96px);
+  letter-spacing: -0.04em; line-height: .95;
+  margin-bottom: 28px;
+  background: linear-gradient(135deg, var(--white) 0%, rgba(148,163,184,.7) 100%);
+  -webkit-background-clip: text; -webkit-text-fill-color: transparent;
+  background-clip: text;
+}
+.hero-h1 em { font-style: normal; -webkit-text-fill-color: var(--sky); }
+.hero-sub {
+  font-size: clamp(15px, 1.8vw, 19px);
+  color: var(--gray); max-width: 580px; margin: 0 auto 60px;
+  font-weight: 300; line-height: 1.75;
+}
+.hero-scroll {
+  display: flex; flex-direction: column; align-items: center; gap: 10px;
+  color: var(--gray); font-family: 'JetBrains Mono', monospace;
+  font-size: 10px; letter-spacing: .15em; text-transform: uppercase;
+  animation: floatScroll 3s ease-in-out infinite;
+}
+.hero-scroll-line { width: 1px; height: 44px; background: linear-gradient(to bottom, var(--sky), transparent); }
+@keyframes floatScroll { 0%,100%{transform:translateY(0)} 50%{transform:translateY(7px)} }
 
-  .api-checks {
-    display: grid; grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
-    gap: 16px; max-width: 700px; margin: 48px auto 0;
-  }
-  .api-check {
-    display: flex; align-items: center; gap: 12px;
-    background: var(--glass); border: 1px solid var(--glass-border);
-    border-radius: 10px; padding: 14px 20px;
-    font-size: 14px;
-    opacity: 0; transform: translateX(-10px);
-    transition: opacity 0.5s ease, transform 0.5s ease;
-  }
-  .api-check.visible { opacity: 1; transform: translateX(0); }
-  .api-check-icon { color: var(--green); font-size: 16px; }
+/* ═══════════════════════════════════════════
+   § 2  QUIÉN SOY — TIMELINE
+═══════════════════════════════════════════ */
+#quien { }
 
-  /* ══════════════════════════════
-     6. ARQUITECTURA
-  ══════════════════════════════ */
-  #arquitectura { }
-  .arq-title {
-    font-family: 'Space Grotesk', sans-serif;
-    font-size: clamp(28px, 4vw, 48px);
-    font-weight: 700; letter-spacing: -0.02em;
-    margin-bottom: 16px;
-  }
-  .arq-subtitle { font-size: 15px; color: var(--muted); margin-bottom: 56px; }
-  .arq-compare {
-    display: grid; grid-template-columns: 1fr 1fr;
-    gap: 32px;
-  }
-  @media (max-width: 768px) {
-    .arq-compare { grid-template-columns: 1fr; }
-    .problema-split { grid-template-columns: 1fr; }
-    .split-middle { display: none; }
-    nav { padding: 16px 20px; }
-    section { padding: 80px 20px; }
-  }
-  .arq-panel {
-    background: var(--glass); border: 1px solid var(--glass-border);
-    border-radius: 20px; padding: 36px;
-    backdrop-filter: blur(12px);
-  }
-  .arq-panel-title {
-    font-family: 'Space Grotesk', sans-serif;
-    font-size: 16px; font-weight: 600;
-    margin-bottom: 24px; color: var(--muted);
-    letter-spacing: 0.05em; text-transform: uppercase;
-    font-size: 13px;
-  }
-  /* Almacén */
-  .almacen-box {
-    border: 2px solid var(--border);
-    border-radius: 12px; padding: 24px;
-    position: relative;
-  }
-  .almacen-label {
-    position: absolute; top: -12px; left: 20px;
-    background: var(--bg2); padding: 0 10px;
-    font-family: 'JetBrains Mono', monospace;
-    font-size: 11px; color: var(--muted); letter-spacing: 0.1em;
-  }
-  .almacen-item {
-    padding: 10px 14px; border-radius: 8px;
-    margin-bottom: 8px; font-size: 13px;
-    background: rgba(255,255,255,0.03);
-    border: 1px solid var(--border);
-    display: flex; align-items: center; gap: 10px;
-    cursor: default;
-    transition: background 0.3s, border-color 0.3s;
-  }
-  .almacen-item:hover, .almacen-item.lit {
-    background: rgba(59,130,246,0.1);
-    border-color: rgba(59,130,246,0.4);
-  }
-  /* Shopping */
-  .local-item {
-    border-radius: 10px; padding: 12px 16px;
-    margin-bottom: 10px; font-size: 13px;
-    border: 1px solid var(--border);
-    display: flex; align-items: center; gap: 12px;
-    transition: all 0.4s ease;
-    opacity: 0.4;
-  }
-  .local-item.highlight {
-    opacity: 1;
-    border-color: var(--blue);
-    background: rgba(59,130,246,0.1);
-    box-shadow: 0 0 20px rgba(59,130,246,0.15);
-  }
-  .local-dot { width: 8px; height: 8px; border-radius: 50%; flex-shrink: 0; }
+.tl-wrap { position: relative; padding-left: 0; margin-top: 56px; }
+.tl-track {
+  position: absolute; left: 22px; top: 8px; bottom: 8px;
+  width: 2px; background: var(--border); border-radius: 2px;
+}
+.tl-fill {
+  position: absolute; left: 22px; top: 8px;
+  width: 2px; height: 0; border-radius: 2px;
+  background: linear-gradient(to bottom, var(--sky), var(--green));
+  box-shadow: 0 0 8px var(--sky); transition: height 1.6s cubic-bezier(.4,0,.2,1);
+}
+.tl-fill.active { height: calc(100% - 16px); }
 
-  /* ══════════════════════════════
-     7. REQUEST FLOW
-  ══════════════════════════════ */
-  #request { }
-  .req-flow-title {
-    font-family: 'Space Grotesk', sans-serif;
-    font-size: clamp(28px, 4vw, 48px);
-    font-weight: 700; letter-spacing: -0.02em;
-    margin-bottom: 60px;
-  }
-  .request-demo {
-    background: var(--bg2); border: 1px solid var(--border);
-    border-radius: 20px; overflow: hidden;
-    max-width: 700px; margin: 0 auto;
-  }
-  .req-header {
-    background: rgba(255,255,255,0.03);
-    padding: 14px 24px;
-    border-bottom: 1px solid var(--border);
-    display: flex; align-items: center; gap: 8px;
-  }
-  .req-dot { width: 10px; height: 10px; border-radius: 50%; }
-  .req-dot.r { background: #ff5f57; }
-  .req-dot.y { background: #febc2e; }
-  .req-dot.g { background: #28c840; }
-  .req-code {
-    padding: 24px;
-    font-family: 'JetBrains Mono', monospace;
-    font-size: 14px; color: var(--blue);
-    border-bottom: 1px solid var(--border);
-    letter-spacing: 0.03em;
-  }
-  .req-code .method { color: var(--green); }
-  .req-code .path { color: var(--white); }
-  .req-code .param { color: #f59e0b; }
-  .req-steps {
-    display: grid; grid-template-columns: repeat(4, 1fr);
-    gap: 0;
-  }
-  .req-step {
-    padding: 20px; text-align: center;
-    border-right: 1px solid var(--border);
-    transition: background 0.4s ease;
-  }
-  .req-step:last-child { border-right: none; }
-  .req-step.active {
-    background: rgba(59,130,246,0.08);
-  }
-  .req-step-icon { font-size: 24px; margin-bottom: 8px; }
-  .req-step-name {
-    font-family: 'Space Grotesk', sans-serif;
-    font-size: 12px; font-weight: 500; color: var(--muted);
-  }
-  .req-step.active .req-step-name { color: var(--white); }
-  .req-response {
-    padding: 20px 24px;
-    font-family: 'JetBrains Mono', monospace;
-    font-size: 12px; color: var(--muted);
-    border-top: 1px solid var(--border);
-    display: none;
-  }
-  .req-response.visible { display: block; }
-  .res-status { color: var(--green); font-weight: 500; margin-bottom: 8px; }
+.tl-item {
+  display: flex; gap: 36px; margin-bottom: 52px;
+  opacity: 0; transform: translateX(-20px);
+  transition: opacity .65s ease, transform .65s ease;
+}
+.tl-item.in { opacity: 1; transform: none; }
 
-  /* ══════════════════════════════
-     8. SEGURIDAD
-  ══════════════════════════════ */
-  #seguridad { }
-  .sec-title {
-    font-family: 'Space Grotesk', sans-serif;
-    font-size: clamp(28px, 4vw, 48px);
-    font-weight: 700; letter-spacing: -0.02em;
-    margin-bottom: 56px;
-  }
-  .sec-blocks {
-    display: flex; flex-direction: column; gap: 20px;
-    max-width: 700px;
-  }
-  .sec-block {
-    background: var(--glass); border: 1px solid var(--glass-border);
-    border-radius: 16px; padding: 28px 32px;
-    display: flex; gap: 24px; align-items: flex-start;
-    backdrop-filter: blur(12px);
-    opacity: 0; transform: translateX(-20px);
-    transition: opacity 0.6s ease, transform 0.6s ease;
-    cursor: default;
-  }
-  .sec-block.visible { opacity: 1; transform: translateX(0); }
-  .sec-block:hover { border-color: var(--blue); }
-  .sec-block-icon {
-    font-size: 32px; flex-shrink: 0;
-    width: 56px; height: 56px; display: flex; align-items: center;
-    justify-content: center;
-    background: rgba(59,130,246,0.08);
-    border-radius: 12px; border: 1px solid rgba(59,130,246,0.2);
-  }
-  .sec-block-title {
-    font-family: 'Space Grotesk', sans-serif;
-    font-size: 20px; font-weight: 600; margin-bottom: 8px;
-  }
-  .sec-block-desc { font-size: 14px; color: var(--muted); line-height: 1.7; }
-  .sec-block-detail {
-    font-family: 'JetBrains Mono', monospace;
-    font-size: 11px; color: var(--blue);
-    margin-top: 10px; letter-spacing: 0.05em;
-  }
+.tl-dot-col { width: 44px; flex-shrink: 0; display: flex; justify-content: center; padding-top: 5px; }
+.tl-dot {
+  width: 10px; height: 10px; border-radius: 50%;
+  background: var(--bg); border: 2px solid var(--gray-dim);
+  transition: background .4s, border-color .4s, box-shadow .4s;
+}
+.tl-item.in .tl-dot { background: var(--sky); border-color: var(--sky); box-shadow: 0 0 10px var(--sky); }
 
-  /* ══════════════════════════════
-     9. RESULTADO - ANTES/DESPUÉS
-  ══════════════════════════════ */
-  #resultado { }
-  .res-title {
-    font-family: 'Space Grotesk', sans-serif;
-    font-size: clamp(28px, 4vw, 48px);
-    font-weight: 700; letter-spacing: -0.02em;
-    margin-bottom: 56px;
-  }
-  .antes-despues {
-    display: grid; grid-template-columns: 1fr 80px 1fr;
-    gap: 0; align-items: stretch;
-  }
-  @media (max-width: 700px) {
-    .antes-despues { grid-template-columns: 1fr; }
-    .ad-divider { display: none; }
-  }
-  .ad-col {
-    background: var(--glass); border: 1px solid var(--glass-border);
-    border-radius: 20px; padding: 36px;
-    backdrop-filter: blur(12px);
-  }
-  .ad-col.before { border-color: rgba(239,68,68,0.2); }
-  .ad-col.after { border-color: rgba(34,197,94,0.2); }
-  .ad-label {
-    font-family: 'JetBrains Mono', monospace;
-    font-size: 11px; letter-spacing: 0.2em;
-    text-transform: uppercase; margin-bottom: 24px;
-  }
-  .ad-label.red { color: var(--red); }
-  .ad-label.green { color: var(--green); }
-  .ad-item {
-    display: flex; align-items: flex-start; gap: 12px;
-    margin-bottom: 16px; font-size: 15px;
-  }
-  .ad-icon { font-size: 18px; flex-shrink: 0; margin-top: 1px; }
-  .ad-divider {
-    display: flex; flex-direction: column; align-items: center;
-    justify-content: center; gap: 0;
-  }
-  .divider-line {
-    width: 2px; flex: 1;
-    background: linear-gradient(to bottom, var(--red), var(--green));
-    transition: opacity 0.5s;
-  }
-  .divider-arrow {
-    font-size: 24px;
-    background: linear-gradient(135deg, var(--red), var(--green));
-    -webkit-background-clip: text; -webkit-text-fill-color: transparent;
-  }
+.tl-body {}
+.tl-tag { font-family: 'JetBrains Mono', monospace; font-size: 10px; color: var(--sky); letter-spacing: .18em; text-transform: uppercase; margin-bottom: 6px; }
+.tl-title { font-family: 'Outfit', sans-serif; font-size: 22px; font-weight: 600; margin-bottom: 8px; letter-spacing: -.01em; }
+.tl-desc { font-size: 14px; color: var(--gray); line-height: 1.75; max-width: 500px; }
 
-  /* ══════════════════════════════
-     10. CIERRE
-  ══════════════════════════════ */
-  #cierre {
-    min-height: 100vh;
-    display: flex; flex-direction: column;
-    justify-content: center; align-items: center;
-    text-align: center;
-    background: #000;
-    max-width: none; padding: 80px 40px;
-    position: relative; overflow: hidden;
-  }
-  #cierre::before {
-    content: '';
-    position: absolute; inset: 0;
-    background: radial-gradient(ellipse 60% 40% at 50% 50%, rgba(59,130,246,0.05), transparent 70%);
-  }
-  .cierre-quote {
-    font-family: 'Space Grotesk', sans-serif;
-    font-size: clamp(22px, 4vw, 44px);
-    font-weight: 500; line-height: 1.3;
-    max-width: 700px; margin: 0 auto 48px;
-    opacity: 0; transform: scale(0.97);
-    transition: opacity 1.2s ease, transform 1.2s ease;
-    letter-spacing: -0.02em;
-  }
-  .cierre-quote.visible { opacity: 1; transform: scale(1); }
-  .cierre-quote em { color: var(--blue); font-style: normal; }
-  .cierre-gracias {
-    font-family: 'Space Grotesk', sans-serif;
-    font-size: 18px; font-weight: 400; color: var(--muted);
-    opacity: 0; transition: opacity 0.8s ease 0.8s;
-    letter-spacing: 0.05em;
-  }
-  .cierre-gracias.visible { opacity: 1; }
-  .cierre-name {
-    margin-top: 32px;
-    font-family: 'JetBrains Mono', monospace;
-    font-size: 12px; color: rgba(255,255,255,0.2);
-    letter-spacing: 0.15em;
-    opacity: 0; transition: opacity 0.8s ease 1.2s;
-  }
-  .cierre-name.visible { opacity: 1; }
+/* ═══════════════════════════════════════════
+   § 3  EL DESAFÍO — SPLIT
+═══════════════════════════════════════════ */
+#desafio { max-width: none; padding-left: 0; padding-right: 0; }
+.desafio-intro { max-width: 1160px; margin: 0 auto; padding: 0 48px 64px; }
+
+.split-grid {
+  display: grid; grid-template-columns: 1fr 140px 1fr;
+  min-height: 56vh;
+}
+.split-side {
+  padding: 64px 52px;
+  display: flex; flex-direction: column; justify-content: center;
+}
+.split-left  { background: rgba(56,189,248,.03); border-right: 1px solid var(--border); }
+.split-right { background: rgba(16,185,129,.03); border-left: 1px solid var(--border); }
+.split-icon  { font-size: 60px; margin-bottom: 22px; }
+.split-name  { font-family: 'Outfit', sans-serif; font-size: 26px; font-weight: 700; margin-bottom: 14px; letter-spacing: -.02em; }
+.split-desc  { font-size: 14px; color: var(--gray); line-height: 1.8; }
+
+.split-mid {
+  display: flex; flex-direction: column;
+  align-items: center; justify-content: center; gap: 10px;
+}
+.broken-segs { display: flex; flex-direction: column; align-items: center; gap: 5px; }
+.bs { width: 2px; background: var(--red); border-radius: 2px; animation: segFlicker 1.6s ease-in-out infinite; opacity: 0; transition: opacity .5s; }
+.bs.shown { opacity: 1; }
+.bs:nth-child(1){height:22px;animation-delay:0s}
+.bs:nth-child(2){height:14px;animation-delay:.18s}
+.bs:nth-child(3){height:18px;animation-delay:.36s}
+.bs:nth-child(4){height:11px;animation-delay:.1s}
+.bs:nth-child(5){height:20px;animation-delay:.28s}
+@keyframes segFlicker { 0%,100%{opacity:1} 50%{opacity:.15} }
+
+.mid-badge {
+  font-family: 'JetBrains Mono', monospace; font-size: 9px;
+  color: var(--red); letter-spacing: .15em; text-transform: uppercase;
+  border: 1px solid rgba(244,63,94,.3); border-radius: 6px;
+  padding: 5px 9px; background: rgba(244,63,94,.05);
+  opacity: 0; transition: opacity .5s .4s;
+}
+.mid-badge.shown { opacity: 1; }
+
+.desafio-tags {
+  max-width: 1160px; margin: 0 auto;
+  padding: 36px 48px; display: flex; flex-wrap: wrap; gap: 10px;
+  border-top: 1px solid var(--border);
+}
+.dtag {
+  font-family: 'JetBrains Mono', monospace; font-size: 12px;
+  padding: 7px 16px; border-radius: 100px;
+  border: 1px solid var(--border); color: var(--gray);
+  opacity: 0; transform: translateY(10px);
+  transition: opacity .5s ease, transform .5s ease;
+}
+.dtag.in { opacity: 1; transform: none; }
+.dtag.sky { border-color: rgba(56,189,248,.25); color: var(--sky); }
+
+/* ═══════════════════════════════════════════
+   § 4  REQUISITOS — GLASS CARDS
+═══════════════════════════════════════════ */
+#requisitos {}
+.req-cards { display: grid; grid-template-columns: repeat(auto-fit, minmax(280px, 1fr)); gap: 22px; margin-top: 56px; }
+.req-card {
+  background: var(--glass-bg); border: 1px solid var(--glass-bdr);
+  border-radius: 22px; padding: 48px 36px;
+  backdrop-filter: blur(20px); -webkit-backdrop-filter: blur(20px);
+  position: relative; overflow: hidden;
+  transition: border-color .3s, box-shadow .3s, transform .3s;
+  opacity: 0; transform: translateY(36px);
+  transition: opacity .7s ease, transform .7s ease, border-color .3s, box-shadow .3s;
+}
+.req-card::before {
+  content: ''; position: absolute; top: 0; left: 0; right: 0; height: 1px;
+  background: linear-gradient(90deg, transparent, rgba(255,255,255,.12), transparent);
+}
+.req-card.in { opacity: 1; transform: translateY(0); }
+.req-card:hover { border-color: rgba(56,189,248,.3); box-shadow: 0 0 36px rgba(56,189,248,.08); transform: translateY(-4px) !important; }
+.req-emoji { font-size: 52px; margin-bottom: 22px; display: block; }
+.req-title { font-family: 'Outfit', sans-serif; font-size: 26px; font-weight: 600; margin-bottom: 12px; }
+.req-desc { font-size: 14px; color: var(--gray); line-height: 1.75; }
+.req-glow { position: absolute; width: 150px; height: 150px; border-radius: 50%; filter: blur(70px); bottom: -50px; right: -50px; opacity: .25; pointer-events: none; }
+
+/* ═══════════════════════════════════════════
+   § 5  QUÉ HACE LA API — FLOW ANIMATION
+═══════════════════════════════════════════ */
+#api-flow-sec {}
+.flow-container { max-width: 420px; margin: 56px auto 0; }
+
+.fn {
+  background: var(--glass-bg); border: 1px solid var(--glass-bdr);
+  border-radius: 14px; padding: 18px 32px;
+  text-align: center; position: relative;
+  opacity: 0; transform: translateY(18px);
+  transition: opacity .55s ease, transform .55s ease, border-color .4s, box-shadow .4s;
+}
+.fn.in { opacity: 1; transform: none; }
+.fn.lit { border-color: var(--sky); box-shadow: 0 0 28px rgba(56,189,248,.18); }
+.fn.lit-green { border-color: var(--green); box-shadow: 0 0 28px rgba(16,185,129,.18); }
+.fn-label { font-family: 'Outfit', sans-serif; font-size: 17px; font-weight: 600; }
+.fn-sub { font-family: 'JetBrains Mono', monospace; font-size: 10px; color: var(--gray); margin-top: 4px; letter-spacing: .08em; }
+
+.fa {
+  width: 2px; height: 48px; margin: 0 auto;
+  background: linear-gradient(to bottom, var(--sky-dim), rgba(56,189,248,.1));
+  position: relative; overflow: hidden;
+  opacity: 0; transition: opacity .4s ease;
+}
+.fa.in { opacity: 1; }
+.fa-pkt {
+  position: absolute; left: 50%; transform: translateX(-50%);
+  width: 8px; height: 8px; border-radius: 50%;
+  background: var(--sky); box-shadow: 0 0 8px var(--sky);
+  top: -4px; display: none;
+  animation: pktTravel 1.6s ease-in-out infinite;
+}
+.fa.in .fa-pkt { display: block; }
+@keyframes pktTravel { 0%{top:-4px;opacity:0} 8%{opacity:1} 92%{opacity:1} 100%{top:calc(100% + 4px);opacity:0} }
+.fa::after {
+  content: ''; position: absolute; bottom: 0; left: 50%;
+  transform: translateX(-50%);
+  border-left: 4px solid transparent;
+  border-right: 4px solid transparent;
+  border-top: 7px solid rgba(56,189,248,.4);
+}
+
+.api-center {
+  border-color: var(--sky); background: rgba(56,189,248,.05) !important;
+  box-shadow: 0 0 40px rgba(56,189,248,.12) !important;
+}
+
+.flow-checks { max-width: 600px; margin: 44px auto 0; display: grid; grid-template-columns: 1fr 1fr; gap: 12px; }
+.fcheck {
+  background: var(--glass-bg); border: 1px solid var(--glass-bdr);
+  border-radius: 10px; padding: 12px 18px;
+  display: flex; align-items: center; gap: 10px; font-size: 14px;
+  opacity: 0; transform: translateX(-10px);
+  transition: opacity .5s ease, transform .5s ease;
+}
+.fcheck.in { opacity: 1; transform: none; }
+.fck-icon { color: var(--green); font-size: 15px; }
+
+/* ═══════════════════════════════════════════
+   § 6  ARQUITECTURA TRADICIONAL
+═══════════════════════════════════════════ */
+#arq-trad {}
+.almacen-wrap { max-width: 520px; margin: 56px auto 0; }
+.almacen-box {
+  border: 2px solid var(--border); border-radius: 18px; padding: 32px;
+  position: relative;
+}
+.almacen-title-badge {
+  position: absolute; top: -13px; left: 28px;
+  background: var(--bg-card); padding: 0 14px;
+  font-family: 'JetBrains Mono', monospace; font-size: 11px;
+  color: var(--gray); letter-spacing: .15em; text-transform: uppercase;
+  border: 1px solid var(--border); border-radius: 4px;
+}
+.almacen-item {
+  display: flex; align-items: center; gap: 12px;
+  padding: 12px 16px; border-radius: 10px; margin-bottom: 8px;
+  background: rgba(255,255,255,.02); border: 1px solid var(--border);
+  font-size: 14px; cursor: default;
+  transition: background .35s, border-color .35s, box-shadow .35s;
+}
+.almacen-item:last-child { margin-bottom: 0; }
+.almacen-item:hover,
+.almacen-item.lit {
+  background: rgba(56,189,248,.07); border-color: rgba(56,189,248,.35);
+  box-shadow: 0 0 16px rgba(56,189,248,.08);
+}
+.almacen-footer {
+  margin-top: 18px; text-align: center;
+  font-family: 'JetBrains Mono', monospace; font-size: 11px;
+  color: var(--gray-dim); letter-spacing: .1em;
+}
+
+/* ═══════════════════════════════════════════
+   § 7  MICROSERVICIOS
+═══════════════════════════════════════════ */
+#arq-micro {}
+.locals-wrap { max-width: 560px; margin: 56px auto 0; display: flex; flex-direction: column; gap: 10px; }
+.local-row {
+  border-radius: 12px; padding: 16px 20px;
+  display: flex; align-items: center; gap: 14px; font-size: 14px;
+  border: 1px solid var(--border); background: rgba(255,255,255,.02);
+  opacity: .35;
+  transition: opacity .45s, border-color .45s, background .45s, box-shadow .45s, transform .3s;
+  cursor: default;
+}
+.local-row.active {
+  opacity: 1; background: rgba(255,255,255,.04);
+}
+.local-row.star {
+  opacity: 1; border-color: var(--sky);
+  background: rgba(56,189,248,.07);
+  box-shadow: 0 0 32px rgba(56,189,248,.15);
+  transform: translateX(4px);
+}
+.local-dot { width: 9px; height: 9px; border-radius: 50%; flex-shrink: 0; }
+.local-name { flex: 1; }
+.local-badge {
+  font-family: 'JetBrains Mono', monospace; font-size: 9px;
+  color: var(--sky); border: 1px solid rgba(56,189,248,.3);
+  border-radius: 4px; padding: 2px 7px; letter-spacing: .1em; text-transform: uppercase;
+  opacity: 0; transition: opacity .4s;
+}
+.local-row.star .local-badge { opacity: 1; }
+
+/* ═══════════════════════════════════════════
+   § 8  RECORRIDO DE UNA SOLICITUD
+═══════════════════════════════════════════ */
+#request-sec {}
+.req-terminal {
+  background: #0d1117; border: 1px solid var(--border);
+  border-radius: 18px; overflow: hidden;
+  max-width: 660px; margin: 56px auto 0;
+}
+.terminal-bar {
+  background: rgba(255,255,255,.04); padding: 13px 20px;
+  border-bottom: 1px solid var(--border);
+  display: flex; align-items: center; gap: 7px;
+}
+.tb-dot { width: 11px; height: 11px; border-radius: 50%; }
+.tb-r{background:#ff5f57} .tb-y{background:#febc2e} .tb-g{background:#28c840}
+.terminal-label {
+  margin-left: 8px; font-family: 'JetBrains Mono', monospace;
+  font-size: 11px; color: var(--gray); letter-spacing: .1em;
+}
+.req-code-line {
+  padding: 20px 24px; border-bottom: 1px solid var(--border);
+  font-family: 'JetBrains Mono', monospace; font-size: 15px;
+}
+.rc-method { color: var(--green); }
+.rc-path { color: var(--white); }
+.rc-param { color: #f59e0b; }
+.rc-header { color: var(--gray); font-size: 12px; margin-top: 6px; }
+.rc-token  { color: #c084fc; }
+
+.req-pipeline {
+  display: grid; grid-template-columns: repeat(4,1fr);
+}
+.rp-step {
+  padding: 20px 12px; text-align: center;
+  border-right: 1px solid var(--border);
+  transition: background .4s;
+}
+.rp-step:last-child { border-right: none; }
+.rp-step.active { background: rgba(56,189,248,.06); }
+.rp-icon { font-size: 24px; margin-bottom: 8px; }
+.rp-name {
+  font-family: 'Outfit', sans-serif; font-size: 12px; font-weight: 500;
+  color: var(--gray); transition: color .4s;
+}
+.rp-step.active .rp-name { color: var(--sky); }
+
+.req-response-out {
+  padding: 18px 24px; border-top: 1px solid var(--border);
+  font-family: 'JetBrains Mono', monospace; font-size: 12px;
+  display: none; line-height: 1.8;
+}
+.req-response-out.shown { display: block; }
+.rr-status { color: var(--green); font-weight: 500; margin-bottom: 10px; }
+.rr-key { color: var(--sky); }
+.rr-val { color: #f59e0b; }
+.rr-bool { color: var(--sky); }
+
+/* ═══════════════════════════════════════════
+   § 9  SEGURIDAD
+═══════════════════════════════════════════ */
+#seguridad {}
+.sec-blocks { margin-top: 56px; display: flex; flex-direction: column; gap: 18px; max-width: 680px; }
+.sec-blk {
+  background: var(--glass-bg); border: 1px solid var(--glass-bdr);
+  border-radius: 18px; padding: 30px 32px;
+  display: flex; gap: 22px; align-items: flex-start;
+  backdrop-filter: blur(16px);
+  opacity: 0; transform: translateX(-22px);
+  transition: opacity .65s ease, transform .65s ease;
+}
+.sec-blk.in { opacity: 1; transform: none; }
+.sec-blk:hover { border-color: rgba(56,189,248,.25); }
+.sec-blk-icon {
+  width: 52px; height: 52px; flex-shrink: 0; border-radius: 12px;
+  background: rgba(56,189,248,.07); border: 1px solid rgba(56,189,248,.15);
+  display: flex; align-items: center; justify-content: center; font-size: 26px;
+}
+.sec-blk-t { font-family: 'Outfit', sans-serif; font-size: 20px; font-weight: 600; margin-bottom: 7px; }
+.sec-blk-d { font-size: 14px; color: var(--gray); line-height: 1.75; }
+.sec-blk-tag {
+  font-family: 'JetBrains Mono', monospace; font-size: 10px;
+  color: var(--sky); margin-top: 10px; letter-spacing: .08em;
+}
+
+/* ═══════════════════════════════════════════
+   § 10  DÓNDE ESTUVO LA INNOVACIÓN  ★ KEY
+═══════════════════════════════════════════ */
+#innovacion {}
+.innov-statement {
+  font-family: 'Outfit', sans-serif; font-weight: 200;
+  font-size: clamp(24px, 4vw, 48px); letter-spacing: -.03em;
+  line-height: 1.15; color: var(--gray); margin-bottom: 60px;
+}
+.innov-statement strong {
+  display: block; color: var(--white); font-weight: 600;
+  font-size: clamp(28px, 4.5vw, 52px);
+}
+
+.innov-list { display: flex; flex-direction: column; gap: 0; max-width: 780px; }
+.innov-item {
+  display: flex; align-items: flex-start; gap: 0;
+  padding: 20px 0; border-bottom: 1px solid var(--border);
+  opacity: 0;
+  transition: opacity .7s ease;
+}
+.innov-item:last-child { border-bottom: none; }
+.innov-item.in { opacity: 1; }
+
+/* the line that "builds" left to right */
+.innov-line {
+  width: 0; height: 2px; flex-shrink: 0; margin-top: 12px; margin-right: 20px;
+  background: linear-gradient(90deg, var(--sky), var(--green));
+  border-radius: 2px; box-shadow: 0 0 6px var(--sky);
+  transition: width 1s cubic-bezier(.4,0,.2,1);
+}
+.innov-item.in .innov-line { width: 40px; }
+
+.innov-text { font-size: clamp(15px, 1.8vw, 18px); line-height: 1.65; color: var(--white); font-weight: 300; }
+.innov-text em { font-style: normal; color: var(--sky); font-weight: 500; }
+
+/* ═══════════════════════════════════════════
+   § 11  IMPACTO — ANTES / DESPUÉS
+═══════════════════════════════════════════ */
+#impacto {}
+.ad-grid {
+  margin-top: 56px;
+  display: grid; grid-template-columns: 1fr 64px 1fr; gap: 0;
+  align-items: stretch;
+}
+.ad-col {
+  background: var(--glass-bg); border: 1px solid var(--glass-bdr);
+  border-radius: 20px; padding: 36px 32px; backdrop-filter: blur(14px);
+}
+.ad-col.before { border-color: rgba(244,63,94,.2); }
+.ad-col.after  { border-color: rgba(16,185,129,.2); }
+.ad-lbl {
+  font-family: 'JetBrains Mono', monospace; font-size: 11px;
+  letter-spacing: .2em; text-transform: uppercase; margin-bottom: 24px;
+}
+.ad-lbl.red   { color: var(--red); }
+.ad-lbl.green { color: var(--green); }
+.ad-row { display: flex; align-items: flex-start; gap: 12px; margin-bottom: 16px; font-size: 15px; line-height: 1.5; }
+.ad-ico { font-size: 17px; flex-shrink: 0; padding-top: 1px; }
+
+.ad-divider {
+  display: flex; flex-direction: column; align-items: center; justify-content: center; gap: 0;
+}
+.ad-dline { width: 2px; flex: 1; }
+.ad-dline.top    { background: linear-gradient(to bottom, var(--red), var(--indigo)); }
+.ad-dline.bottom { background: linear-gradient(to bottom, var(--indigo), var(--green)); }
+.ad-darrow { font-size: 22px; line-height: 1; }
+
+/* ═══════════════════════════════════════════
+   § 12  CIERRE
+═══════════════════════════════════════════ */
+#cierre {
+  min-height: 100vh; max-width: none;
+  background: #000; display: flex; flex-direction: column;
+  justify-content: center; align-items: center; text-align: center;
+  padding: 80px 48px; position: relative; overflow: hidden;
+}
+#cierre::before {
+  content: ''; position: absolute; inset: 0; pointer-events: none;
+  background: radial-gradient(ellipse 55% 45% at 50% 50%, rgba(56,189,248,.04), transparent 70%);
+}
+.cierre-quote {
+  font-family: 'Outfit', sans-serif; font-weight: 300;
+  font-size: clamp(20px, 3.5vw, 42px); line-height: 1.3;
+  max-width: 680px; letter-spacing: -.02em;
+  opacity: 0; transform: scale(.97);
+  transition: opacity 1.4s ease, transform 1.4s ease;
+}
+.cierre-quote.in { opacity: 1; transform: none; }
+.cierre-quote em { font-style: normal; color: var(--sky); }
+
+.cierre-gracias {
+  font-family: 'Outfit', sans-serif; font-size: clamp(18px, 2.5vw, 28px);
+  font-weight: 400; color: var(--gray); margin-top: 52px;
+  opacity: 0; transition: opacity .9s ease .9s;
+}
+.cierre-gracias.in { opacity: 1; }
+
+.cierre-firma {
+  margin-top: 32px; opacity: 0; transition: opacity .9s ease 1.4s;
+}
+.cierre-firma.in { opacity: 1; }
+.cierre-firma-name {
+  font-family: 'Outfit', sans-serif; font-size: 17px; font-weight: 500; color: var(--white);
+}
+.cierre-firma-sub {
+  font-family: 'JetBrains Mono', monospace; font-size: 11px;
+  color: var(--gray-dim); letter-spacing: .15em; text-transform: uppercase;
+  margin-top: 6px;
+}
+
+/* ═══════════════════════════════════════════
+   RESPONSIVE
+═══════════════════════════════════════════ */
+@media (max-width: 860px) {
+  .sec { padding: 100px 24px; }
+  #nav { padding: 18px 24px; }
+  .split-grid { grid-template-columns: 1fr; }
+  .split-mid { display: none; }
+  .ad-grid { grid-template-columns: 1fr; }
+  .ad-divider { display: none; }
+  .flow-checks { grid-template-columns: 1fr; }
+  .req-pipeline { grid-template-columns: 1fr 1fr; }
+  .rp-step:nth-child(2) { border-right: none; }
+  .rp-step:nth-child(3) { border-top: 1px solid var(--border); }
+  .rp-step:nth-child(4) { border-right: none; border-top: 1px solid var(--border); }
+  .req-cards { grid-template-columns: 1fr; }
+}
+@media (max-width: 520px) {
+  .hero-h1 { font-size: 38px; }
+  #hero-nodes { display: none; }
+}
+
+/* ─ reduced motion ─ */
+@media (prefers-reduced-motion: reduce) {
+  *, *::before, *::after { animation-duration: .01ms !important; transition-duration: .01ms !important; }
+}
 </style>
 </head>
 <body>
 
-<div id="progress-bar"></div>
+<div id="pbar"></div>
 
-<nav>
-  <span class="nav-logo">DGISE · Santiago del Estero</span>
-  <div class="nav-dot"></div>
+<nav id="nav">
+  <span class="nav-id">DGISE · Santiago del Estero</span>
+  <div class="nav-pulse"></div>
 </nav>
 
-<!-- ══════════════════════════════
-     1. HERO
-══════════════════════════════ -->
-<div id="hero">
-  <div id="hero-bg"></div>
-  <div class="hero-grid"></div>
+<!-- ══════════════════════════════════════
+     § 1  HERO
+══════════════════════════════════════ -->
+<section id="hero">
+  <div id="hero-grid"></div>
+  <div class="orb orb-1"></div>
+  <div class="orb orb-2"></div>
 
-  <div style="position:relative; z-index:1; display:flex; flex-direction:column; align-items:center;">
-    <div class="hero-tag">Presentación técnica — 2025</div>
-    <p class="hero-name">Rocío Marcos</p>
-    <h1 class="hero-title">API <span>IOSEP</span></h1>
-    <p class="hero-sub">Una arquitectura basada en microservicios para conectar organismos del Estado de forma segura, rápida y escalable.</p>
-    <div class="hero-scroll">
+  <div style="position:relative;z-index:1;display:flex;flex-direction:column;align-items:center;">
+    <div id="hero-nodes">
+      <div class="h-node fade-up" style="transition-delay:.2s">
+        <span>🏥</span>
+        <span class="h-node-label">IOSEP</span>
+      </div>
+      <div id="hero-line">
+        <div id="hero-packet"></div>
+        <div id="hero-blocker">✕</div>
+      </div>
+      <div class="h-node fade-up" style="transition-delay:.4s">
+        <span>🏛️</span>
+        <span class="h-node-label">DGISE</span>
+      </div>
+    </div>
+
+    <span class="hero-tag fade-up" style="transition-delay:.1s">Presentación técnica — 2025</span>
+    <h1 class="hero-h1 fade-up" style="transition-delay:.3s">
+      Integración entre<br><em>organismos públicos</em>
+    </h1>
+    <p class="hero-sub fade-up" style="transition-delay:.5s">
+      Una arquitectura basada en microservicios para compartir información de forma segura, eficiente y escalable.
+    </p>
+    <div class="hero-scroll fade-up" style="transition-delay:.7s">
       <span>scroll</span>
-      <div class="scroll-line"></div>
+      <div class="hero-scroll-line"></div>
     </div>
   </div>
-</div>
+</section>
 
-<!-- ══════════════════════════════
-     2. QUIÉN SOY
-══════════════════════════════ -->
-<section id="quien">
-  <div class="eyebrow">quién soy</div>
-  <h2 class="timeline-title anim">Mi camino hasta acá</h2>
-  <div class="timeline">
-    <div class="timeline-line"></div>
-    <div class="timeline-line-fill" id="timeline-fill"></div>
+<!-- ══════════════════════════════════════
+     § 2  QUIÉN SOY
+══════════════════════════════════════ -->
+<section class="sec" id="quien">
+  <div class="eyebrow fade-up">quién soy</div>
+  <h2 class="sh sh-xl fade-up d1">Mi camino<br><span class="sh-dim">hasta acá.</span></h2>
 
-    <div class="timeline-item" style="transition-delay:0.1s">
-      <div class="timeline-dot-wrap">
-        <div class="timeline-dot"></div>
-      </div>
-      <div>
-        <div class="timeline-year">FORMACIÓN</div>
-        <div class="timeline-label">ITSE</div>
-        <div class="timeline-desc">Instituto Tecnológico de Santiago del Estero. Acá aprendí que la tecnología tiene propósito cuando se pone al servicio de las personas.</div>
+  <div class="tl-wrap" id="tl-wrap">
+    <div class="tl-track"></div>
+    <div class="tl-fill" id="tl-fill"></div>
+
+    <div class="tl-item d1" style="transition-delay:.05s">
+      <div class="tl-dot-col"><div class="tl-dot"></div></div>
+      <div class="tl-body">
+        <div class="tl-tag">formación</div>
+        <div class="tl-title">ITSE</div>
+        <div class="tl-desc">Instituto Tecnológico de Santiago del Estero. Acá aprendí que tecnología sin propósito no tiene sentido — todo lo que construimos tiene que servir a alguien.</div>
       </div>
     </div>
 
-    <div class="timeline-item" style="transition-delay:0.25s">
-      <div class="timeline-dot-wrap">
-        <div class="timeline-dot"></div>
-      </div>
-      <div>
-        <div class="timeline-year">CARRERA</div>
-        <div class="timeline-label">Desarrolladora</div>
-        <div class="timeline-desc">Empecé a construir sistemas reales. Cada proyecto fue una oportunidad de crecer y de entender mejor los problemas que la tecnología puede resolver.</div>
+    <div class="tl-item" style="transition-delay:.2s">
+      <div class="tl-dot-col"><div class="tl-dot"></div></div>
+      <div class="tl-body">
+        <div class="tl-tag">carrera</div>
+        <div class="tl-title">Desarrolladora</div>
+        <div class="tl-desc">Empecé a construir sistemas reales. Cada proyecto fue una oportunidad de entender mejor qué problemas puede resolver la tecnología y cuáles no.</div>
       </div>
     </div>
 
-    <div class="timeline-item" style="transition-delay:0.4s">
-      <div class="timeline-dot-wrap">
-        <div class="timeline-dot"></div>
-      </div>
-      <div>
-        <div class="timeline-year">HOY</div>
-        <div class="timeline-label">Dirección de Informática</div>
-        <div class="timeline-desc">Trabajo en la Dirección de Informática de la provincia, gestionando sistemas críticos para toda la provincia y sus organismos. Información para miles de personas, todos los días.</div>
+    <div class="tl-item" style="transition-delay:.35s">
+      <div class="tl-dot-col"><div class="tl-dot"></div></div>
+      <div class="tl-body">
+        <div class="tl-tag">hoy</div>
+        <div class="tl-title">Dirección de Informática</div>
+        <div class="tl-desc">Trabajo gestionando sistemas críticos para toda la provincia — información que afecta a miles de personas todos los días, en ámbitos muy distintos.</div>
       </div>
     </div>
 
-    <div class="timeline-item" style="transition-delay:0.55s">
-      <div class="timeline-dot-wrap">
-        <div class="timeline-dot"></div>
-      </div>
-      <div>
-        <div class="timeline-year">PROYECTO</div>
-        <div class="timeline-label">API IOSEP ↗</div>
-        <div class="timeline-desc">Un canal de comunicación seguro entre dos organismos del Estado para agilizar prestaciones de salud. De eso trata esta presentación.</div>
+    <div class="tl-item" style="transition-delay:.5s">
+      <div class="tl-dot-col"><div class="tl-dot"></div></div>
+      <div class="tl-body">
+        <div class="tl-tag">proyecto</div>
+        <div class="tl-title">Integración IOSEP ↗</div>
+        <div class="tl-desc">Un canal seguro para que dos organismos que antes no estaban integrados de esta manera puedan compartir información de forma controlada y eficiente.</div>
       </div>
     </div>
   </div>
 </section>
 
-<!-- ══════════════════════════════
-     3. EL PROBLEMA
-══════════════════════════════ -->
-<section id="problema" class="full-bleed">
-  <div class="problema-intro">
-    <div class="eyebrow anim">el problema</div>
-    <h2 class="anim delay-1">Dos organismos.<br>Sin comunicación.</h2>
+<!-- ══════════════════════════════════════
+     § 3  EL DESAFÍO
+══════════════════════════════════════ -->
+<section class="sec-full" id="desafio">
+  <div class="desafio-intro">
+    <div class="eyebrow fade-up">el desafío</div>
+    <h2 class="sh sh-xl fade-up d1">
+      Dos organismos.<br>
+      <span class="sh-dim">Una oportunidad de conectarlos.</span>
+    </h2>
   </div>
 
-  <div class="problema-split">
-    <div class="split-entity split-left">
-      <div class="split-icon anim-left">🏥</div>
-      <div class="split-name anim-left delay-1">IOSEP</div>
-      <div class="split-desc anim-left delay-2">
-        Instituto de Obra Social de la Provincia. Un organismo <em>descentralizado</em> que brinda prestaciones de salud a miles de empleados públicos y sus familias.
-        <br><br>
-        Necesita información del Estado para funcionar: datos de afiliados, habilitaciones, validaciones.
+  <div class="split-grid">
+    <div class="split-side split-left">
+      <div class="split-icon fade-left">🏥</div>
+      <div class="split-name fade-left d1">IOSEP</div>
+      <div class="split-desc fade-left d2">
+        Instituto de Obra Social de la Provincia. Un organismo descentralizado que brinda prestaciones de salud a empleados públicos y sus familias.<br><br>
+        Necesita información del Estado para operar: validaciones, habilitaciones, datos de afiliados. Información que impacta directamente en la calidad de vida de las personas.
       </div>
     </div>
 
-    <div class="split-middle">
-      <div class="broken-line" id="broken-line">
-        <div class="bl-seg"></div>
-        <div class="bl-seg"></div>
-        <div class="bl-seg"></div>
-        <div class="bl-seg"></div>
-        <div class="bl-seg"></div>
+    <div class="split-mid">
+      <div class="broken-segs" id="bs-wrap">
+        <div class="bs"></div><div class="bs"></div>
+        <div class="bs"></div><div class="bs"></div><div class="bs"></div>
       </div>
-      <div class="no-comm" id="no-comm" style="opacity:0; transition: opacity 0.5s 0.5s">
-        sin conexión
-      </div>
+      <div class="mid-badge" id="mid-badge">sin integración</div>
     </div>
 
-    <div class="split-entity split-right">
-      <div class="split-icon anim-right">🏛️</div>
-      <div class="split-name anim-right delay-1">Dirección de Informática</div>
-      <div class="split-desc anim-right delay-2">
-        Gestiona un <em>volumen enorme</em> de información provincial. Datos sensibles, sistemas críticos, infraestructura de múltiples organismos.
-        <br><br>
-        Tiene la información que IOSEP necesita, pero no había un canal seguro para compartirla.
+    <div class="split-side split-right">
+      <div class="split-icon fade-right">🏛️</div>
+      <div class="split-name fade-right d1">Dirección de Informática</div>
+      <div class="split-desc fade-right d2">
+        Gestiona un volumen enorme de información provincial. Datos sensibles, sistemas de múltiples organismos, infraestructura crítica para toda la provincia.<br><br>
+        Tenía la información que el IOSEP necesitaba — pero no existía un canal formal, seguro y escalable para compartirla.
       </div>
     </div>
   </div>
 
-  <div class="problema-tags section-inner" style="border-top: 1px solid var(--border); padding-top: 40px;">
-    <div class="ptag red">Procesos manuales</div>
-    <div class="ptag red">Demoras innecesarias</div>
-    <div class="ptag red">Datos sensibles sin protocolo</div>
-    <div class="ptag red">Sin trazabilidad</div>
-    <div class="ptag red">Escalabilidad imposible</div>
+  <div class="desafio-tags">
+    <div class="dtag sky">Grandes volúmenes de información</div>
+    <div class="dtag sky">Prestaciones de salud</div>
+    <div class="dtag sky">Datos sensibles</div>
+    <div class="dtag sky">Oportunidad de modernizar</div>
+    <div class="dtag">Comunicación sin canal formal</div>
+    <div class="dtag">Proceso que podía mejorarse</div>
   </div>
 </section>
 
-<!-- ══════════════════════════════
-     4. LO QUE NECESITÁBAMOS
-══════════════════════════════ -->
-<section id="requisitos">
-  <div class="eyebrow anim">requisitos</div>
-  <h2 class="req-title anim delay-1">Lo que la solución<br>tenía que ser.</h2>
+<!-- ══════════════════════════════════════
+     § 4  REQUISITOS
+══════════════════════════════════════ -->
+<section class="sec" id="requisitos">
+  <div class="eyebrow fade-up">lo que necesitábamos</div>
+  <h2 class="sh sh-xl fade-up d1">Tres condiciones<br><span class="sh-dim">no negociables.</span></h2>
   <div class="req-cards">
-    <div class="req-card delay-1">
-      <div class="req-icon">⚡</div>
-      <div class="req-name">Rápida</div>
-      <div class="req-desc">Las prestaciones de salud no pueden esperar. Cada consulta a la API tiene que responder en milisegundos para no interrumpir la atención al afiliado.</div>
-      <div class="req-glow" style="background: #3b82f6;"></div>
+    <div class="req-card d1">
+      <span class="req-emoji">⚡</span>
+      <div class="req-title">Rápida</div>
+      <div class="req-desc">Las prestaciones de salud no pueden esperar. Cada consulta tiene que responder en milisegundos para no interrumpir la atención al afiliado.</div>
+      <div class="req-glow" style="background:var(--sky)"></div>
     </div>
-    <div class="req-card delay-2">
-      <div class="req-icon">🔒</div>
-      <div class="req-name">Segura</div>
-      <div class="req-desc">Manejamos datos sensibles de personas. Cada request debe autenticarse, autorizarse y validarse antes de devolver cualquier información.</div>
-      <div class="req-glow" style="background: #22c55e;"></div>
+    <div class="req-card d2">
+      <span class="req-emoji">🔒</span>
+      <div class="req-title">Segura</div>
+      <div class="req-desc">Son datos sensibles de personas reales. Cada solicitud debe validarse, autenticarse y autorizarse antes de devolver cualquier información.</div>
+      <div class="req-glow" style="background:var(--green)"></div>
     </div>
-    <div class="req-card delay-3">
-      <div class="req-icon">📈</div>
-      <div class="req-name">Escalable</div>
-      <div class="req-desc">La arquitectura tiene que poder crecer. Si mañana otro organismo necesita integrarse, el sistema debe estar listo sin reescribirse desde cero.</div>
-      <div class="req-glow" style="background: #8b5cf6;"></div>
-    </div>
-  </div>
-</section>
-
-<!-- ══════════════════════════════
-     5. QUÉ ES UNA API
-══════════════════════════════ -->
-<section id="api">
-  <div class="eyebrow anim">concepto</div>
-  <h2 class="api-title anim delay-1">¿Qué hace nuestra API?</h2>
-
-  <div class="api-flow" id="api-flow">
-    <div class="flow-node anim delay-1" id="fn-iosep">
-      <div class="flow-node-label">🏥 IOSEP</div>
-      <div class="flow-node-sub">hace una solicitud</div>
-    </div>
-    <div class="flow-arrow anim delay-1">
-      <div class="flow-packet"></div>
-    </div>
-    <div class="flow-node highlight anim delay-2" id="fn-api">
-      <div class="flow-node-label">API</div>
-      <div class="flow-node-sub">punto de contacto</div>
-    </div>
-    <div class="flow-arrow anim delay-2">
-      <div class="flow-packet"></div>
-    </div>
-    <div class="flow-node anim delay-3" id="fn-data">
-      <div class="flow-node-label">🗄️ Datos</div>
-      <div class="flow-node-sub">sistemas internos</div>
-    </div>
-    <div class="flow-arrow anim delay-3" style="background: linear-gradient(to bottom, #22c55e, transparent);">
-      <div class="flow-packet" style="background: var(--green); box-shadow: 0 0 8px var(--green);"></div>
-    </div>
-    <div class="flow-node anim delay-4" id="fn-resp">
-      <div class="flow-node-label">✅ Respuesta</div>
-      <div class="flow-node-sub">sólo lo autorizado</div>
-    </div>
-  </div>
-
-  <div class="api-checks">
-    <div class="api-check delay-1"><span class="api-check-icon">✔</span> Validación del request</div>
-    <div class="api-check delay-2"><span class="api-check-icon">✔</span> Verificación de permisos</div>
-    <div class="api-check delay-3"><span class="api-check-icon">✔</span> Consulta segura</div>
-    <div class="api-check delay-4"><span class="api-check-icon">✔</span> Respuesta filtrada</div>
-  </div>
-</section>
-
-<!-- ══════════════════════════════
-     6. ARQUITECTURA
-══════════════════════════════ -->
-<section id="arquitectura">
-  <div class="eyebrow anim">arquitectura</div>
-  <h2 class="arq-title anim delay-1">Del almacén al shopping.</h2>
-  <p class="arq-subtitle anim delay-2">Cómo pasamos de un sistema monolítico a microservicios.</p>
-
-  <div class="arq-compare anim delay-2">
-    <div class="arq-panel">
-      <div class="arq-panel-title">🏪 Arquitectura tradicional</div>
-      <div class="almacen-box">
-        <span class="almacen-label">ALMACÉN</span>
-        <div class="almacen-item" data-hover>📦 Usuarios</div>
-        <div class="almacen-item" data-hover>💰 Ventas</div>
-        <div class="almacen-item" data-hover>🗃️ Stock</div>
-        <div class="almacen-item" data-hover>🖨️ Caja</div>
-        <div style="margin-top:16px; font-size:12px; color: var(--muted); font-family: 'JetBrains Mono', monospace; text-align:center;">
-          un dueño · todo junto · todo conectado
-        </div>
-      </div>
-      <p style="font-size:13px; color:var(--muted); margin-top:16px; line-height:1.7;">
-        Todo el sistema es una sola unidad. Si algo falla, puede afectar a todo lo demás. Difícil de escalar y de mantener.
-      </p>
-    </div>
-
-    <div class="arq-panel">
-      <div class="arq-panel-title">🛍️ Microservicios</div>
-      <div style="display:flex; flex-direction:column; gap:8px;" id="locales">
-        <div class="local-item" style="border-left:3px solid #a78bfa;" data-color="#a78bfa">
-          <div class="local-dot" style="background:#a78bfa"></div> Farmacia
-        </div>
-        <div class="local-item" style="border-left:3px solid #f59e0b;" data-color="#f59e0b">
-          <div class="local-dot" style="background:#f59e0b"></div> Ropa
-        </div>
-        <div class="local-item" style="border-left:3px solid #ec4899;" data-color="#ec4899">
-          <div class="local-dot" style="background:#ec4899"></div> Comida
-        </div>
-        <div class="local-item" style="border-left:3px solid #14b8a6;" data-color="#14b8a6">
-          <div class="local-dot" style="background:#14b8a6"></div> Electrónica
-        </div>
-        <div class="local-item highlight" id="local-api" style="border-left:3px solid var(--blue); border-color: var(--blue);">
-          <div class="local-dot" style="background:var(--blue)"></div>
-          <strong>API IOSEP</strong> ← nuestra solución
-        </div>
-      </div>
-      <p style="font-size:13px; color:var(--muted); margin-top:16px; line-height:1.7;">
-        Cada servicio es independiente. Puede desarrollarse, desplegarse y escalarse por separado. Si uno falla, los demás siguen funcionando.
-      </p>
+    <div class="req-card d3">
+      <span class="req-emoji">📈</span>
+      <div class="req-title">Escalable</div>
+      <div class="req-desc">Si mañana otro organismo necesita integrarse, la arquitectura tiene que estar lista. Sin reescribir todo desde cero.</div>
+      <div class="req-glow" style="background:var(--indigo)"></div>
     </div>
   </div>
 </section>
 
-<!-- ══════════════════════════════
-     7. REQUEST EN VIVO
-══════════════════════════════ -->
-<section id="request">
-  <div class="eyebrow anim">en acción</div>
-  <h2 class="req-flow-title anim delay-1">Un request, paso a paso.</h2>
-  <div class="request-demo anim delay-2" id="req-demo">
-    <div class="req-header">
-      <div class="req-dot r"></div>
-      <div class="req-dot y"></div>
-      <div class="req-dot g"></div>
-      <span style="font-family:'JetBrains Mono',monospace; font-size:11px; color:var(--muted); margin-left:8px;">IOSEP → API DGISE</span>
+<!-- ══════════════════════════════════════
+     § 5  QUÉ HACE LA API
+══════════════════════════════════════ -->
+<section class="sec" id="api-flow-sec">
+  <div class="eyebrow fade-up">la herramienta</div>
+  <h2 class="sh sh-xl fade-up d1">La API como<br><span class="sh-dim">intermediario seguro.</span></h2>
+
+  <div class="flow-container">
+    <div class="fn d1" id="fn0"><div class="fn-label">🏥 IOSEP</div><div class="fn-sub">hace una solicitud</div></div>
+    <div class="fa d2"><div class="fa-pkt"></div></div>
+    <div class="fn d2 api-center" id="fn1"><div class="fn-label">API</div><div class="fn-sub">punto de control</div></div>
+    <div class="fa d3"><div class="fa-pkt"></div></div>
+    <div class="fn d3" id="fn2"><div class="fn-label">🗄️ Datos</div><div class="fn-sub">sistemas internos</div></div>
+    <div class="fa d4" style="background:linear-gradient(to bottom,var(--green),rgba(16,185,129,.1))">
+      <div class="fa-pkt" style="background:var(--green);box-shadow:0 0 8px var(--green)"></div>
     </div>
-    <div class="req-code">
-      <span class="method">GET</span> <span class="path">/afiliado/</span><span class="param">45872</span>
-      <br>
-      <span style="color:var(--muted)">Authorization:</span> Bearer <span style="color:#f59e0b">ey···</span>
+    <div class="fn d4" id="fn3"><div class="fn-label">✅ Respuesta</div><div class="fn-sub">solo lo autorizado</div></div>
+  </div>
+
+  <div class="flow-checks">
+    <div class="fcheck d1"><span class="fck-icon">✔</span> Validación del request</div>
+    <div class="fcheck d2"><span class="fck-icon">✔</span> Verificación de permisos</div>
+    <div class="fcheck d3"><span class="fck-icon">✔</span> Consulta controlada</div>
+    <div class="fcheck d4"><span class="fck-icon">✔</span> Respuesta autorizada</div>
+  </div>
+</section>
+
+<!-- ══════════════════════════════════════
+     § 6  ARQUITECTURA TRADICIONAL
+══════════════════════════════════════ -->
+<section class="sec" id="arq-trad">
+  <div class="eyebrow fade-up">contexto técnico</div>
+  <h2 class="sh sh-xl fade-up d1">Arquitectura<br><span class="sh-dim">tradicional.</span></h2>
+  <p class="fade-up d2" style="color:var(--gray);font-size:15px;margin-top:12px;max-width:580px;line-height:1.75;">Un almacén donde todo convive bajo el mismo techo: usuarios, ventas, stock y caja. Si algo cambia, puede afectar todo lo demás.</p>
+
+  <div class="almacen-wrap fade-up d3">
+    <div class="almacen-box">
+      <div class="almacen-title-badge">almacén</div>
+      <div class="almacen-item" data-lit>👤 Usuarios</div>
+      <div class="almacen-item" data-lit>💰 Ventas</div>
+      <div class="almacen-item" data-lit>📦 Stock</div>
+      <div class="almacen-item" data-lit>🖨️ Caja</div>
+      <div class="almacen-footer">un dueño · todo junto · todo conectado</div>
     </div>
-    <div class="req-steps">
-      <div class="req-step" id="step-1">
-        <div class="req-step-icon">🔑</div>
-        <div class="req-step-name">Autenticación</div>
-      </div>
-      <div class="req-step" id="step-2">
-        <div class="req-step-icon">🛡️</div>
-        <div class="req-step-name">Autorización</div>
-      </div>
-      <div class="req-step" id="step-3">
-        <div class="req-step-icon">🔍</div>
-        <div class="req-step-name">Consulta</div>
-      </div>
-      <div class="req-step" id="step-4">
-        <div class="req-step-icon">📦</div>
-        <div class="req-step-name">Respuesta</div>
-      </div>
+  </div>
+</section>
+
+<!-- ══════════════════════════════════════
+     § 7  MICROSERVICIOS
+══════════════════════════════════════ -->
+<section class="sec" id="arq-micro">
+  <div class="eyebrow fade-up">el cambio</div>
+  <h2 class="sh sh-xl fade-up d1">Arquitectura de<br><span class="sh-dim">microservicios.</span></h2>
+  <p class="fade-up d2" style="color:var(--gray);font-size:15px;margin-top:12px;max-width:600px;line-height:1.75;">Como un shopping: cada local tiene su propio dueño, su propio stock y su propia especialidad. Si un local cierra, el resto sigue funcionando.</p>
+
+  <div class="locals-wrap fade-up d3" id="locals-wrap">
+    <div class="local-row active" style="border-left:3px solid #a78bfa">
+      <div class="local-dot" style="background:#a78bfa"></div>
+      <span class="local-name">Farmacia</span>
     </div>
-    <div class="req-response" id="req-response">
-      <div class="res-status">HTTP/1.1 200 OK</div>
-      <span style="color:var(--muted)">Content-Type:</span> application/json<br><br>
+    <div class="local-row active" style="border-left:3px solid #f59e0b">
+      <div class="local-dot" style="background:#f59e0b"></div>
+      <span class="local-name">Ropa</span>
+    </div>
+    <div class="local-row active" style="border-left:3px solid #ec4899">
+      <div class="local-dot" style="background:#ec4899"></div>
+      <span class="local-name">Comida</span>
+    </div>
+    <div class="local-row active" style="border-left:3px solid #14b8a6">
+      <div class="local-dot" style="background:#14b8a6"></div>
+      <span class="local-name">Electrónica</span>
+    </div>
+    <div class="local-row" id="local-api" style="border-left:3px solid var(--sky); border-color: var(--sky);">
+      <div class="local-dot" style="background:var(--sky)"></div>
+      <span class="local-name"><strong>API IOSEP</strong> — nuestra solución</span>
+      <span class="local-badge">activo</span>
+    </div>
+  </div>
+</section>
+
+<!-- ══════════════════════════════════════
+     § 8  RECORRIDO DE UNA SOLICITUD
+══════════════════════════════════════ -->
+<section class="sec" id="request-sec">
+  <div class="eyebrow fade-up">en acción</div>
+  <h2 class="sh sh-xl fade-up d1">Una solicitud,<br><span class="sh-dim">paso a paso.</span></h2>
+
+  <div class="req-terminal fade-up d2" id="req-terminal">
+    <div class="terminal-bar">
+      <div class="tb-dot tb-r"></div><div class="tb-dot tb-y"></div><div class="tb-dot tb-g"></div>
+      <span class="terminal-label">IOSEP → API DGISE</span>
+    </div>
+    <div class="req-code-line">
+      <div><span class="rc-method">GET</span> <span class="rc-path">/afiliado/</span><span class="rc-param">45872</span></div>
+      <div class="rc-header">Authorization: Bearer <span class="rc-token">eyJhbGciOi···</span></div>
+    </div>
+    <div class="req-pipeline">
+      <div class="rp-step" id="rp1"><div class="rp-icon">🔑</div><div class="rp-name">Autenticación</div></div>
+      <div class="rp-step" id="rp2"><div class="rp-icon">🛡️</div><div class="rp-name">Autorización</div></div>
+      <div class="rp-step" id="rp3"><div class="rp-icon">🔍</div><div class="rp-name">Consulta</div></div>
+      <div class="rp-step" id="rp4"><div class="rp-icon">📦</div><div class="rp-name">Respuesta</div></div>
+    </div>
+    <div class="req-response-out" id="req-out">
+      <div class="rr-status">HTTP/1.1 200 OK</div>
       {<br>
-      &nbsp;&nbsp;<span style="color:#22c55e">"afiliado"</span>: <span style="color:#f59e0b">"45872"</span>,<br>
-      &nbsp;&nbsp;<span style="color:#22c55e">"nombre"</span>: <span style="color:#f59e0b">"[datos autorizados]"</span>,<br>
-      &nbsp;&nbsp;<span style="color:#22c55e">"activo"</span>: <span style="color:#3b82f6">true</span><br>
+      &nbsp;&nbsp;<span class="rr-key">"afiliado"</span>: <span class="rr-val">"45872"</span>,<br>
+      &nbsp;&nbsp;<span class="rr-key">"nombre"</span>: <span class="rr-val">"[datos autorizados]"</span>,<br>
+      &nbsp;&nbsp;<span class="rr-key">"activo"</span>: <span class="rr-bool">true</span>,<br>
+      &nbsp;&nbsp;<span class="rr-key">"prestaciones"</span>: <span class="rr-val">"[según permisos]"</span><br>
       }
     </div>
   </div>
 </section>
 
-<!-- ══════════════════════════════
-     8. SEGURIDAD
-══════════════════════════════ -->
-<section id="seguridad">
-  <div class="eyebrow anim">seguridad</div>
-  <h2 class="sec-title anim delay-1">Tres capas de protección.</h2>
+<!-- ══════════════════════════════════════
+     § 9  SEGURIDAD
+══════════════════════════════════════ -->
+<section class="sec" id="seguridad">
+  <div class="eyebrow fade-up">protección</div>
+  <h2 class="sh sh-xl fade-up d1">Tres capas<br><span class="sh-dim">de acceso controlado.</span></h2>
+  <p class="fade-up d2" style="color:var(--gray);font-size:15px;margin-top:12px;max-width:560px;line-height:1.75;">No como una clase de seguridad informática — sino como tres puertas que garantizan que solo llegue la información correcta, a quien corresponde.</p>
+
   <div class="sec-blocks">
-    <div class="sec-block delay-1">
-      <div class="sec-block-icon">🔑</div>
+    <div class="sec-blk d1">
+      <div class="sec-blk-icon">🔑</div>
       <div>
-        <div class="sec-block-title">Autenticación</div>
-        <div class="sec-block-desc">Cada sistema que quiere conectarse debe identificarse con credenciales válidas. Si no está registrado, no entra. Simple.</div>
-        <div class="sec-block-detail">→ tokens JWT · credenciales por organismo</div>
+        <div class="sec-blk-t">Autenticación</div>
+        <div class="sec-blk-d">Cada sistema que quiere conectarse debe identificarse con credenciales válidas. Si no está registrado, no entra.</div>
+        <div class="sec-blk-tag">→ tokens JWT · credenciales por organismo</div>
       </div>
     </div>
-    <div class="sec-block delay-2">
-      <div class="sec-block-icon">🛡️</div>
+    <div class="sec-blk d2">
+      <div class="sec-blk-icon">🛡️</div>
       <div>
-        <div class="sec-block-title">Autorización</div>
-        <div class="sec-block-desc">Que alguien sea quien dice ser no significa que pueda ver todo. Cada organismo tiene acceso únicamente a los datos que le corresponden.</div>
-        <div class="sec-block-detail">→ permisos por endpoint · principio de mínimo privilegio</div>
+        <div class="sec-blk-t">Autorización</div>
+        <div class="sec-blk-d">Que alguien sea quien dice ser no significa que pueda ver todo. Cada organismo accede únicamente a los datos que le corresponden.</div>
+        <div class="sec-blk-tag">→ permisos por endpoint · principio de mínimo privilegio</div>
       </div>
     </div>
-    <div class="sec-block delay-3">
-      <div class="sec-block-icon">✅</div>
+    <div class="sec-blk d3">
+      <div class="sec-blk-icon">✅</div>
       <div>
-        <div class="sec-block-title">Validaciones</div>
-        <div class="sec-block-desc">Antes de procesar cualquier solicitud, se verifica que los datos lleguen en el formato correcto y dentro de los rangos esperados.</div>
-        <div class="sec-block-detail">→ schemas de validación · sanitización de inputs</div>
+        <div class="sec-blk-t">Validaciones</div>
+        <div class="sec-blk-d">Antes de procesar cualquier solicitud, se verifica que los datos lleguen en el formato correcto y dentro de los rangos esperados.</div>
+        <div class="sec-blk-tag">→ schemas de validación · sanitización de inputs</div>
       </div>
     </div>
   </div>
 </section>
 
-<!-- ══════════════════════════════
-     9. RESULTADO
-══════════════════════════════ -->
-<section id="resultado">
-  <div class="eyebrow anim">resultado</div>
-  <h2 class="res-title anim delay-1">Antes y después.</h2>
-  <div class="antes-despues anim delay-2">
+<!-- ══════════════════════════════════════
+     § 10  DÓNDE ESTUVO LA INNOVACIÓN  ★
+══════════════════════════════════════ -->
+<section class="sec" id="innovacion">
+  <div class="eyebrow fade-up">lo más importante</div>
+
+  <div class="innov-statement fade-up d1">
+    <strong>La innovación no fue<br>usar microservicios.</strong>
+    fue lo que logramos con ellos.
+  </div>
+
+  <div class="innov-list" id="innov-list">
+    <div class="innov-item d1">
+      <div class="innov-line"></div>
+      <div class="innov-text">Integrar dos organismos públicos que antes <em>no estaban comunicados</em> de esta manera.</div>
+    </div>
+    <div class="innov-item d2">
+      <div class="innov-line"></div>
+      <div class="innov-text">Compartir información de forma <em>segura y controlada</em>, con trazabilidad de cada consulta.</div>
+    </div>
+    <div class="innov-item d3">
+      <div class="innov-line"></div>
+      <div class="innov-text">Separar claramente el <em>acceso a los datos</em> de la lógica de seguridad — dos responsabilidades distintas.</div>
+    </div>
+    <div class="innov-item d4">
+      <div class="innov-line"></div>
+      <div class="innov-text">Preparar una <em>arquitectura reutilizable</em> para futuras integraciones dentro del Estado.</div>
+    </div>
+    <div class="innov-item d5">
+      <div class="innov-line"></div>
+      <div class="innov-text">Establecer un modelo que puede <em>incorporar nuevos organismos</em> sin modificar los sistemas existentes.</div>
+    </div>
+  </div>
+</section>
+
+<!-- ══════════════════════════════════════
+     § 11  IMPACTO
+══════════════════════════════════════ -->
+<section class="sec" id="impacto">
+  <div class="eyebrow fade-up">el resultado</div>
+  <h2 class="sh sh-xl fade-up d1">El cambio<br><span class="sh-dim">concreto.</span></h2>
+
+  <div class="ad-grid fade-up d2">
     <div class="ad-col before">
-      <div class="ad-label red">// antes</div>
-      <div class="ad-item"><span class="ad-icon">❌</span> Procesos manuales entre organismos</div>
-      <div class="ad-item"><span class="ad-icon">❌</span> Tiempos de espera para obtener datos</div>
-      <div class="ad-item"><span class="ad-icon">❌</span> Sin trazabilidad de las consultas</div>
-      <div class="ad-item"><span class="ad-icon">❌</span> Difícil de mantener y auditar</div>
-      <div class="ad-item"><span class="ad-icon">❌</span> Imposible de escalar a nuevos organismos</div>
+      <div class="ad-lbl red">// antes</div>
+      <div class="ad-row"><span class="ad-ico">❌</span> Procesos manuales entre organismos</div>
+      <div class="ad-row"><span class="ad-ico">❌</span> Mayor tiempo de respuesta</div>
+      <div class="ad-row"><span class="ad-ico">❌</span> Menor nivel de integración</div>
+      <div class="ad-row"><span class="ad-ico">❌</span> Mayor complejidad operativa</div>
+      <div class="ad-row"><span class="ad-ico">❌</span> Sin canal formal de comunicación</div>
     </div>
+
     <div class="ad-divider">
-      <div class="divider-line"></div>
-      <div class="divider-arrow">→</div>
-      <div class="divider-line"></div>
+      <div class="ad-dline top"></div>
+      <div class="ad-darrow">→</div>
+      <div class="ad-dline bottom"></div>
     </div>
+
     <div class="ad-col after">
-      <div class="ad-label green">// después</div>
-      <div class="ad-item"><span class="ad-icon">✅</span> Integración automática entre sistemas</div>
-      <div class="ad-item"><span class="ad-icon">✅</span> Respuesta en tiempo real</div>
-      <div class="ad-item"><span class="ad-icon">✅</span> Logs y auditoría de cada consulta</div>
-      <div class="ad-item"><span class="ad-icon">✅</span> Arquitectura limpia y mantenible</div>
-      <div class="ad-item"><span class="ad-icon">✅</span> Lista para incorporar nuevos organismos</div>
+      <div class="ad-lbl green">// después</div>
+      <div class="ad-row"><span class="ad-ico">✅</span> Comunicación automática y segura</div>
+      <div class="ad-row"><span class="ad-ico">✅</span> Procesos más ágiles</div>
+      <div class="ad-row"><span class="ad-ico">✅</span> Información disponible cuando se necesita</div>
+      <div class="ad-row"><span class="ad-ico">✅</span> Arquitectura preparada para crecer</div>
+      <div class="ad-row"><span class="ad-ico">✅</span> Modelo extensible a nuevos organismos</div>
     </div>
   </div>
 </section>
 
-<!-- ══════════════════════════════
-     10. CIERRE
-══════════════════════════════ -->
-<div id="cierre">
-  <p class="cierre-quote" id="cierre-quote">
-    La tecnología tiene sentido cuando <em>mejora la vida</em> de las personas.
+<!-- ══════════════════════════════════════
+     § 12  CIERRE
+══════════════════════════════════════ -->
+<section id="cierre" class="sec">
+  <p class="cierre-quote" id="cq">
+    "La tecnología tiene sentido cuando<br><em>mejora la vida de las personas."</em>
   </p>
-  <p class="cierre-gracias" id="cierre-gracias">Gracias.</p>
-  <p class="cierre-name" id="cierre-name">Rocío Marcos · Dirección de Informática · Santiago del Estero</p>
-</div>
+  <p class="cierre-gracias" id="cg">Gracias.</p>
+  <div class="cierre-firma" id="cf">
+    <div class="cierre-firma-name">Rocío Marcos</div>
+    <div class="cierre-firma-sub">Dirección de Informática · Santiago del Estero</div>
+  </div>
+</section>
 
+<!-- ══════════════════════════════════════
+     JAVASCRIPT
+══════════════════════════════════════ -->
 <script>
-// ── PROGRESS BAR ──
-const bar = document.getElementById('progress-bar');
+/* ─ progress bar ─ */
+const pbar = document.getElementById('pbar');
 window.addEventListener('scroll', () => {
-  const total = document.body.scrollHeight - window.innerHeight;
-  const pct = (window.scrollY / total) * 100;
-  bar.style.width = pct + '%';
+  const tot = document.body.scrollHeight - window.innerHeight;
+  pbar.style.width = (window.scrollY / tot * 100) + '%';
+}, { passive: true });
+
+/* ─ hero fade-up on load ─ */
+window.addEventListener('load', () => {
+  document.querySelectorAll('#hero .fade-up').forEach(el => el.classList.add('in'));
 });
 
-// ── INTERSECTION OBSERVER ──
+/* ─ generic IntersectionObserver ─ */
 const io = new IntersectionObserver((entries) => {
-  entries.forEach(e => {
-    if (e.isIntersecting) {
-      e.target.classList.add('visible');
-    }
-  });
-}, { threshold: 0.15 });
+  entries.forEach(e => { if (e.isIntersecting) { e.target.classList.add('in'); } });
+}, { threshold: 0.12 });
 
 document.querySelectorAll(
-  '.anim, .anim-left, .anim-right, .eyebrow, .timeline-item, ' +
-  '.req-card, .flow-node, .flow-arrow, .api-check, .sec-block, .ptag'
-).forEach(el => io.observe(el));
+  '.eyebrow, .fade-up, .fade-left, .fade-right, .scale-in, ' +
+  '.tl-item, .req-card, .fn, .fa, .fcheck, .sec-blk, ' +
+  '.innov-item, .dtag'
+).forEach(el => {
+  if (!el.closest('#hero')) io.observe(el);
+});
 
-// ── TIMELINE FILL ──
-const fillObs = new IntersectionObserver((entries) => {
-  entries.forEach(e => {
-    if (e.isIntersecting) {
-      document.getElementById('timeline-fill').classList.add('active');
-    }
-  });
-}, { threshold: 0.2 });
-fillObs.observe(document.getElementById('quien'));
+/* ─ timeline fill ─ */
+const tlFill = document.getElementById('tl-fill');
+const tlObs = new IntersectionObserver((entries) => {
+  if (entries[0].isIntersecting) tlFill.classList.add('active');
+}, { threshold: 0.15 });
+tlObs.observe(document.getElementById('quien'));
 
-// ── BROKEN LINE + NO-COMM ──
-const splitObs = new IntersectionObserver((entries) => {
-  entries.forEach(e => {
-    if (e.isIntersecting) {
-      document.getElementById('broken-line').classList.add('visible');
-      const nc = document.getElementById('no-comm');
-      setTimeout(() => { nc.style.opacity = '1'; }, 500);
-    }
-  });
-}, { threshold: 0.3 });
-splitObs.observe(document.getElementById('problema'));
+/* ─ broken segments (desafío) ─ */
+const desafioObs = new IntersectionObserver((entries) => {
+  if (entries[0].isIntersecting) {
+    document.querySelectorAll('.bs').forEach(b => b.classList.add('shown'));
+    document.getElementById('mid-badge').classList.add('shown');
+    document.querySelectorAll('.dtag').forEach((t, i) => {
+      setTimeout(() => t.classList.add('in'), i * 120 + 400);
+    });
+  }
+}, { threshold: 0.25 });
+desafioObs.observe(document.getElementById('desafio'));
 
-// ── LOCALES ANIMATION ──
-let localAnimDone = false;
-const localObs = new IntersectionObserver((entries) => {
-  entries.forEach(e => {
-    if (e.isIntersecting && !localAnimDone) {
-      localAnimDone = true;
-      const items = document.querySelectorAll('.local-item:not(#local-api)');
-      items.forEach((item, i) => {
-        setTimeout(() => { item.classList.add('highlight'); }, i * 300);
-        setTimeout(() => { item.classList.remove('highlight'); }, i * 300 + 700);
-      });
-      setTimeout(() => {
-        document.getElementById('local-api').style.boxShadow = '0 0 40px rgba(59,130,246,0.3)';
-      }, items.length * 300 + 200);
-    }
-  });
-}, { threshold: 0.4 });
-localObs.observe(document.getElementById('locales'));
-
-// ── REQUEST ANIMATION ──
-let reqDone = false;
-const reqObs = new IntersectionObserver((entries) => {
-  entries.forEach(e => {
-    if (e.isIntersecting && !reqDone) {
-      reqDone = true;
-      const steps = [1,2,3,4];
-      steps.forEach((s, i) => {
-        setTimeout(() => {
-          steps.forEach(x => document.getElementById('step-'+x).classList.remove('active'));
-          document.getElementById('step-'+s).classList.add('active');
-          if (s === 4) {
-            setTimeout(() => {
-              document.getElementById('req-response').classList.add('visible');
-            }, 600);
-          }
-        }, i * 900 + 400);
-      });
-    }
-  });
-}, { threshold: 0.3 });
-const rd = document.getElementById('req-demo');
-if (rd) reqObs.observe(rd);
-
-// ── CIERRE ──
-const cierreObs = new IntersectionObserver((entries) => {
-  entries.forEach(e => {
-    if (e.isIntersecting) {
-      document.getElementById('cierre-quote').classList.add('visible');
-      document.getElementById('cierre-gracias').classList.add('visible');
-      document.getElementById('cierre-name').classList.add('visible');
-    }
-  });
-}, { threshold: 0.4 });
-cierreObs.observe(document.getElementById('cierre'));
-
-// ── ALMACEN HOVER ──
+/* ─ almacén hover ─ */
 document.querySelectorAll('.almacen-item').forEach(item => {
   item.addEventListener('mouseenter', () => item.classList.add('lit'));
   item.addEventListener('mouseleave', () => item.classList.remove('lit'));
 });
+
+/* ─ locales animation ─ */
+let localsDone = false;
+const localsObs = new IntersectionObserver((entries) => {
+  if (entries[0].isIntersecting && !localsDone) {
+    localsDone = true;
+    const rows = document.querySelectorAll('.local-row:not(#local-api)');
+    rows.forEach((r, i) => {
+      setTimeout(() => { r.classList.add('active'); }, i * 220 + 300);
+    });
+    setTimeout(() => {
+      rows.forEach(r => r.classList.remove('active'));
+      document.getElementById('local-api').classList.add('star');
+    }, rows.length * 220 + 900);
+  }
+}, { threshold: 0.3 });
+localsObs.observe(document.getElementById('arq-micro'));
+
+/* ─ request animation ─ */
+let reqDone = false;
+const reqObs = new IntersectionObserver((entries) => {
+  if (entries[0].isIntersecting && !reqDone) {
+    reqDone = true;
+    const steps = ['rp1','rp2','rp3','rp4'];
+    steps.forEach((id, i) => {
+      setTimeout(() => {
+        steps.forEach(x => document.getElementById(x).classList.remove('active'));
+        document.getElementById(id).classList.add('active');
+        if (id === 'rp4') {
+          setTimeout(() => { document.getElementById('req-out').classList.add('shown'); }, 700);
+        }
+      }, i * 950 + 500);
+    });
+  }
+}, { threshold: 0.3 });
+reqObs.observe(document.getElementById('req-terminal'));
+
+/* ─ cierre ─ */
+const cierreObs = new IntersectionObserver((entries) => {
+  if (entries[0].isIntersecting) {
+    document.getElementById('cq').classList.add('in');
+    document.getElementById('cg').classList.add('in');
+    document.getElementById('cf').classList.add('in');
+  }
+}, { threshold: 0.35 });
+cierreObs.observe(document.getElementById('cierre'));
 </script>
 </body>
 </html>
