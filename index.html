@@ -1,0 +1,1243 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>API IOSEP — Rocío Marcos</title>
+<link href="https://fonts.googleapis.com/css2?family=Space+Grotesk:wght@300;400;500;600;700&family=Inter:wght@300;400;500&family=JetBrains+Mono:wght@400;500&display=swap" rel="stylesheet">
+<style>
+  *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+
+  :root {
+    --bg: #07070f;
+    --bg2: #0d0d1a;
+    --blue: #3b82f6;
+    --blue-dim: #1d4ed8;
+    --blue-glow: rgba(59,130,246,0.18);
+    --green: #22c55e;
+    --red: #ef4444;
+    --white: #f0f0f0;
+    --muted: #6b7280;
+    --border: rgba(255,255,255,0.07);
+    --glass: rgba(255,255,255,0.04);
+    --glass-border: rgba(255,255,255,0.1);
+  }
+
+  html { scroll-behavior: smooth; }
+
+  body {
+    background: var(--bg);
+    color: var(--white);
+    font-family: 'Inter', sans-serif;
+    overflow-x: hidden;
+    line-height: 1.6;
+  }
+
+  /* ── SCROLLBAR ── */
+  ::-webkit-scrollbar { width: 4px; }
+  ::-webkit-scrollbar-track { background: var(--bg); }
+  ::-webkit-scrollbar-thumb { background: var(--blue-dim); border-radius: 2px; }
+
+  /* ── PROGRESS BAR ── */
+  #progress-bar {
+    position: fixed; top: 0; left: 0; height: 2px;
+    background: linear-gradient(90deg, var(--blue), var(--green));
+    z-index: 999; width: 0%; transition: width 0.1s linear;
+  }
+
+  /* ── NAV ── */
+  nav {
+    position: fixed; top: 0; left: 0; right: 0;
+    padding: 16px 40px;
+    display: flex; justify-content: space-between; align-items: center;
+    z-index: 100;
+    background: linear-gradient(to bottom, rgba(7,7,15,0.95), transparent);
+  }
+  .nav-logo {
+    font-family: 'Space Grotesk', sans-serif;
+    font-size: 13px; font-weight: 600; letter-spacing: 0.15em;
+    color: var(--muted); text-transform: uppercase;
+  }
+  .nav-dot {
+    width: 6px; height: 6px; border-radius: 50%;
+    background: var(--green);
+    box-shadow: 0 0 8px var(--green);
+    animation: pulse 2s infinite;
+  }
+  @keyframes pulse {
+    0%, 100% { opacity: 1; transform: scale(1); }
+    50% { opacity: 0.5; transform: scale(0.8); }
+  }
+
+  /* ── SECTIONS ── */
+  section {
+    min-height: 100vh;
+    display: flex; flex-direction: column; justify-content: center;
+    padding: 100px 40px;
+    position: relative;
+    max-width: 1200px;
+    margin: 0 auto;
+  }
+  section.full-bleed {
+    max-width: none;
+    padding: 100px 0;
+  }
+  .section-inner {
+    max-width: 1100px;
+    margin: 0 auto;
+    width: 100%;
+    padding: 0 40px;
+  }
+
+  /* ── EYEBROW ── */
+  .eyebrow {
+    font-family: 'JetBrains Mono', monospace;
+    font-size: 11px; letter-spacing: 0.2em;
+    color: var(--blue); text-transform: uppercase;
+    margin-bottom: 20px;
+    opacity: 0; transform: translateY(10px);
+    transition: opacity 0.5s, transform 0.5s;
+  }
+  .eyebrow::before { content: '// '; color: var(--muted); }
+  .eyebrow.visible { opacity: 1; transform: translateY(0); }
+
+  /* ── ANIMATE ON SCROLL ── */
+  .anim { opacity: 0; transform: translateY(30px); transition: opacity 0.7s ease, transform 0.7s ease; }
+  .anim.visible { opacity: 1; transform: translateY(0); }
+  .anim-left { opacity: 0; transform: translateX(-30px); transition: opacity 0.7s ease, transform 0.7s ease; }
+  .anim-left.visible { opacity: 1; transform: translateX(0); }
+  .anim-right { opacity: 0; transform: translateX(30px); transition: opacity 0.7s ease, transform 0.7s ease; }
+  .anim-right.visible { opacity: 1; transform: translateX(0); }
+  .delay-1 { transition-delay: 0.15s; }
+  .delay-2 { transition-delay: 0.3s; }
+  .delay-3 { transition-delay: 0.45s; }
+  .delay-4 { transition-delay: 0.6s; }
+
+  /* ══════════════════════════════
+     1. HERO
+  ══════════════════════════════ */
+  #hero {
+    min-height: 100vh;
+    display: flex; flex-direction: column; justify-content: center; align-items: center;
+    text-align: center;
+    position: relative; overflow: hidden;
+  }
+  #hero-bg {
+    position: absolute; inset: 0;
+    background: radial-gradient(ellipse 80% 60% at 50% 60%, rgba(59,130,246,0.07) 0%, transparent 70%);
+    pointer-events: none;
+  }
+  .hero-grid {
+    position: absolute; inset: 0;
+    background-image:
+      linear-gradient(rgba(59,130,246,0.03) 1px, transparent 1px),
+      linear-gradient(90deg, rgba(59,130,246,0.03) 1px, transparent 1px);
+    background-size: 60px 60px;
+    pointer-events: none;
+  }
+  .hero-tag {
+    font-family: 'JetBrains Mono', monospace;
+    font-size: 11px; letter-spacing: 0.25em; color: var(--blue);
+    text-transform: uppercase;
+    margin-bottom: 32px;
+    padding: 6px 16px;
+    border: 1px solid rgba(59,130,246,0.3);
+    border-radius: 100px;
+    display: inline-block;
+  }
+  .hero-name {
+    font-family: 'Space Grotesk', sans-serif;
+    font-size: clamp(14px, 2vw, 18px);
+    font-weight: 400; color: var(--muted);
+    margin-bottom: 12px; letter-spacing: 0.05em;
+  }
+  .hero-title {
+    font-family: 'Space Grotesk', sans-serif;
+    font-size: clamp(42px, 8vw, 88px);
+    font-weight: 700; line-height: 0.95;
+    margin-bottom: 24px;
+    letter-spacing: -0.03em;
+  }
+  .hero-title span { color: var(--blue); }
+  .hero-sub {
+    font-size: clamp(15px, 2vw, 18px);
+    color: var(--muted); max-width: 520px;
+    margin: 0 auto 48px;
+    font-weight: 300; line-height: 1.7;
+  }
+  .hero-scroll {
+    display: flex; flex-direction: column; align-items: center; gap: 8px;
+    color: var(--muted); font-size: 12px; letter-spacing: 0.1em;
+    font-family: 'JetBrains Mono', monospace;
+    animation: float 3s ease-in-out infinite;
+  }
+  .scroll-line {
+    width: 1px; height: 50px;
+    background: linear-gradient(to bottom, var(--blue), transparent);
+  }
+  @keyframes float {
+    0%, 100% { transform: translateY(0); }
+    50% { transform: translateY(8px); }
+  }
+
+  /* ══════════════════════════════
+     2. QUIÉN SOY - TIMELINE
+  ══════════════════════════════ */
+  #quien {
+    padding: 120px 40px;
+  }
+  .timeline-title {
+    font-family: 'Space Grotesk', sans-serif;
+    font-size: clamp(32px, 5vw, 52px);
+    font-weight: 700; margin-bottom: 72px;
+    letter-spacing: -0.02em;
+  }
+  .timeline {
+    position: relative;
+    padding-left: 0;
+  }
+  .timeline-line {
+    position: absolute; left: 24px; top: 0; bottom: 0;
+    width: 2px;
+    background: var(--border);
+  }
+  .timeline-line-fill {
+    position: absolute; left: 24px; top: 0;
+    width: 2px; height: 0%;
+    background: linear-gradient(to bottom, var(--blue), var(--green));
+    transition: height 1.5s ease;
+    box-shadow: 0 0 12px var(--blue);
+  }
+  .timeline-line-fill.active { height: 100%; }
+  .timeline-item {
+    display: flex; gap: 32px; margin-bottom: 56px;
+    padding-left: 0;
+    opacity: 0; transform: translateX(-20px);
+    transition: opacity 0.6s ease, transform 0.6s ease;
+  }
+  .timeline-item.visible { opacity: 1; transform: translateX(0); }
+  .timeline-dot-wrap {
+    position: relative; flex-shrink: 0;
+    width: 48px; display: flex; justify-content: center;
+  }
+  .timeline-dot {
+    width: 12px; height: 12px; border-radius: 50%;
+    background: var(--bg); border: 2px solid var(--blue-dim);
+    margin-top: 6px; position: relative; z-index: 1;
+    transition: background 0.4s, border-color 0.4s, box-shadow 0.4s;
+  }
+  .timeline-item.visible .timeline-dot {
+    background: var(--blue);
+    border-color: var(--blue);
+    box-shadow: 0 0 12px var(--blue);
+  }
+  .timeline-year {
+    font-family: 'JetBrains Mono', monospace;
+    font-size: 11px; color: var(--blue);
+    letter-spacing: 0.1em; margin-bottom: 6px;
+  }
+  .timeline-label {
+    font-family: 'Space Grotesk', sans-serif;
+    font-size: 22px; font-weight: 600; margin-bottom: 8px;
+    letter-spacing: -0.01em;
+  }
+  .timeline-desc {
+    font-size: 14px; color: var(--muted); line-height: 1.7;
+    max-width: 480px;
+  }
+
+  /* ══════════════════════════════
+     3. EL PROBLEMA - SPLIT
+  ══════════════════════════════ */
+  #problema {
+    min-height: 100vh;
+    padding: 0;
+    max-width: none;
+  }
+  .problema-intro {
+    text-align: center; padding: 80px 40px 60px;
+    max-width: 700px; margin: 0 auto;
+  }
+  .problema-intro h2 {
+    font-family: 'Space Grotesk', sans-serif;
+    font-size: clamp(32px, 5vw, 52px);
+    font-weight: 700; letter-spacing: -0.02em;
+    margin-bottom: 16px;
+  }
+  .problema-split {
+    display: grid; grid-template-columns: 1fr auto 1fr;
+    min-height: 60vh;
+    gap: 0;
+  }
+  .split-entity {
+    padding: 60px 48px;
+    display: flex; flex-direction: column; justify-content: center;
+  }
+  .split-left { background: rgba(59,130,246,0.04); border-right: 1px solid var(--border); }
+  .split-right { background: rgba(34,197,94,0.03); border-left: 1px solid var(--border); }
+  .split-icon { font-size: 64px; margin-bottom: 24px; }
+  .split-name {
+    font-family: 'Space Grotesk', sans-serif;
+    font-size: 28px; font-weight: 700;
+    margin-bottom: 16px;
+  }
+  .split-desc { font-size: 15px; color: var(--muted); line-height: 1.7; }
+
+  .split-middle {
+    display: flex; flex-direction: column; justify-content: center;
+    align-items: center; padding: 40px 32px; gap: 12px;
+    width: 200px;
+  }
+  .broken-line {
+    display: flex; flex-direction: column; align-items: center; gap: 6px;
+    opacity: 0; transition: opacity 0.5s;
+  }
+  .broken-line.visible { opacity: 1; }
+  .bl-seg {
+    width: 2px; background: var(--red);
+    border-radius: 2px;
+    animation: flicker 1.5s ease-in-out infinite;
+  }
+  .bl-seg:nth-child(1) { height: 20px; animation-delay: 0s; }
+  .bl-seg:nth-child(2) { height: 14px; animation-delay: 0.2s; }
+  .bl-seg:nth-child(3) { height: 18px; animation-delay: 0.4s; }
+  .bl-seg:nth-child(4) { height: 10px; animation-delay: 0.1s; }
+  .bl-seg:nth-child(5) { height: 16px; animation-delay: 0.3s; }
+  @keyframes flicker {
+    0%, 100% { opacity: 1; }
+    50% { opacity: 0.2; }
+  }
+  .no-comm {
+    font-family: 'JetBrains Mono', monospace;
+    font-size: 10px; color: var(--red);
+    text-align: center; letter-spacing: 0.1em;
+    padding: 6px 10px;
+    border: 1px solid rgba(239,68,68,0.3);
+    border-radius: 4px;
+    background: rgba(239,68,68,0.05);
+  }
+  .problema-tags {
+    display: flex; flex-wrap: wrap; gap: 12px;
+    padding: 40px 48px;
+    border-top: 1px solid var(--border);
+    max-width: 1200px; margin: 0 auto;
+  }
+  .ptag {
+    font-family: 'JetBrains Mono', monospace;
+    font-size: 13px; padding: 8px 18px;
+    border: 1px solid var(--border); border-radius: 100px;
+    color: var(--muted);
+    opacity: 0; transform: translateY(12px);
+    transition: opacity 0.5s ease, transform 0.5s ease;
+  }
+  .ptag.visible { opacity: 1; transform: translateY(0); }
+  .ptag.red { border-color: rgba(239,68,68,0.3); color: var(--red); }
+
+  /* ══════════════════════════════
+     4. REQUISITOS - CARDS
+  ══════════════════════════════ */
+  #requisitos { }
+  .req-title {
+    font-family: 'Space Grotesk', sans-serif;
+    font-size: clamp(28px, 4vw, 48px);
+    font-weight: 700; margin-bottom: 56px;
+    letter-spacing: -0.02em;
+  }
+  .req-cards {
+    display: grid; grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
+    gap: 24px;
+  }
+  .req-card {
+    background: var(--glass);
+    border: 1px solid var(--glass-border);
+    border-radius: 20px;
+    padding: 48px 36px;
+    backdrop-filter: blur(16px);
+    -webkit-backdrop-filter: blur(16px);
+    position: relative; overflow: hidden;
+    opacity: 0; transform: translateY(40px);
+    transition: opacity 0.7s ease, transform 0.7s ease;
+  }
+  .req-card.visible { opacity: 1; transform: translateY(0); }
+  .req-card::before {
+    content: '';
+    position: absolute; top: 0; left: 0; right: 0; height: 1px;
+    background: linear-gradient(90deg, transparent, rgba(255,255,255,0.15), transparent);
+  }
+  .req-card:hover {
+    border-color: var(--blue);
+    box-shadow: 0 0 32px rgba(59,130,246,0.12);
+    transform: translateY(-4px);
+  }
+  .req-icon { font-size: 48px; margin-bottom: 20px; }
+  .req-name {
+    font-family: 'Space Grotesk', sans-serif;
+    font-size: 24px; font-weight: 600;
+    margin-bottom: 12px;
+  }
+  .req-desc { font-size: 14px; color: var(--muted); line-height: 1.7; }
+  .req-glow {
+    position: absolute; width: 120px; height: 120px;
+    border-radius: 50%; filter: blur(60px);
+    bottom: -40px; right: -40px; opacity: 0.3;
+  }
+
+  /* ══════════════════════════════
+     5. QUÉ ES UNA API
+  ══════════════════════════════ */
+  #api { }
+  .api-title {
+    font-family: 'Space Grotesk', sans-serif;
+    font-size: clamp(28px, 4vw, 48px);
+    font-weight: 700; margin-bottom: 60px;
+    letter-spacing: -0.02em;
+  }
+  .api-flow {
+    display: flex; flex-direction: column; align-items: center; gap: 0;
+    max-width: 400px; margin: 0 auto;
+  }
+  .flow-node {
+    background: var(--glass);
+    border: 1px solid var(--glass-border);
+    border-radius: 14px;
+    padding: 20px 40px;
+    text-align: center;
+    width: 100%;
+    backdrop-filter: blur(12px);
+    opacity: 0; transform: translateY(20px);
+    transition: opacity 0.5s ease, transform 0.5s ease;
+  }
+  .flow-node.visible { opacity: 1; transform: translateY(0); }
+  .flow-node-label {
+    font-family: 'Space Grotesk', sans-serif;
+    font-size: 18px; font-weight: 600;
+  }
+  .flow-node-sub {
+    font-family: 'JetBrains Mono', monospace;
+    font-size: 11px; color: var(--muted); margin-top: 4px;
+  }
+  .flow-node.highlight {
+    border-color: var(--blue);
+    background: rgba(59,130,246,0.08);
+    box-shadow: 0 0 32px rgba(59,130,246,0.15);
+  }
+  .flow-arrow {
+    width: 2px; height: 48px;
+    background: linear-gradient(to bottom, var(--blue), var(--blue-dim));
+    position: relative;
+    opacity: 0; transition: opacity 0.4s ease;
+  }
+  .flow-arrow.visible { opacity: 1; }
+  .flow-arrow::after {
+    content: '';
+    position: absolute; bottom: 0; left: 50%;
+    transform: translateX(-50%);
+    border-left: 5px solid transparent;
+    border-right: 5px solid transparent;
+    border-top: 8px solid var(--blue-dim);
+  }
+  .flow-packet {
+    width: 10px; height: 10px; border-radius: 50%;
+    background: var(--blue);
+    box-shadow: 0 0 8px var(--blue);
+    position: absolute; left: 50%; transform: translateX(-50%);
+    top: 0;
+    animation: travel 2s ease-in-out infinite;
+    display: none;
+  }
+  .flow-arrow.visible .flow-packet { display: block; }
+  @keyframes travel {
+    0% { top: 0; opacity: 0; }
+    10% { opacity: 1; }
+    90% { opacity: 1; }
+    100% { top: 100%; opacity: 0; }
+  }
+
+  .api-checks {
+    display: grid; grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+    gap: 16px; max-width: 700px; margin: 48px auto 0;
+  }
+  .api-check {
+    display: flex; align-items: center; gap: 12px;
+    background: var(--glass); border: 1px solid var(--glass-border);
+    border-radius: 10px; padding: 14px 20px;
+    font-size: 14px;
+    opacity: 0; transform: translateX(-10px);
+    transition: opacity 0.5s ease, transform 0.5s ease;
+  }
+  .api-check.visible { opacity: 1; transform: translateX(0); }
+  .api-check-icon { color: var(--green); font-size: 16px; }
+
+  /* ══════════════════════════════
+     6. ARQUITECTURA
+  ══════════════════════════════ */
+  #arquitectura { }
+  .arq-title {
+    font-family: 'Space Grotesk', sans-serif;
+    font-size: clamp(28px, 4vw, 48px);
+    font-weight: 700; letter-spacing: -0.02em;
+    margin-bottom: 16px;
+  }
+  .arq-subtitle { font-size: 15px; color: var(--muted); margin-bottom: 56px; }
+  .arq-compare {
+    display: grid; grid-template-columns: 1fr 1fr;
+    gap: 32px;
+  }
+  @media (max-width: 768px) {
+    .arq-compare { grid-template-columns: 1fr; }
+    .problema-split { grid-template-columns: 1fr; }
+    .split-middle { display: none; }
+    nav { padding: 16px 20px; }
+    section { padding: 80px 20px; }
+  }
+  .arq-panel {
+    background: var(--glass); border: 1px solid var(--glass-border);
+    border-radius: 20px; padding: 36px;
+    backdrop-filter: blur(12px);
+  }
+  .arq-panel-title {
+    font-family: 'Space Grotesk', sans-serif;
+    font-size: 16px; font-weight: 600;
+    margin-bottom: 24px; color: var(--muted);
+    letter-spacing: 0.05em; text-transform: uppercase;
+    font-size: 13px;
+  }
+  /* Almacén */
+  .almacen-box {
+    border: 2px solid var(--border);
+    border-radius: 12px; padding: 24px;
+    position: relative;
+  }
+  .almacen-label {
+    position: absolute; top: -12px; left: 20px;
+    background: var(--bg2); padding: 0 10px;
+    font-family: 'JetBrains Mono', monospace;
+    font-size: 11px; color: var(--muted); letter-spacing: 0.1em;
+  }
+  .almacen-item {
+    padding: 10px 14px; border-radius: 8px;
+    margin-bottom: 8px; font-size: 13px;
+    background: rgba(255,255,255,0.03);
+    border: 1px solid var(--border);
+    display: flex; align-items: center; gap: 10px;
+    cursor: default;
+    transition: background 0.3s, border-color 0.3s;
+  }
+  .almacen-item:hover, .almacen-item.lit {
+    background: rgba(59,130,246,0.1);
+    border-color: rgba(59,130,246,0.4);
+  }
+  /* Shopping */
+  .local-item {
+    border-radius: 10px; padding: 12px 16px;
+    margin-bottom: 10px; font-size: 13px;
+    border: 1px solid var(--border);
+    display: flex; align-items: center; gap: 12px;
+    transition: all 0.4s ease;
+    opacity: 0.4;
+  }
+  .local-item.highlight {
+    opacity: 1;
+    border-color: var(--blue);
+    background: rgba(59,130,246,0.1);
+    box-shadow: 0 0 20px rgba(59,130,246,0.15);
+  }
+  .local-dot { width: 8px; height: 8px; border-radius: 50%; flex-shrink: 0; }
+
+  /* ══════════════════════════════
+     7. REQUEST FLOW
+  ══════════════════════════════ */
+  #request { }
+  .req-flow-title {
+    font-family: 'Space Grotesk', sans-serif;
+    font-size: clamp(28px, 4vw, 48px);
+    font-weight: 700; letter-spacing: -0.02em;
+    margin-bottom: 60px;
+  }
+  .request-demo {
+    background: var(--bg2); border: 1px solid var(--border);
+    border-radius: 20px; overflow: hidden;
+    max-width: 700px; margin: 0 auto;
+  }
+  .req-header {
+    background: rgba(255,255,255,0.03);
+    padding: 14px 24px;
+    border-bottom: 1px solid var(--border);
+    display: flex; align-items: center; gap: 8px;
+  }
+  .req-dot { width: 10px; height: 10px; border-radius: 50%; }
+  .req-dot.r { background: #ff5f57; }
+  .req-dot.y { background: #febc2e; }
+  .req-dot.g { background: #28c840; }
+  .req-code {
+    padding: 24px;
+    font-family: 'JetBrains Mono', monospace;
+    font-size: 14px; color: var(--blue);
+    border-bottom: 1px solid var(--border);
+    letter-spacing: 0.03em;
+  }
+  .req-code .method { color: var(--green); }
+  .req-code .path { color: var(--white); }
+  .req-code .param { color: #f59e0b; }
+  .req-steps {
+    display: grid; grid-template-columns: repeat(4, 1fr);
+    gap: 0;
+  }
+  .req-step {
+    padding: 20px; text-align: center;
+    border-right: 1px solid var(--border);
+    transition: background 0.4s ease;
+  }
+  .req-step:last-child { border-right: none; }
+  .req-step.active {
+    background: rgba(59,130,246,0.08);
+  }
+  .req-step-icon { font-size: 24px; margin-bottom: 8px; }
+  .req-step-name {
+    font-family: 'Space Grotesk', sans-serif;
+    font-size: 12px; font-weight: 500; color: var(--muted);
+  }
+  .req-step.active .req-step-name { color: var(--white); }
+  .req-response {
+    padding: 20px 24px;
+    font-family: 'JetBrains Mono', monospace;
+    font-size: 12px; color: var(--muted);
+    border-top: 1px solid var(--border);
+    display: none;
+  }
+  .req-response.visible { display: block; }
+  .res-status { color: var(--green); font-weight: 500; margin-bottom: 8px; }
+
+  /* ══════════════════════════════
+     8. SEGURIDAD
+  ══════════════════════════════ */
+  #seguridad { }
+  .sec-title {
+    font-family: 'Space Grotesk', sans-serif;
+    font-size: clamp(28px, 4vw, 48px);
+    font-weight: 700; letter-spacing: -0.02em;
+    margin-bottom: 56px;
+  }
+  .sec-blocks {
+    display: flex; flex-direction: column; gap: 20px;
+    max-width: 700px;
+  }
+  .sec-block {
+    background: var(--glass); border: 1px solid var(--glass-border);
+    border-radius: 16px; padding: 28px 32px;
+    display: flex; gap: 24px; align-items: flex-start;
+    backdrop-filter: blur(12px);
+    opacity: 0; transform: translateX(-20px);
+    transition: opacity 0.6s ease, transform 0.6s ease;
+    cursor: default;
+  }
+  .sec-block.visible { opacity: 1; transform: translateX(0); }
+  .sec-block:hover { border-color: var(--blue); }
+  .sec-block-icon {
+    font-size: 32px; flex-shrink: 0;
+    width: 56px; height: 56px; display: flex; align-items: center;
+    justify-content: center;
+    background: rgba(59,130,246,0.08);
+    border-radius: 12px; border: 1px solid rgba(59,130,246,0.2);
+  }
+  .sec-block-title {
+    font-family: 'Space Grotesk', sans-serif;
+    font-size: 20px; font-weight: 600; margin-bottom: 8px;
+  }
+  .sec-block-desc { font-size: 14px; color: var(--muted); line-height: 1.7; }
+  .sec-block-detail {
+    font-family: 'JetBrains Mono', monospace;
+    font-size: 11px; color: var(--blue);
+    margin-top: 10px; letter-spacing: 0.05em;
+  }
+
+  /* ══════════════════════════════
+     9. RESULTADO - ANTES/DESPUÉS
+  ══════════════════════════════ */
+  #resultado { }
+  .res-title {
+    font-family: 'Space Grotesk', sans-serif;
+    font-size: clamp(28px, 4vw, 48px);
+    font-weight: 700; letter-spacing: -0.02em;
+    margin-bottom: 56px;
+  }
+  .antes-despues {
+    display: grid; grid-template-columns: 1fr 80px 1fr;
+    gap: 0; align-items: stretch;
+  }
+  @media (max-width: 700px) {
+    .antes-despues { grid-template-columns: 1fr; }
+    .ad-divider { display: none; }
+  }
+  .ad-col {
+    background: var(--glass); border: 1px solid var(--glass-border);
+    border-radius: 20px; padding: 36px;
+    backdrop-filter: blur(12px);
+  }
+  .ad-col.before { border-color: rgba(239,68,68,0.2); }
+  .ad-col.after { border-color: rgba(34,197,94,0.2); }
+  .ad-label {
+    font-family: 'JetBrains Mono', monospace;
+    font-size: 11px; letter-spacing: 0.2em;
+    text-transform: uppercase; margin-bottom: 24px;
+  }
+  .ad-label.red { color: var(--red); }
+  .ad-label.green { color: var(--green); }
+  .ad-item {
+    display: flex; align-items: flex-start; gap: 12px;
+    margin-bottom: 16px; font-size: 15px;
+  }
+  .ad-icon { font-size: 18px; flex-shrink: 0; margin-top: 1px; }
+  .ad-divider {
+    display: flex; flex-direction: column; align-items: center;
+    justify-content: center; gap: 0;
+  }
+  .divider-line {
+    width: 2px; flex: 1;
+    background: linear-gradient(to bottom, var(--red), var(--green));
+    transition: opacity 0.5s;
+  }
+  .divider-arrow {
+    font-size: 24px;
+    background: linear-gradient(135deg, var(--red), var(--green));
+    -webkit-background-clip: text; -webkit-text-fill-color: transparent;
+  }
+
+  /* ══════════════════════════════
+     10. CIERRE
+  ══════════════════════════════ */
+  #cierre {
+    min-height: 100vh;
+    display: flex; flex-direction: column;
+    justify-content: center; align-items: center;
+    text-align: center;
+    background: #000;
+    max-width: none; padding: 80px 40px;
+    position: relative; overflow: hidden;
+  }
+  #cierre::before {
+    content: '';
+    position: absolute; inset: 0;
+    background: radial-gradient(ellipse 60% 40% at 50% 50%, rgba(59,130,246,0.05), transparent 70%);
+  }
+  .cierre-quote {
+    font-family: 'Space Grotesk', sans-serif;
+    font-size: clamp(22px, 4vw, 44px);
+    font-weight: 500; line-height: 1.3;
+    max-width: 700px; margin: 0 auto 48px;
+    opacity: 0; transform: scale(0.97);
+    transition: opacity 1.2s ease, transform 1.2s ease;
+    letter-spacing: -0.02em;
+  }
+  .cierre-quote.visible { opacity: 1; transform: scale(1); }
+  .cierre-quote em { color: var(--blue); font-style: normal; }
+  .cierre-gracias {
+    font-family: 'Space Grotesk', sans-serif;
+    font-size: 18px; font-weight: 400; color: var(--muted);
+    opacity: 0; transition: opacity 0.8s ease 0.8s;
+    letter-spacing: 0.05em;
+  }
+  .cierre-gracias.visible { opacity: 1; }
+  .cierre-name {
+    margin-top: 32px;
+    font-family: 'JetBrains Mono', monospace;
+    font-size: 12px; color: rgba(255,255,255,0.2);
+    letter-spacing: 0.15em;
+    opacity: 0; transition: opacity 0.8s ease 1.2s;
+  }
+  .cierre-name.visible { opacity: 1; }
+</style>
+</head>
+<body>
+
+<div id="progress-bar"></div>
+
+<nav>
+  <span class="nav-logo">DGISE · Santiago del Estero</span>
+  <div class="nav-dot"></div>
+</nav>
+
+<!-- ══════════════════════════════
+     1. HERO
+══════════════════════════════ -->
+<div id="hero">
+  <div id="hero-bg"></div>
+  <div class="hero-grid"></div>
+
+  <div style="position:relative; z-index:1; display:flex; flex-direction:column; align-items:center;">
+    <div class="hero-tag">Presentación técnica — 2025</div>
+    <p class="hero-name">Rocío Marcos</p>
+    <h1 class="hero-title">API <span>IOSEP</span></h1>
+    <p class="hero-sub">Una arquitectura basada en microservicios para conectar organismos del Estado de forma segura, rápida y escalable.</p>
+    <div class="hero-scroll">
+      <span>scroll</span>
+      <div class="scroll-line"></div>
+    </div>
+  </div>
+</div>
+
+<!-- ══════════════════════════════
+     2. QUIÉN SOY
+══════════════════════════════ -->
+<section id="quien">
+  <div class="eyebrow">quién soy</div>
+  <h2 class="timeline-title anim">Mi camino hasta acá</h2>
+  <div class="timeline">
+    <div class="timeline-line"></div>
+    <div class="timeline-line-fill" id="timeline-fill"></div>
+
+    <div class="timeline-item" style="transition-delay:0.1s">
+      <div class="timeline-dot-wrap">
+        <div class="timeline-dot"></div>
+      </div>
+      <div>
+        <div class="timeline-year">FORMACIÓN</div>
+        <div class="timeline-label">ITSE</div>
+        <div class="timeline-desc">Instituto Tecnológico de Santiago del Estero. Acá aprendí que la tecnología tiene propósito cuando se pone al servicio de las personas.</div>
+      </div>
+    </div>
+
+    <div class="timeline-item" style="transition-delay:0.25s">
+      <div class="timeline-dot-wrap">
+        <div class="timeline-dot"></div>
+      </div>
+      <div>
+        <div class="timeline-year">CARRERA</div>
+        <div class="timeline-label">Desarrolladora</div>
+        <div class="timeline-desc">Empecé a construir sistemas reales. Cada proyecto fue una oportunidad de crecer y de entender mejor los problemas que la tecnología puede resolver.</div>
+      </div>
+    </div>
+
+    <div class="timeline-item" style="transition-delay:0.4s">
+      <div class="timeline-dot-wrap">
+        <div class="timeline-dot"></div>
+      </div>
+      <div>
+        <div class="timeline-year">HOY</div>
+        <div class="timeline-label">Dirección de Informática</div>
+        <div class="timeline-desc">Trabajo en la Dirección de Informática de la provincia, gestionando sistemas críticos para toda la provincia y sus organismos. Información para miles de personas, todos los días.</div>
+      </div>
+    </div>
+
+    <div class="timeline-item" style="transition-delay:0.55s">
+      <div class="timeline-dot-wrap">
+        <div class="timeline-dot"></div>
+      </div>
+      <div>
+        <div class="timeline-year">PROYECTO</div>
+        <div class="timeline-label">API IOSEP ↗</div>
+        <div class="timeline-desc">Un canal de comunicación seguro entre dos organismos del Estado para agilizar prestaciones de salud. De eso trata esta presentación.</div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- ══════════════════════════════
+     3. EL PROBLEMA
+══════════════════════════════ -->
+<section id="problema" class="full-bleed">
+  <div class="problema-intro">
+    <div class="eyebrow anim">el problema</div>
+    <h2 class="anim delay-1">Dos organismos.<br>Sin comunicación.</h2>
+  </div>
+
+  <div class="problema-split">
+    <div class="split-entity split-left">
+      <div class="split-icon anim-left">🏥</div>
+      <div class="split-name anim-left delay-1">IOSEP</div>
+      <div class="split-desc anim-left delay-2">
+        Instituto de Obra Social de la Provincia. Un organismo <em>descentralizado</em> que brinda prestaciones de salud a miles de empleados públicos y sus familias.
+        <br><br>
+        Necesita información del Estado para funcionar: datos de afiliados, habilitaciones, validaciones.
+      </div>
+    </div>
+
+    <div class="split-middle">
+      <div class="broken-line" id="broken-line">
+        <div class="bl-seg"></div>
+        <div class="bl-seg"></div>
+        <div class="bl-seg"></div>
+        <div class="bl-seg"></div>
+        <div class="bl-seg"></div>
+      </div>
+      <div class="no-comm" id="no-comm" style="opacity:0; transition: opacity 0.5s 0.5s">
+        sin conexión
+      </div>
+    </div>
+
+    <div class="split-entity split-right">
+      <div class="split-icon anim-right">🏛️</div>
+      <div class="split-name anim-right delay-1">Dirección de Informática</div>
+      <div class="split-desc anim-right delay-2">
+        Gestiona un <em>volumen enorme</em> de información provincial. Datos sensibles, sistemas críticos, infraestructura de múltiples organismos.
+        <br><br>
+        Tiene la información que IOSEP necesita, pero no había un canal seguro para compartirla.
+      </div>
+    </div>
+  </div>
+
+  <div class="problema-tags section-inner" style="border-top: 1px solid var(--border); padding-top: 40px;">
+    <div class="ptag red">Procesos manuales</div>
+    <div class="ptag red">Demoras innecesarias</div>
+    <div class="ptag red">Datos sensibles sin protocolo</div>
+    <div class="ptag red">Sin trazabilidad</div>
+    <div class="ptag red">Escalabilidad imposible</div>
+  </div>
+</section>
+
+<!-- ══════════════════════════════
+     4. LO QUE NECESITÁBAMOS
+══════════════════════════════ -->
+<section id="requisitos">
+  <div class="eyebrow anim">requisitos</div>
+  <h2 class="req-title anim delay-1">Lo que la solución<br>tenía que ser.</h2>
+  <div class="req-cards">
+    <div class="req-card delay-1">
+      <div class="req-icon">⚡</div>
+      <div class="req-name">Rápida</div>
+      <div class="req-desc">Las prestaciones de salud no pueden esperar. Cada consulta a la API tiene que responder en milisegundos para no interrumpir la atención al afiliado.</div>
+      <div class="req-glow" style="background: #3b82f6;"></div>
+    </div>
+    <div class="req-card delay-2">
+      <div class="req-icon">🔒</div>
+      <div class="req-name">Segura</div>
+      <div class="req-desc">Manejamos datos sensibles de personas. Cada request debe autenticarse, autorizarse y validarse antes de devolver cualquier información.</div>
+      <div class="req-glow" style="background: #22c55e;"></div>
+    </div>
+    <div class="req-card delay-3">
+      <div class="req-icon">📈</div>
+      <div class="req-name">Escalable</div>
+      <div class="req-desc">La arquitectura tiene que poder crecer. Si mañana otro organismo necesita integrarse, el sistema debe estar listo sin reescribirse desde cero.</div>
+      <div class="req-glow" style="background: #8b5cf6;"></div>
+    </div>
+  </div>
+</section>
+
+<!-- ══════════════════════════════
+     5. QUÉ ES UNA API
+══════════════════════════════ -->
+<section id="api">
+  <div class="eyebrow anim">concepto</div>
+  <h2 class="api-title anim delay-1">¿Qué hace nuestra API?</h2>
+
+  <div class="api-flow" id="api-flow">
+    <div class="flow-node anim delay-1" id="fn-iosep">
+      <div class="flow-node-label">🏥 IOSEP</div>
+      <div class="flow-node-sub">hace una solicitud</div>
+    </div>
+    <div class="flow-arrow anim delay-1">
+      <div class="flow-packet"></div>
+    </div>
+    <div class="flow-node highlight anim delay-2" id="fn-api">
+      <div class="flow-node-label">API</div>
+      <div class="flow-node-sub">punto de contacto</div>
+    </div>
+    <div class="flow-arrow anim delay-2">
+      <div class="flow-packet"></div>
+    </div>
+    <div class="flow-node anim delay-3" id="fn-data">
+      <div class="flow-node-label">🗄️ Datos</div>
+      <div class="flow-node-sub">sistemas internos</div>
+    </div>
+    <div class="flow-arrow anim delay-3" style="background: linear-gradient(to bottom, #22c55e, transparent);">
+      <div class="flow-packet" style="background: var(--green); box-shadow: 0 0 8px var(--green);"></div>
+    </div>
+    <div class="flow-node anim delay-4" id="fn-resp">
+      <div class="flow-node-label">✅ Respuesta</div>
+      <div class="flow-node-sub">sólo lo autorizado</div>
+    </div>
+  </div>
+
+  <div class="api-checks">
+    <div class="api-check delay-1"><span class="api-check-icon">✔</span> Validación del request</div>
+    <div class="api-check delay-2"><span class="api-check-icon">✔</span> Verificación de permisos</div>
+    <div class="api-check delay-3"><span class="api-check-icon">✔</span> Consulta segura</div>
+    <div class="api-check delay-4"><span class="api-check-icon">✔</span> Respuesta filtrada</div>
+  </div>
+</section>
+
+<!-- ══════════════════════════════
+     6. ARQUITECTURA
+══════════════════════════════ -->
+<section id="arquitectura">
+  <div class="eyebrow anim">arquitectura</div>
+  <h2 class="arq-title anim delay-1">Del almacén al shopping.</h2>
+  <p class="arq-subtitle anim delay-2">Cómo pasamos de un sistema monolítico a microservicios.</p>
+
+  <div class="arq-compare anim delay-2">
+    <div class="arq-panel">
+      <div class="arq-panel-title">🏪 Arquitectura tradicional</div>
+      <div class="almacen-box">
+        <span class="almacen-label">ALMACÉN</span>
+        <div class="almacen-item" data-hover>📦 Usuarios</div>
+        <div class="almacen-item" data-hover>💰 Ventas</div>
+        <div class="almacen-item" data-hover>🗃️ Stock</div>
+        <div class="almacen-item" data-hover>🖨️ Caja</div>
+        <div style="margin-top:16px; font-size:12px; color: var(--muted); font-family: 'JetBrains Mono', monospace; text-align:center;">
+          un dueño · todo junto · todo conectado
+        </div>
+      </div>
+      <p style="font-size:13px; color:var(--muted); margin-top:16px; line-height:1.7;">
+        Todo el sistema es una sola unidad. Si algo falla, puede afectar a todo lo demás. Difícil de escalar y de mantener.
+      </p>
+    </div>
+
+    <div class="arq-panel">
+      <div class="arq-panel-title">🛍️ Microservicios</div>
+      <div style="display:flex; flex-direction:column; gap:8px;" id="locales">
+        <div class="local-item" style="border-left:3px solid #a78bfa;" data-color="#a78bfa">
+          <div class="local-dot" style="background:#a78bfa"></div> Farmacia
+        </div>
+        <div class="local-item" style="border-left:3px solid #f59e0b;" data-color="#f59e0b">
+          <div class="local-dot" style="background:#f59e0b"></div> Ropa
+        </div>
+        <div class="local-item" style="border-left:3px solid #ec4899;" data-color="#ec4899">
+          <div class="local-dot" style="background:#ec4899"></div> Comida
+        </div>
+        <div class="local-item" style="border-left:3px solid #14b8a6;" data-color="#14b8a6">
+          <div class="local-dot" style="background:#14b8a6"></div> Electrónica
+        </div>
+        <div class="local-item highlight" id="local-api" style="border-left:3px solid var(--blue); border-color: var(--blue);">
+          <div class="local-dot" style="background:var(--blue)"></div>
+          <strong>API IOSEP</strong> ← nuestra solución
+        </div>
+      </div>
+      <p style="font-size:13px; color:var(--muted); margin-top:16px; line-height:1.7;">
+        Cada servicio es independiente. Puede desarrollarse, desplegarse y escalarse por separado. Si uno falla, los demás siguen funcionando.
+      </p>
+    </div>
+  </div>
+</section>
+
+<!-- ══════════════════════════════
+     7. REQUEST EN VIVO
+══════════════════════════════ -->
+<section id="request">
+  <div class="eyebrow anim">en acción</div>
+  <h2 class="req-flow-title anim delay-1">Un request, paso a paso.</h2>
+  <div class="request-demo anim delay-2" id="req-demo">
+    <div class="req-header">
+      <div class="req-dot r"></div>
+      <div class="req-dot y"></div>
+      <div class="req-dot g"></div>
+      <span style="font-family:'JetBrains Mono',monospace; font-size:11px; color:var(--muted); margin-left:8px;">IOSEP → API DGISE</span>
+    </div>
+    <div class="req-code">
+      <span class="method">GET</span> <span class="path">/afiliado/</span><span class="param">45872</span>
+      <br>
+      <span style="color:var(--muted)">Authorization:</span> Bearer <span style="color:#f59e0b">ey···</span>
+    </div>
+    <div class="req-steps">
+      <div class="req-step" id="step-1">
+        <div class="req-step-icon">🔑</div>
+        <div class="req-step-name">Autenticación</div>
+      </div>
+      <div class="req-step" id="step-2">
+        <div class="req-step-icon">🛡️</div>
+        <div class="req-step-name">Autorización</div>
+      </div>
+      <div class="req-step" id="step-3">
+        <div class="req-step-icon">🔍</div>
+        <div class="req-step-name">Consulta</div>
+      </div>
+      <div class="req-step" id="step-4">
+        <div class="req-step-icon">📦</div>
+        <div class="req-step-name">Respuesta</div>
+      </div>
+    </div>
+    <div class="req-response" id="req-response">
+      <div class="res-status">HTTP/1.1 200 OK</div>
+      <span style="color:var(--muted)">Content-Type:</span> application/json<br><br>
+      {<br>
+      &nbsp;&nbsp;<span style="color:#22c55e">"afiliado"</span>: <span style="color:#f59e0b">"45872"</span>,<br>
+      &nbsp;&nbsp;<span style="color:#22c55e">"nombre"</span>: <span style="color:#f59e0b">"[datos autorizados]"</span>,<br>
+      &nbsp;&nbsp;<span style="color:#22c55e">"activo"</span>: <span style="color:#3b82f6">true</span><br>
+      }
+    </div>
+  </div>
+</section>
+
+<!-- ══════════════════════════════
+     8. SEGURIDAD
+══════════════════════════════ -->
+<section id="seguridad">
+  <div class="eyebrow anim">seguridad</div>
+  <h2 class="sec-title anim delay-1">Tres capas de protección.</h2>
+  <div class="sec-blocks">
+    <div class="sec-block delay-1">
+      <div class="sec-block-icon">🔑</div>
+      <div>
+        <div class="sec-block-title">Autenticación</div>
+        <div class="sec-block-desc">Cada sistema que quiere conectarse debe identificarse con credenciales válidas. Si no está registrado, no entra. Simple.</div>
+        <div class="sec-block-detail">→ tokens JWT · credenciales por organismo</div>
+      </div>
+    </div>
+    <div class="sec-block delay-2">
+      <div class="sec-block-icon">🛡️</div>
+      <div>
+        <div class="sec-block-title">Autorización</div>
+        <div class="sec-block-desc">Que alguien sea quien dice ser no significa que pueda ver todo. Cada organismo tiene acceso únicamente a los datos que le corresponden.</div>
+        <div class="sec-block-detail">→ permisos por endpoint · principio de mínimo privilegio</div>
+      </div>
+    </div>
+    <div class="sec-block delay-3">
+      <div class="sec-block-icon">✅</div>
+      <div>
+        <div class="sec-block-title">Validaciones</div>
+        <div class="sec-block-desc">Antes de procesar cualquier solicitud, se verifica que los datos lleguen en el formato correcto y dentro de los rangos esperados.</div>
+        <div class="sec-block-detail">→ schemas de validación · sanitización de inputs</div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- ══════════════════════════════
+     9. RESULTADO
+══════════════════════════════ -->
+<section id="resultado">
+  <div class="eyebrow anim">resultado</div>
+  <h2 class="res-title anim delay-1">Antes y después.</h2>
+  <div class="antes-despues anim delay-2">
+    <div class="ad-col before">
+      <div class="ad-label red">// antes</div>
+      <div class="ad-item"><span class="ad-icon">❌</span> Procesos manuales entre organismos</div>
+      <div class="ad-item"><span class="ad-icon">❌</span> Tiempos de espera para obtener datos</div>
+      <div class="ad-item"><span class="ad-icon">❌</span> Sin trazabilidad de las consultas</div>
+      <div class="ad-item"><span class="ad-icon">❌</span> Difícil de mantener y auditar</div>
+      <div class="ad-item"><span class="ad-icon">❌</span> Imposible de escalar a nuevos organismos</div>
+    </div>
+    <div class="ad-divider">
+      <div class="divider-line"></div>
+      <div class="divider-arrow">→</div>
+      <div class="divider-line"></div>
+    </div>
+    <div class="ad-col after">
+      <div class="ad-label green">// después</div>
+      <div class="ad-item"><span class="ad-icon">✅</span> Integración automática entre sistemas</div>
+      <div class="ad-item"><span class="ad-icon">✅</span> Respuesta en tiempo real</div>
+      <div class="ad-item"><span class="ad-icon">✅</span> Logs y auditoría de cada consulta</div>
+      <div class="ad-item"><span class="ad-icon">✅</span> Arquitectura limpia y mantenible</div>
+      <div class="ad-item"><span class="ad-icon">✅</span> Lista para incorporar nuevos organismos</div>
+    </div>
+  </div>
+</section>
+
+<!-- ══════════════════════════════
+     10. CIERRE
+══════════════════════════════ -->
+<div id="cierre">
+  <p class="cierre-quote" id="cierre-quote">
+    La tecnología tiene sentido cuando <em>mejora la vida</em> de las personas.
+  </p>
+  <p class="cierre-gracias" id="cierre-gracias">Gracias.</p>
+  <p class="cierre-name" id="cierre-name">Rocío Marcos · Dirección de Informática · Santiago del Estero</p>
+</div>
+
+<script>
+// ── PROGRESS BAR ──
+const bar = document.getElementById('progress-bar');
+window.addEventListener('scroll', () => {
+  const total = document.body.scrollHeight - window.innerHeight;
+  const pct = (window.scrollY / total) * 100;
+  bar.style.width = pct + '%';
+});
+
+// ── INTERSECTION OBSERVER ──
+const io = new IntersectionObserver((entries) => {
+  entries.forEach(e => {
+    if (e.isIntersecting) {
+      e.target.classList.add('visible');
+    }
+  });
+}, { threshold: 0.15 });
+
+document.querySelectorAll(
+  '.anim, .anim-left, .anim-right, .eyebrow, .timeline-item, ' +
+  '.req-card, .flow-node, .flow-arrow, .api-check, .sec-block, .ptag'
+).forEach(el => io.observe(el));
+
+// ── TIMELINE FILL ──
+const fillObs = new IntersectionObserver((entries) => {
+  entries.forEach(e => {
+    if (e.isIntersecting) {
+      document.getElementById('timeline-fill').classList.add('active');
+    }
+  });
+}, { threshold: 0.2 });
+fillObs.observe(document.getElementById('quien'));
+
+// ── BROKEN LINE + NO-COMM ──
+const splitObs = new IntersectionObserver((entries) => {
+  entries.forEach(e => {
+    if (e.isIntersecting) {
+      document.getElementById('broken-line').classList.add('visible');
+      const nc = document.getElementById('no-comm');
+      setTimeout(() => { nc.style.opacity = '1'; }, 500);
+    }
+  });
+}, { threshold: 0.3 });
+splitObs.observe(document.getElementById('problema'));
+
+// ── LOCALES ANIMATION ──
+let localAnimDone = false;
+const localObs = new IntersectionObserver((entries) => {
+  entries.forEach(e => {
+    if (e.isIntersecting && !localAnimDone) {
+      localAnimDone = true;
+      const items = document.querySelectorAll('.local-item:not(#local-api)');
+      items.forEach((item, i) => {
+        setTimeout(() => { item.classList.add('highlight'); }, i * 300);
+        setTimeout(() => { item.classList.remove('highlight'); }, i * 300 + 700);
+      });
+      setTimeout(() => {
+        document.getElementById('local-api').style.boxShadow = '0 0 40px rgba(59,130,246,0.3)';
+      }, items.length * 300 + 200);
+    }
+  });
+}, { threshold: 0.4 });
+localObs.observe(document.getElementById('locales'));
+
+// ── REQUEST ANIMATION ──
+let reqDone = false;
+const reqObs = new IntersectionObserver((entries) => {
+  entries.forEach(e => {
+    if (e.isIntersecting && !reqDone) {
+      reqDone = true;
+      const steps = [1,2,3,4];
+      steps.forEach((s, i) => {
+        setTimeout(() => {
+          steps.forEach(x => document.getElementById('step-'+x).classList.remove('active'));
+          document.getElementById('step-'+s).classList.add('active');
+          if (s === 4) {
+            setTimeout(() => {
+              document.getElementById('req-response').classList.add('visible');
+            }, 600);
+          }
+        }, i * 900 + 400);
+      });
+    }
+  });
+}, { threshold: 0.3 });
+const rd = document.getElementById('req-demo');
+if (rd) reqObs.observe(rd);
+
+// ── CIERRE ──
+const cierreObs = new IntersectionObserver((entries) => {
+  entries.forEach(e => {
+    if (e.isIntersecting) {
+      document.getElementById('cierre-quote').classList.add('visible');
+      document.getElementById('cierre-gracias').classList.add('visible');
+      document.getElementById('cierre-name').classList.add('visible');
+    }
+  });
+}, { threshold: 0.4 });
+cierreObs.observe(document.getElementById('cierre'));
+
+// ── ALMACEN HOVER ──
+document.querySelectorAll('.almacen-item').forEach(item => {
+  item.addEventListener('mouseenter', () => item.classList.add('lit'));
+  item.addEventListener('mouseleave', () => item.classList.remove('lit'));
+});
+</script>
+</body>
+</html>
